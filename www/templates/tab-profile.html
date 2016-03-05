@@ -1,0 +1,48 @@
+<!--
+  tab.profile:
+  @controllers: NearbyProfileCtrl, NotificationsProfileCtrl, ProfileCtrl. (All as vm)
+  @url: '/nearby/:userId', /notifications/:sender, 'profile' 
+  Generates a LinkedIn profile view from fields in object vm.user.
+  Shows an addContact footer (see directive.contact.js) 
+-->
+<ion-view view-title="{{vm.viewTitle}}">
+  <ion-content class="profile-content">
+    <div class="list card">
+      
+      <div class="item item-thumbnail-left profile-header">
+        <img ng-src="{{vm.user.pictureUrl}}">
+        <h2 class="profile-header-txt profile-bold" ng-bind="vm.user.name"></h2>
+        <br>
+        <p class="profile-header-txt" ng-bind="vm.user.positions.values[0].title"></p>
+        <p class="profile-header-txt" ng-bind="vm.user.positions.values[0].company.name"></p>
+      </div>
+
+      <div class="item">
+          <span ng-bind="vm.user.industry"></span>
+           &nbsp|&nbsp
+          <span ng-bind="vm.user.location.name"></span>
+          
+      </div>
+
+      <div class="item"> 
+          Connections: 
+          <span ng-bind="vm.user.numConnections"></span>
+      </div>
+      <div class="item profile-content">
+        <span> Background </span>
+      </div>
+      <div class="item item-body">
+        <p class="profile-bold"> Summary </p>
+        <p ng-bind="vm.user.summary"></p>
+      </div>
+      <div ng-show="vm.user.emailAddress" class="item profile-content">
+        <span> Email </span>
+      </div>
+      <div ng-show="vm.user.emailAddress" class="item item-button-right">
+        {{vm.user.emailAddress}}
+      </div>
+      
+    </div>
+  </ion-content>
+  <add-contact user="vm.user"></add-contact>
+</ion-view>

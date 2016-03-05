@@ -1,0 +1,40 @@
+<!-- 
+  Login: 
+  @controller: LoginCtrl  
+  @state: 'login'
+  Title page with login button that open a LinkedIn authentication window in inAppBrowser window,
+  then redirects to 'tab/nearby'. Shows authentication loading cover while the redirect resolves
+-->
+<ion-view title="PSYCHIC LINK" hide-back-button="true" can-swipe-back="false">
+
+    <!-- Title Page and Login Button -->
+    <ion-content scroll="false" ng-show="!loggingIn">
+        <section class="login-container">
+          <!-- DEVELOPMENT -->
+          <div class = "col button-row text-center" ng-show="DEV" ng-click="devLogin()">
+            <img src="./img/signin-button.png" />
+          </div>
+          <!-- PRODUCTION -->          
+          <div class = "col button-row text-center top-button" ng-show="!DEV" ng-click="login()">
+            <img src="./img/signin-button.png" />
+          </div>
+         
+          <div class = "col header text-center">
+          </div>
+          <div class = "col button-row text-center explanation">
+              <h5> Use low energy radio waves </h5>
+              <h5> to see what the people around you do. </h5>
+          </div>
+        </section>
+    </ion-content>
+
+    <!-- Authenticating cover -->
+    <section class="authenticate-container" ng-show="loggingIn">
+      <div class="col spacer"></div>
+      <div class="col button-row text-center"> 
+        <div> <ion-spinner class="auth-spinner spinner-stable" icon="ripple"></ion-spinner> </div>
+        <div> <span> Authenticating </span> </div>
+      </div>
+      <div class="col spacer"></div>    
+    </section>
+</ion-view>

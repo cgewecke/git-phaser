@@ -1,0 +1,60 @@
+<!--
+  tab.settings: 
+  @controller: SettingsCtrl as vm 
+  @state: 'settings'
+  iOS service permissions & information about enabling/disabling these. Also logout. 
+-->
+<ion-view view-title="Settings">
+  <server-status></server-status>
+  <ion-content>
+  	<div class="list">
+      <!-- Location Services -->
+  		<div class="item item-icon-left item-button-right item-text-wrap"
+           ng-click="vm.toast()">
+          <i class="icon ion-ios-navigate-outline"></i> 
+          Location Services
+          <button class="button button-clear button-balanced" ng-show="vm.geolocate.enabled"> ON </button>
+          <button class="button button-clear button-assertive" ng-show="!vm.geolocate.enabled"> OFF </button>
+      </div>
+
+      <!-- Push Notifications -->
+      <div class="item item-icon-left item-button-right item-text-wrap"
+            ng-click="vm.toast()">
+          <i class="icon ion-ios-bell-outline"></i> 
+          Push Notifications
+          <button class="button button-clear button-balanced" ng-show="vm.geolocate.enabled"> ON </button>
+          <button class="button button-clear button-assertive" ng-show="!vm.geolocate.enabled"> OFF </button>
+      </div>
+
+      <!-- iBeacons / Logout -->
+	    <div class="item item-icon-left item-button-right item-text-wrap">
+	      <i class="icon ion-android-wifi"></i>
+	      Turn iBeacons Off
+	      <button ng-click="vm.logout()" class="button button-outline button-assertive">Logout</button>
+	    </div>
+
+      <!-- Testing Divider -->
+      <div class="item item-divider">
+        Developer Testing
+      </div>
+
+      <div class="item item-button-right item-text-wrap">
+        Connect to self
+        <button ng-click="vm.testPub()" class="button button-outline button-assertive">Connect</button>
+      </div>
+      <div class="item item-button-right item-text-wrap">
+        Disconnect from self
+        <button ng-click="vm.clearPub()" class="button button-outline button-assertive">Disconnect</button>
+      </div>
+      <div class="item item-button-right item-text-wrap">
+        Notify self
+        <button ng-click="vm.testNotify()" class="button button-outline button-assertive">Notify</button>
+      </div>
+      <div class="item item-button-right item-text-wrap">
+        Clear notifications
+        <button ng-click="vm.clearNotes()" class="button button-outline button-assertive">Clear</button>
+      </div>
+
+	</div>
+  </ion-content>
+</ion-view>

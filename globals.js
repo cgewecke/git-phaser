@@ -1,0 +1,1 @@
+abspath = "/Users/christophergewecke/Sites/beacon-testing/linkedin";

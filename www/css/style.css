@@ -1,0 +1,115 @@
+/* Empty. Add your own CSS if you like */
+.profile-add-contact {
+	opacity: 8;
+    -webkit-animation: flash 1s;
+    animation: flash 1s;
+}
+
+.profile-footer{
+	-webkit-animation: slideOutDown 300ms;
+    animation: slideOutDown 300ms;
+}
+
+.directive-footer{
+    bottom: 49px !important;
+}
+.item-chat.new-item.ng-enter {
+    -webkit-animation: slideInLeft 500ms;
+    animation: slideInLeft 500ms;
+}
+
+.authenticate-container {
+	color: white;
+    background-color: #BECDDE;
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    height: 100%;
+}
+
+.authenticate-container.spacer {
+    -webkit-flex: 1;
+}
+
+.spinner svg{
+
+  	width: 96px !important;
+ 	height: 96px !important;
+}
+
+.align-left{
+    text-align: left;
+}
+
+.align-right{
+    text-align: right;
+}
+
+/* Settings */
+.settings-info{
+    padding-left: 10px;
+}
+.item-icon-left.setup{
+    padding-left: 70px; 
+}
+.smaller{
+    font-size: 11px !important;
+}
+
+i.icon.setup{
+    font-size: 49px;
+}
+/* Map CSS */
+beacon-map{
+    height: 600px;
+}
+
+beacon-map.ipad{
+    height: 1000px;
+}
+
+#map{
+    height: inherit;
+}
+
+.leaflet-control-zoom-out{
+    visibility: hidden !important;
+}
+
+.leaflet-control-zoom-in{
+    visibility: hidden !important;
+}
+
+.bar.bar-grey {
+
+    background-color: #D6D6D6;
+    background-image: none;
+    color: #444; 
+}
+
+.bar-center{
+    margin-top: 10px !important;
+}   
+
+.bar.bar-transparent{
+    border-color: none;
+    background-color: transparent;
+    background-image: none;
+}
+
+
+.leaflet-bar{
+    border: none !important;
+}
+
+
+.icon-badge {
+  position: absolute;
+    top: 4%;
+    right: 33%;
+    right: calc(50% - 21px);
+    padding: 1px 6px;
+    height: auto;
+    font-size: 12px;
+    line-height: 16px;
+    pointer-events: none;
+}

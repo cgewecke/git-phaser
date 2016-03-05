@@ -1,0 +1,74 @@
+<!--
+  Setup:
+  @controller: SetupCtrl as vm
+  @route: '/setup'
+  View shown to new accounts/installs post-login, notifying them of the hardware permissions
+  the app will ask for, and asking them to accept or cancel. This informational view is
+  designed to smooth the process of getting everything app needs from phone. Debatable if it
+  succeeds
+-->
+<ion-view title="You're new!" hide-back-button="true" can-swipe-back="false">
+
+    <!-- A list of the permissions the app is about to ask for -->
+    <ion-content ng-show="!vm.ready">   
+        <div class="item item-energized item-text-wrap">
+          <div class="settings-info">
+            <p> <span class="light">
+                  <b> We're about to ask your phone to use the services listed below. (It will ask you if that's ok.) </b> 
+                </span> 
+                <span class="light"> You can turn these on and off later from the app's settings menu. </span> 
+            </p>
+          </div>
+        </div>
+        <div class="item item-icon-left setup item-text-wrap" >
+          <i class="icon setup ion-android-wifi"></i>
+          <p> <b> iBeacons </b> are battery-safe, low-energy Bluetooth signals. They let
+             your phone find people nearby. 
+          </p>
+          <p> <span class="positive"> REQUIRED </span> </p>
+        </div>
+      
+        <div class="item item-icon-left setup item-text-wrap" >
+          <i class="icon setup ion-ios-navigate-outline"></i>
+          <p> <b> Location Services </b> let you see yourself and everyone else on a map. 
+            (This app won't track you or run GPS continuously.) 
+          </p>
+          <p> <span class="energized"> OPTIONAL </span> </p>
+        </div>
+         
+      <div class="item item-icon-left setup item-text-wrap" >
+          <i class="icon setup ion-ios-bell-outline"></i>
+          <p> <b> Push Notifications </b> tell you when someone checked your profile. 
+          </p>
+          <p> <span class="energized"> OPTIONAL </span> </p>
+        </div>
+      </div>  
+      </div>   
+    </ion-content>
+
+    <!-- Accept/Reject buttons -->
+    <ion-footer-bar class="bar-stable" >
+      <span class="col col-10"></span>
+      <span class="button-bar">
+        <button id="setup-accept" class="button button-positive button-outline icon-left ion-ios-checkmark-outline"
+                ng-click="vm.accept()">
+                I'm ready!
+        </button>
+        <button id="setup-reject" class="button button-assertive button-outline icon-left ion-ios-minus-outline"
+                ng-click="vm.reject()">
+                Cancel
+        </button>
+      </span>
+      <span class="col col-10"></span> 
+    </ion-footer-bar>
+
+    <!-- Permissions cover (Disabled) -->
+    <section class="authenticate-container" ng-show="vm.ready">
+      <div class="col spacer"></div>
+      <div class="col button-row text-center"> 
+        <div> <ion-spinner class="auth-spinner spinner-stable" icon="ripple"></ion-spinner> </div>
+        <div> <span> Getting Permissions </span> </div>
+      </div>
+      <div class="col spacer"></div>    
+    </section>
+</ion-view>

@@ -1,0 +1,98 @@
+<!--
+  tab.nearby:
+  @controller: NearbyCtrl as vm
+  @state: 'tab.nearby'
+  Slidebox where slide '0' is a list view of all connections to this phone, and 
+  slide '1' is a map view of users current location, address. There is a footer 
+  button bar to toggle between these. Shows scanning cover if there are no connections.
+
+  Unit Testing:
+  #nearby-list-slide
+  #nearby-map-slide
+  #nearby-scanning-cover
+  #nearby-list-button
+  #nearby-map-button
+-->
+<ion-view view-title="Nearby">
+  <server-status></server-status>
+  <ion-content> 
+    <!-- SLIDES -->
+    <ion-slide-box id="nearby-slidebox" active-slide="vm.slide" auto-play="false" show-pager="false">
+      <!-- List Slide -->
+      <ion-slide id="nearby-list-slide">
+        <ion-list>
+          <ion-item
+            ng-repeat="user in vm.connections"
+            class="item-chat item-avatar item-icon-right"
+            ng-class="{'new-item': user.isNew }"
+            type="item-text-wrap"
+            href="#/tab/nearby/{{user.profile.id}}"
+            ng-click="vm.notify.sawProfile(user.receiver)"
+            ng-show="user.profile">
+            <img ng-src="{{user.profile.pictureUrl}}">
+            <h2>{{user.profile.firstName}}&nbsp{{user.profile.lastName}}</h2>
+            <p>{{user.profile.headline}}</p>
+            <span class="last-message-timestamp">{{user.proximity | proximityFilter }}</span>
+            <i class="icon ion-chevron-right icon-accessory"></i>
+          </ion-item>
+        </ion-list>
+       
+      </ion-slide>
+      <!-- Map Slide -->
+      <ion-slide id="nearby-map-slide"> 
+         <ion-header-bar align-title="left" class="bar-grey"> 
+          <div class="title bar-center">{{vm.geolocate.address}}</div>
+          <div class="buttons bar-center">
+            <button class="button button-clear button-positive icon ion-ios-person"
+                    ng-show="vm.connections.length && vm.slide === vm.mapSlide"
+                    ng-click="vm.slide=vm.listSlide"></button> 
+            <span class="badge badge-assertive icon-badge" ng-bind="vm.connections.length"
+                  ng-show="vm.connections.length && vm.slide === vm.mapSlide"></span>   
+          </div>
+        </ion-header-bar>
+        <beacon-map slide="vm.slide"></beacon-map>
+      </ion-slide>
+    </ion-slide-box>
+  </ion-content> 
+
+  <!-- Scanning Cover for empty connections table, list view -->
+  <section id="nearby-scanning-cover" class="authenticate-container fade" 
+           ng-show="!vm.connections.length && vm.slide === vm.listSlide">
+    <div class="col spacer"></div>
+    <div class="col button-row text-center"> 
+      <div> <ion-spinner class="auth-spinner spinner-stable" icon="ripple"></ion-spinner> </div>
+      <div> <span> Scanning </span> </div>
+    </div>
+    <div class="col spacer"></div>    
+  </section>
+
+  <!-- FOOTERS -->
+
+  <!-- Home Button for map view -->
+  <ion-footer-bar align-title="left" class="bar-subfooter bar-transparent"
+        ng-show="(vm.slide === vm.mapSlide)">
+    <button class="button button-clear" ng-click='vm.geolocate.updateMap()'>
+      <i class="icon positive ion-ios-home"></i>
+    </button> 
+  </ion-footer-bar>
+  
+  <!-- Slide Toggle -->
+  <ion-footer-bar align-title="left" class="bar-stable" >
+    <span class="col col-20"></span>
+    <span class="button-bar">
+      <button id="nearby-list-button" class="button button-positive icon-left ion-ios-list-outline"
+              ng-class="{'button-outline': !(vm.slide === vm.listSlide)}"
+              ng-click="vm.slide=vm.listSlide">
+        List
+      </button>
+      <button id="nearby-map-button" class="button button-positive icon-left ion-ios-location-outline"
+              ng-class="{'button-outline': !(vm.slide === vm.mapSlide)}"
+              ng-click="vm.slide=vm.mapSlide">
+        Map
+      </button>
+    </span>
+    <span class="col col-20"></span>
+</ion-footer-bar>
+</ion-view>
+
+<!--  -->

@@ -1,0 +1,28 @@
+{
+  "name": "leaflet-pulse-icon",
+  "version": "0.1.0",
+  "description": "A pulsing icon plugin.",
+  "main": "src/L.Icon.Pulse.js",
+  "author": "Filip Zavadil",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mapshakers/leaflet-icon-pulse.git"
+  },
+  "dependencies": {
+    "leaflet": ">=0.7.3",
+    "gobble-autoprefixer": "^0.1.1",
+    "gobble-cli": "^0.4.2",
+    "gobble": "^0.10.2"
+  },
+  "keywords": [
+    "icon",
+    "map",
+    "marker",
+    "leaflet"
+  ],
+  "scripts": {
+    "postinstall": "node_modules/gobble-cli/lib/index.js build -f dist",
+    "watch": "node_modules/gobble-cli/lib/index.js watch -f dist"
+  }
+}

@@ -1,0 +1,31 @@
+<!--
+  tab.notifications:
+  @controller: NotificationsCtrl as vm
+  @state: 'tab.notifications'
+  List of notifications ordered by most recent.
+-->
+<ion-view view-title="Notifications">
+  <server-status></server-status>
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="note in vm.notifications | orderBy:'-timestamp'"
+                class="item-chat item-avatar item-icon-right"
+                type="item-text-wrap"
+                href="#/tab/notifications/{{note.sender}}"> 
+        <img ng-src="{{note.pictureUrl}}">
+        <h2>{{note.name}}</h2>
+        <p> <span> Checked your profile </span> 
+            <span class="last-message-timestamp">{{note.timestamp | timeFilter}}</span>
+        </p>
+        <p> <span class="last-message-timestamp">{{note.location}}</span> </p>
+        <i class="icon ion-chevron-right icon-accessory"></i> 
+      </ion-item>
+
+      <!-- No Notifications --> 
+      <ion-item id="notifications-none" type="item-text-wrap" ng-show="!vm.notifications.length"> 
+        You have no notifications.
+      </ion-item>
+
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,12 @@
+{
+  "apn": {
+    "passphrase": "1234",
+    "key": "key.pem",
+    "cert": "aps.pem"
+  },
+  "production":true,
+  "badge": true,
+  "sound": true,
+  "alert": true,
+  "vibrate": true
+}
