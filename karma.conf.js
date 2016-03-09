@@ -7,7 +7,6 @@ module.exports = function(config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'], 
@@ -19,6 +18,7 @@ module.exports = function(config) {
         // Add JQuery so that 'find' etc works correctly
         'node_modules/jquery/dist/jquery.min.js',
 
+        // Lib 
         'www/lib/ionic/js/ionic.bundle.js',
         'www/lib/angular-mocks/angular-mocks.js',
         'www/lib/moment/moment.js',
@@ -33,14 +33,28 @@ module.exports = function(config) {
         'www/lib/ionic-toast/dist/ionic-toast.bundle.min.js',
         'www/lib/leaflet/leaflet.js',
         'www/lib/leaflet-pulse-icon/src/L.Icon.Pulse.js',
+        
+        // Misc app
         'www/js/*.js',
+        'www/js/mongo/*.js',
+        'www/js/filters/*.js',
+
+        // Core w/specs
+        'www/js/config/*.js',
+        'www/js/config/specs/*.js',
+        'www/js/controllers/*.js',
+        'www/js/controllers/specs/*.js',
+        'www/js/directives/*.js',
+        'www/js/directives/specs/*.js',
+        'www/js/services/*.js',
+        'www/js/services/specs/*.js',
+
+        // Templates
         'www/templates/*.html',
 
-        'tests/controllers/*.js',
-        'tests/services/*.js',
+        // Test utilities & mocks
         'tests/mocks/*.js',
         'tests/util/*.js',
-        'tests/directives/*.js'
     ],
 
 

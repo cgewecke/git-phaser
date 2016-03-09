@@ -136,13 +136,12 @@ describe('Service: GeoLocate', function () {
 
         it('should resolve an address on success', function(){
 
-            var q;
             var expected = mock_results[1].formatted_address.split(',').slice(0, -2).join(', ');
 
             defer.resolve(mock_position);
             spyOn($cordovaGeolocation, 'getCurrentPosition').and.callThrough();
             
-            q = GeoLocate.getAddress();
+            GeoLocate.getAddress();
             $scope.$digest();
             
             expect(GeoLocate.address).toEqual(expected);

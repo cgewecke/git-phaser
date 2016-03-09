@@ -1,12 +1,11 @@
+angular.module('linkedin')
+  .controller("LoginCtrl", LoginCtrl);
+
 // @controller: LoginCtrl
 // @route: /login
 //
 // Functions/Methods for a two-step login process which signs into LinkedIn and then
 // Meteor using details from a LinkedIn profile
-angular.module('linkedin')
-  .controller("LoginCtrl", LoginCtrl);
-
-
 function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, LinkedIn, Beacons, ionicToast, $timeout ){
     
     $scope.DEV = $rootScope.DEV;
