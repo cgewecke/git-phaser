@@ -1,27 +1,27 @@
-// @service: LinkedIn
-// A service for interacting w/ the LinkedIn api
+// @service: GitHub
+// A service for interacting w/ the GitHub api
 
-angular.module('linkedin')
-  .service("LinkedIn", LinkedIn);
+angular.module('gitphaser')
+  .service("GitHub", GitHub);
 
 
-function LinkedIn($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, Beacons){
+function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, Beacons){
 
 	var self = this;
 
 	// ------------------------------   PRIVATE  ------------------------------------
 	
-	// LinkedIn profile data api call
+	// GitHub profile data api call
   var options = ":(id,num-connections,picture-url,first-name,last-name,headline,location,industry,specialties,positions,summary,email-address,public-profile-url)";
   var protocol = "?callback=JSON_CALLBACK&format=jsonp&oauth2_access_token="
-  var me_root = "https://api.linkedin.com/v1/people/~";
+  var me_root = "https://api.GitHub.com/v1/people/~";
   var other_root = null;
 
   // Keys
-  var id = "75rttrx3oxeeii"; // Security . . . .
-  var sec = "adcGXkzR4fH6e3zI";
-  var perm = ["r_basicprofile", "r_emailaddress"];
-  var state = "randomstring";
+  var id = 'cc2cd9f335b94412c764';
+  var secret = '1f4838b6f17c07b6d91761930a2f484adc25762f';
+  var perm = [];
+  var state = "u79z234c06nq";
 
   // PRODUCTION 
   var authToken = null;
@@ -46,7 +46,7 @@ function LinkedIn($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, B
 
   // @function: initialize
   // Invoked in the routing resolve at tab/nearby - if user autologs into Meteor,
-  // we still need to fetch a fresh linkedin profile for them. Only initializes
+  // we still need to fetch a fresh GitHub profile for them. Only initializes
   // if self.me doesn't exist yet.
   self.initialize = function(){
 
@@ -60,15 +60,15 @@ function LinkedIn($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, B
           self.setAuthToken(Meteor.user().profile.authToken);
           self.getMe().then(function(success){
 
-            MSLog('@LinkedIn:initialize: autologged in');
+            MSLog('@GitHub:initialize: autologged in');
             d.resolve(true);
           }, function(error){
-            MSLog('@LinkedIn:initialize. Failed: couldnt get profile')
+            MSLog('@GitHub:initialize. Failed: couldnt get profile')
             d.reject('AUTH_REQUIRED');
           }); 
         }, 
         function(userLoggedOut){
-          MSLog('@LinkedIn:initialize: Failed: requireUser: ' + userLoggedOut);
+          MSLog('@GitHub:initialize: Failed: requireUser: ' + userLoggedOut);
           d.reject('AUTH_REQUIRED');
         }
       );
@@ -77,26 +77,24 @@ function LinkedIn($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, B
     }
 
     return d.promise;
-    
-
   }
 
 	// @function: authenticate: 
   // @return: promise (rejects if $cordovaOauth fails)
-  // Logs user into LinkedIn via inAppBroswer. sets authToken
+  // Logs user into GitHub via inAppBroswer. sets authToken
 	self.authenticate = function(){
 		var deferred = $q.defer();
 		$ionicPlatform.ready(function() {
 
-      $cordovaOauth.linkedin(id, sec, perm, state, {redirect_uri: "http://cyclop.se/help"}).then(
-      function(result) {
-     		  authToken = result.access_token;
-          MSLog('@LinkedIn:authenticate: authToken = ' + authToken);
-      		deferred.resolve();
+      $cordovaOauth.github(id, sec, perm, state, {redirect_uri: "http://cyclop.se/help"}).then(
+        function(result) {
+       		  authToken = result.access_token;
+        		deferred.resolve();
+            MSLog('@GitHub:authenticate: authToken = ' + authToken);
 
-    	}, function(error) {
-          deferred.reject(error);
-      });
+      	}, function(error) {
+            deferred.reject(error);
+        });
     });
 
 		return deferred.promise;	
@@ -104,7 +102,7 @@ function LinkedIn($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, B
 
 	// @function: getMe
   // @return: promise 
-  // LinkedIn API call to get the user profile. Resolves self.me.
+  // GitHub API call to get the user profile. Resolves self.me.
 	self.getMe = function(){
 		
 		var deferred = $q.defer();
