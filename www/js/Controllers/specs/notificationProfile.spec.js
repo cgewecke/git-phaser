@@ -2,7 +2,7 @@ describe('NotificationsProfileCtrl', function(){
 
     var $controller, $scope, $reactive, MeteorMock, user, $stateParams;
 
-    beforeEach(module('linkedin'));    // Application
+    beforeEach(module('gitphaser'));    // Application
     beforeEach(module('mocks'));  // Mocked Meteor services, collections
     
     // Disable Ionic templating

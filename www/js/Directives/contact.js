@@ -1,11 +1,11 @@
-angular.module('linkedin')
+angular.module('gitphaser')
   .directive("addContact", AddContact);
 
 // @directive: <add-contact user='someUserProfile'></add-contact>
 // @params: user (the profile object of the user to be added). 
 //
 // A footer bar on the profile template that allows user to add info from
-// a discovered LinkedIn profile to be added to the native contacts. Also manages
+// a discovered GitHub profile to be added to the native contacts. Also manages
 // a list of contact ids associated with the user account.
 function AddContact($cordovaContacts, $timeout, $auth){
     return {
@@ -27,7 +27,7 @@ function AddContact($cordovaContacts, $timeout, $auth){
 
        link: function(scope, elem, attrs){
 
-          scope.currentUserId = Meteor.user().username; // user.username === LinkedIn profile 'id'
+          scope.currentUserId = Meteor.user().username; // user.username === GitHub profile 'id'
           scope.contactAdded = hasContact(); // Boolean determines visibility of this directive
           scope.flasher = false; // DOM message flag
 

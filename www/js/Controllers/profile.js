@@ -1,14 +1,14 @@
-angular.module('linkedin')
+angular.module('gitphaser')
   .controller('ProfileCtrl', ProfileCtrl)
 
 // @controller: ProfileCtrl
-// @params: $scope, LinkedIn
+// @params: $scope, GitHub
 // @route: /tab/profile
 //
-// Exposes LinkedIn.me profile object to default profile template
-function ProfileCtrl ($scope, LinkedIn){
+// Exposes GitHub.me profile object to default profile template
+function ProfileCtrl ($scope, GitHub){
     
-  this.user = LinkedIn.me;
+  this.user = GitHub.me;
   this.user.name = this.user.firstName + ' ' + this.user.lastName;
   this.viewTitle = "You";
   

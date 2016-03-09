@@ -4,7 +4,7 @@ describe('LoadingCtrl', function(){
         compileProvider, ionicToast, mock_status;
 
     beforeEach(module('templates'));   // ng-html2js template cache
-    beforeEach(module('linkedin'));    // Application
+    beforeEach(module('gitphaser'));    // Application
     beforeEach(module('mocks'));  // Mocked Meteor services, collections
     
     // Disable Ionic templating

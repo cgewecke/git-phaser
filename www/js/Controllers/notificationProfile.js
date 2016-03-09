@@ -1,4 +1,4 @@
-angular.module('linkedin')
+angular.module('gitphaser')
   .controller('NotificationsProfileCtrl', NotificationsProfileCtrl);
 
 // @controller: NotificationsProfileCtrl

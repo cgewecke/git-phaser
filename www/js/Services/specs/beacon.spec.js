@@ -2,7 +2,7 @@
 
 describe('Service: Beacons', function () {
     
-    beforeEach(module('linkedin'));    // Application
+    beforeEach(module('gitphaser'));    // Application
     beforeEach(module('mocks'));  // Mocked Meteor services, collections
 
     // Disable Ionic templating

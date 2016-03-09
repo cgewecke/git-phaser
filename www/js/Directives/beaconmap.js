@@ -1,4 +1,4 @@
-angular.module('linkedin')
+angular.module('gitphaser')
   .directive("beaconMap", BeaconMap);
 
 //@ directive: <beacon-map></beacon-map>

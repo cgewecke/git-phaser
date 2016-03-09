@@ -3,7 +3,7 @@ var nt_debug;
 
 describe('Service: Notify', function () {
     
-    beforeEach(module('linkedin'));    // Application
+    beforeEach(module('gitphaser'));    // Application
     beforeEach(module('mocks'));  // Mocked Meteor services, collections
 
     // Disable Ionic templating
@@ -13,10 +13,10 @@ describe('Service: Notify', function () {
     }));
 
     var $scope, $q, $cordovaPush, $window,
-        Notify, GeoLocate, LinkedIn, defer, user;
+        Notify, GeoLocate, GitHub, defer, user;
 
     beforeEach(inject(function(_$rootScope_, _$q_, _$cordovaPush_, _$window_, 
-    						   _Mock_, _Notify_, _GeoLocate_, _LinkedIn_ ){
+    						   _Mock_, _Notify_, _GeoLocate_, _GitHub_ ){
         
         $scope = _$rootScope_;
         $cordovaPush = _$cordovaPush_;
@@ -25,7 +25,7 @@ describe('Service: Notify', function () {
     
         Notify = _Notify_;
         GeoLocate = _GeoLocate_;
-        LinkedIn = _LinkedIn_;
+        GitHub = _GitHub_;
         Meteor.user = _Mock_.Meteor.user;
         Meteor.userId = _Mock_.Meteor.userId;
         user = _Mock_.user;
@@ -35,8 +35,8 @@ describe('Service: Notify', function () {
         //$cordovaPush mocks
         $cordovaPush.register = function(config){return defer.promise };
         
-        // LinkedIn mocks
-        LinkedIn.me = {
+        // GitHub mocks
+        GitHub.me = {
 			pictureUrl: 'http:hello',
 			firstName: 'Nicole',
 			lastName: 'Star-Siren'
@@ -168,9 +168,9 @@ describe('Service: Notify', function () {
 				notification: {
 					type: 'sawProfile',
 					sender: Meteor.userId(),
-					pictureUrl: LinkedIn.me.pictureUrl,
-					name: LinkedIn.me.firstName + ' ' + LinkedIn.me.lastName,
-					profile: LinkedIn.me,
+					pictureUrl: GitHub.me.pictureUrl,
+					name: GitHub.me.firstName + ' ' + GitHub.me.lastName,
+					profile: GitHub.me,
 					location: 'someLocation', 
 					timestamp: new Date()
 				}

@@ -1,6 +1,6 @@
 // @service: Beacons
 // Handlers for initializing, transmitting and receiving of beacon signals
-angular.module('linkedin')
+angular.module('gitphaser')
   .service("Beacons", Beacons);
 
 

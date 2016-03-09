@@ -1,7 +1,7 @@
 var routes_debug, routes_debugII;
 
 angular
-  .module('linkedin')
+  .module('gitphaser')
   .config(config);
 
 function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings) {
@@ -59,8 +59,8 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings) {
         user: ['$auth', function($auth){
           return $auth.requireUser();
         }],
-        linkInit: ['LinkedIn', 'user',function(LinkedIn, user){
-            return LinkedIn.initialize();
+        linkInit: ['GitHub', 'user',function(GitHub, user){
+            return GitHub.initialize();
         }],
         pushInit: ['Notify', 'linkInit', function(Notify, linkInit){
             return Notify.initialize();
@@ -78,9 +78,6 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings) {
      
             return deferred.promise;
         }], 
-        geo: ['GeoLocate', 'subscription', function(GeoLocate, subscription){
-            return GeoLocate.setup();
-        }]
       }
   })
   .state('tab.nearby-profile', {
@@ -108,8 +105,8 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings) {
         }
       },
       resolve: {
-        user: ['LinkedIn',function(LinkedIn){
-            return LinkedIn.initialize();
+        user: ['GitHub',function(GitHub){
+            return GitHub.initialize();
         }]
       }
   })

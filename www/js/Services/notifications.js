@@ -1,9 +1,9 @@
 // @service: Notify
 // Handles push notification registry and does internal notifications management
-angular.module('linkedin')
+angular.module('gitphaser')
   .service("Notify", Notify);
 
-function Notify($q, $rootScope, LinkedIn, GeoLocate, $cordovaPush){
+function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPush){
 	
 	var self = this;
 	var error;
@@ -52,7 +52,7 @@ function Notify($q, $rootScope, LinkedIn, GeoLocate, $cordovaPush){
 	// Geolocates, generates a notification. 
 	self.sawProfile = function(userId){
 		
-		if (!LinkedIn.me) return;
+		if (!GitHub.me) return;
 
 		GeoLocate.getAddress().then(function(location){
 	
@@ -61,9 +61,9 @@ function Notify($q, $rootScope, LinkedIn, GeoLocate, $cordovaPush){
 				notification: {
 					type: 'sawProfile',
 					sender: Meteor.userId(),
-					pictureUrl: LinkedIn.me.pictureUrl,
-					name: LinkedIn.me.firstName + ' ' + LinkedIn.me.lastName,
-					profile: LinkedIn.me,
+					pictureUrl: GitHub.me.pictureUrl,
+					name: GitHub.me.firstName + ' ' + GitHub.me.lastName,
+					profile: GitHub.me,
 					location: location, 
 					timestamp: new Date()
 				}

@@ -1,4 +1,4 @@
-angular.module('linkedin')
+angular.module('gitphaser')
   .controller('SettingsCtrl', SettingsCtrl);
 
 // @controller: SettingsCtrl
@@ -9,7 +9,7 @@ angular.module('linkedin')
 // developer testing functions, like clearing notifications etc. 
 function SettingsCtrl($scope, $state, GeoLocate, Notify, ionicToast) {
 
-  var message = "Go to Settings > LinkedIn in your device's settings menu to change this."
+  var message = "Go to Settings > Git-Phaser in your device's settings menu to change this."
   this.geolocate = {enabled: true};
   this.notify = {enabled: true};
 

@@ -5,7 +5,7 @@
 // clientSecret adcGXkzR4fH6e3zI
 angular
 
-	.module('linkedin', [
+	.module('gitphaser', [
 		'ionic', 
 		'ionic-toast',
 		'ngCordova',

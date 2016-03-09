@@ -1,4 +1,4 @@
-angular.module('linkedin')
+angular.module('gitphaser')
   .directive("serverStatus", ServerStatus);
 
 

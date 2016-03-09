@@ -1,4 +1,4 @@
-angular.module('linkedin')
+angular.module('gitphaser')
   .controller('TabsCtrl', TabsCtrl);
 
 // @controller: TabsCtrl

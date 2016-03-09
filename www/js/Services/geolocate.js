@@ -1,6 +1,6 @@
 var gl_debug;
 
-angular.module('linkedin')
+angular.module('gitphaser')
   .service("GeoLocate", GeoLocate)
  
 // @service: GeoLocate:  - a service and directive 

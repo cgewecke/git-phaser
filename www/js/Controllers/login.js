@@ -1,43 +1,43 @@
-angular.module('linkedin')
+angular.module('gitphaser')
   .controller("LoginCtrl", LoginCtrl);
 
 // @controller: LoginCtrl
 // @route: /login
 //
-// Functions/Methods for a two-step login process which signs into LinkedIn and then
-// Meteor using details from a LinkedIn profile
-function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, LinkedIn, Beacons, ionicToast, $timeout ){
+// Functions/Methods for a two-step login process which signs into GitHub and then
+// Meteor using details from a GitHub profile
+function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacons, ionicToast, $timeout ){
     
     $scope.DEV = $rootScope.DEV;
 
     var appHash = "Txc9"; // Constant to help generate password  
-    var toastMessage = "Couldn't get your LinkedIn profile. Try again.";
+    var toastMessage = "Couldn't get your GitHub profile. Try again.";
     
     $scope.loggingIn = false; // Dom flag for spinner that appears when returning from inAppBrowser login
 
     // ------------------------------------ PUBLIC -------------------------------------------
     // @function: Login
-    // Authenticates with LinkedIn, loads linkedin profile and passes to meteor login handlers. 
+    // Authenticates with GitHub, loads GitHub profile and passes to meteor login handlers. 
     // Shows toast on authentication failure.
     $scope.login = function(){
       MSLog('@login');
       
       $scope.loggingIn = true;
-      LinkedIn.authenticate().then(function(){
+      GitHub.authenticate().then(function(){
   
-        LinkedIn.getMe().then(function(){
+        GitHub.getMe().then(function(){
           meteorLogin();
         },
         function(error){
           $scope.loggingIn = false;
           ionicToast.show(toastMessage, 'top', true, 2500);
-          MSLog('Linkedin data api failed: ' + error)
+          MSLog('GitHub data api failed: ' + error)
         });
 
       }, function(error){
         $scope.loggingIn = false;
         ionicToast.show(toastMessage, 'top', true, 2500);
-        MSLog('Linkedin login failed: ' + JSON.stringify(error));
+        MSLog('GitHub login failed: ' + JSON.stringify(error));
 
       });
     };
@@ -48,7 +48,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, LinkedIn, Beac
     $scope.devLogin = function(){
       MSLog('@devLogin');
       
-      LinkedIn.getMe().then(function(){
+      GitHub.getMe().then(function(){
         meteorLogin();
       });
     };
@@ -62,12 +62,12 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, LinkedIn, Beac
       
       // User object
       var user = {
-        username: LinkedIn.me.id,
-        password: LinkedIn.me.id + '_' + appHash,
+        username: GitHub.me.id,
+        password: GitHub.me.id + '_' + appHash,
         email: null,
         profile: {
-          authToken: LinkedIn.me.authToken,
-          profileUrl: LinkedIn.me.publicProfileUrl,
+          authToken: GitHub.me.authToken,
+          profileUrl: GitHub.me.publicProfileUrl,
           notifications: [],
           contacts: [],
           notifyCount: 0,
@@ -97,7 +97,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, LinkedIn, Beac
     }
 
     // @function: loginWithAccount
-    // Update our user w/current linkedIn profile
+    // Update our user w/current GitHub profile
     // Set pl_id in local storage to user email. This variable will be accessed by
     // the beacon delegate and used to self-identify with server when woken up in the
     // background.  Redirect to setup if app is a new install, nearby otherwise.

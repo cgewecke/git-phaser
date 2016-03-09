@@ -1,7 +1,7 @@
 var auth_debug;
 
 angular
-  .module('linkedin')
+  .module('gitphaser')
   .run(run);
 
 // @function: run

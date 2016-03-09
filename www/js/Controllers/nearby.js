@@ -1,4 +1,4 @@
-angular.module('linkedin') 
+angular.module('gitphaser') 
   .controller('NearbyCtrl', NearbyCtrl);  
 
 // @controller NearbyCtrl

@@ -4,7 +4,7 @@ var bm_test_debug;
 describe('Directive: <beacon-map>', function () {
     
     beforeEach(module('templates'));   // ng-html2js template cache
-    beforeEach(module('linkedin'));    // Application
+    beforeEach(module('gitphaser'));    // Application
     beforeEach(module('mocks'));  // Mocked Meteor services, collections
 
     var $scope, $compile, ionicToast, 

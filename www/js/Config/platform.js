@@ -1,5 +1,5 @@
 angular
-  .module('linkedin')
+  .module('gitphaser')
   .run(run);
 
 // @function run 

@@ -1,5 +1,5 @@
 angular
-  .module('linkedin')
+  .module('gitphaser')
   .filter('proximityFilter', proximityFilter)
   .filter('timeFilter', timeFilter);
  
