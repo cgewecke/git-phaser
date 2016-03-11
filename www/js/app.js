@@ -11,7 +11,8 @@ angular
 		'ngCordova',
 		'ngCordovaOauth',
 		'angular-meteor',
-		'angular-meteor.auth'
+		'angular-meteor.auth',
+		'pascalprecht.github-adapter'
 
 	]);
 
