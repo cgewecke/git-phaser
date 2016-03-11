@@ -147,9 +147,7 @@ function Beacons($rootScope, $q, $cordovaBeacon){
 
         } else {
             MSLog("@beacon:disconnect. Error: receiver - " + receiver);
-        }
-        
-        
+        }        
     };
 
     // @function: onCapture
@@ -174,8 +172,7 @@ function Beacons($rootScope, $q, $cordovaBeacon){
                    proximity: beacon.proximity 
                 };
                 
-                Meteor.call('newConnection', pkg);
-                
+                Meteor.call('newConnection', pkg);                
             })
         }
     };

@@ -13,6 +13,7 @@
 .directive-footer{
     bottom: 49px !important;
 }
+
 .item-chat.new-item.ng-enter {
     -webkit-animation: slideInLeft 500ms;
     animation: slideInLeft 500ms;
@@ -20,7 +21,8 @@
 
 .authenticate-container {
 	color: white;
-    background-color: #BECDDE;
+    background-color: rgba(2, 119, 189, 0.7);
+    /*background-color: #BECDDE;*/
     display: -webkit-flex;
     -webkit-flex-direction: column;
     height: 100%;
@@ -30,8 +32,33 @@
     -webkit-flex: 1;
 }
 
-.spinner svg{
+.phaser{
+    position: relative;
+    transform: translateY(-150%);
+    -webkit-transform: translateY(-150%);
+}
 
+.phaser-wrapper{
+    position: absolute;
+}
+
+button.login{
+    font-weight: bold;
+    /*background-color: white !important;*/
+}
+
+h1.login{
+    color: white !important;
+    text-align: center;
+    font-size: 56px;
+    transform: translateY(50%);
+    -webkit-transform: translateY(50%);
+}
+p.login{
+    font-size: 105%
+}
+
+.spinner svg {
   	width: 96px !important;
  	height: 96px !important;
 }

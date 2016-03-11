@@ -28,10 +28,8 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, Bea
 
   // DEVELOPMENT
   if ($rootScope.DEV){
-    var authToken = "AQVbu1wVMcgL6BeBXtX5vyjBq43jUDUdECcmNIWXbGP0j9qcH1BJZYgRvZ6eNrl6tvu6UTZr0hVgNznuHGM9LknLo9o-s3psKB0kA45XUMgiO8SrCwgAHVvRKquBNwLaJmjetNhy9R3aa3q_q0UyAoJVb1TXRMRax-mG7zwdj0kjJRZZ0_g";    //var authToken = "AQUl56nBFIjZQ8Oaa0v6HP7L2i7jTxPYfex0zxzCURmUBAuxtA0e0GoUXwh4diqdWLoWEWqjgUdoSV-AoGUuMONt4r5tfkWwT8terrwGSt3FvHk7vHHSjn8Yg1wcH8plajefoPUn_RMRnlKnQvTppKy9z6UeIqK_959_1nzVSLss0BEPVuU";
-    ///var authToken = "AQWFvIL0cz5QjMQSF7HI7R1iVpd62p_-lsxPmv9pm4SfmJ-WH00GV4vaLExhWJsLN_HJio_b-fYYxFnzn1qRMZXeUMvX9XyryH3mGBsUX7Qdi_RnqHna-O5bVpxLbay9VjDLWwfteLU83i-oaRbq-nsj2Jzbr43nLsZ_k8EirlVYycpUJKQ"
+    var authToken = "4b6e119a5365ffdbe93f523a6a98bc8c2adf278f";
   };
-  
 
   // ------------------------------   PUBLIC ------------------------------------
 	
@@ -86,9 +84,11 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, Bea
 		var deferred = $q.defer();
 		$ionicPlatform.ready(function() {
 
-      $cordovaOauth.github(id, sec, perm, state, {redirect_uri: "http://cyclop.se/help"}).then(
+      $cordovaOauth.github(id, secret, perm, {redirect_uri: "http://cyclop.se/help"}).then(
         function(result) {
-       		  authToken = result.access_token;
+            console.log('GITHUB RESULT: ' + JSON.stringify(result));
+      
+            authToken = result.split('&')[0].split('=')[1];
         		deferred.resolve();
             MSLog('@GitHub:authenticate: authToken = ' + authToken);
 

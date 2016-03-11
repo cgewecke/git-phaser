@@ -12,10 +12,10 @@ function BeaconMap(GeoLocate){
        template: '<div id="map"></div>',
        link: function searchboxEventHandlers(scope, elem, attrs){
 
-       		// Unit Testing exposure
-       		scope.GeoLocate = GeoLocate;
+   		// Unit Testing exposure
+   		scope.GeoLocate = GeoLocate;
 
-       		// Map must be a fixed size, so expand for IPad
+   		// Map must be a fixed size, so expand for IPad
 			ionic.Platform.isIPad() ? elem.addClass('ipad') : false;
 			
 			// Load or update map when slide view is toggled to map	

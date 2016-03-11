@@ -5,36 +5,55 @@
   Title page with login button that open a LinkedIn authentication window in inAppBrowser window,
   then redirects to 'tab/nearby'. Shows authentication loading cover while the redirect resolves
 -->
-<ion-view title="PSYCHIC LINK" hide-back-button="true" can-swipe-back="false">
+<ion-view hide-nav-bar="true" hide-back-button="true" can-swipe-back="false"> 
+  
+  <!-- Title Page and Login Button -->
+  <section class="authenticate-container" ng-show="!loggingIn">
+    
+    <!-- Title -->
+    <div class="col spacer text-center">
+        <h1 class="login"> git-phaser </h1>
+        <br><br>
+        <p class="login"> See the repos around you </p>
+    </div> 
 
-    <!-- Title Page and Login Button -->
-    <ion-content scroll="false" ng-show="!loggingIn">
-        <section class="login-container">
-          <!-- DEVELOPMENT -->
-          <div class = "col button-row text-center" ng-show="DEV" ng-click="devLogin()">
-            <img src="./img/signin-button.png" />
-          </div>
-          <!-- PRODUCTION -->          
-          <div class = "col button-row text-center top-button" ng-show="!DEV" ng-click="login()">
-            <img src="./img/signin-button.png" />
-          </div>
-         
-          <div class = "col header text-center">
-          </div>
-          <div class = "col button-row text-center explanation">
-              <h5> Use low energy radio waves </h5>
-              <h5> to see what the people around you do. </h5>
-          </div>
-        </section>
-    </ion-content>
+    <!-- Phaser Image -->
+    <div class = "col button-row text-center">
+          <div class="phaser-wrapper">
+            <svg height="256" width="256">
+              <circle cx="128" cy="128" r="100" stroke="white" stroke-width="1" fill="white" />
+            </svg>
+            <img class="phaser" src="./img/phaser256.png" />
+          </div> 
+    </div>
 
-    <!-- Authenticating cover -->
-    <section class="authenticate-container" ng-show="loggingIn">
-      <div class="col spacer"></div>
-      <div class="col button-row text-center"> 
-        <div> <ion-spinner class="auth-spinner spinner-stable" icon="ripple"></ion-spinner> </div>
-        <div> <span> Authenticating </span> </div>
-      </div>
-      <div class="col spacer"></div>    
-    </section>
-</ion-view>
+    <!-- Spacer -->
+    <div class="col spacer"></div>  
+    
+    <!-- Login Button -->    
+    <!-- DEVELOPMENT -->
+    <div class = "col spacer text-center" ng-show="DEV">
+        <button ng-click="devLogin()" 
+                class="button button-large button-outline button-light icon-right ion-social-github login">
+          Sign in with GitHub &nbsp
+        </button>
+    </div>  
+    <!-- PRODUCTION -->  
+    <div class = "col spacer text-center" ng-show="!DEV">
+        <button ng-click="login()" 
+                class="button button-large button-outline button-light icon-right ion-social-github login">
+          Sign in with GitHub &nbsp
+        </button>
+    </div>  
+  </section>
+
+  <!-- Authenticating cover -->
+  <section class="authenticate-container" ng-show="loggingIn">
+    <div class="col spacer"></div>
+    <div class="col button-row text-center"> 
+      <div> <ion-spinner class="auth-spinner spinner-stable" icon="ripple"></ion-spinner> </div>
+      <div> <span> Authenticating </span> </div>
+    </div>
+    <div class="col spacer"></div>    
+  </section>
+</ion-view> 

@@ -36,10 +36,7 @@ function ServerStatus($reactive, ionicToast){
               scope.status = true:
               scope.status = false;
               
-       		});
-
-       		
-
+       		});     		
        }
     };
  };
