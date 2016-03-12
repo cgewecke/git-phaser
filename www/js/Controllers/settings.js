@@ -7,18 +7,17 @@ angular.module('gitphaser')
 //
 // Attempts to display current app permissions. Currently used for some useful
 // developer testing functions, like clearing notifications etc. 
-function SettingsCtrl($scope, $state, GeoLocate, Notify, ionicToast) {
+function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, ionicToast) {
+  $reactive(this).attach($scope);
 
   var message = "Go to Settings > Git-Phaser in your device's settings menu to change this."
   this.geolocate = {enabled: true};
   this.notify = {enabled: true};
 
   this.logout = function() {
-    Meteor.logout(function(err){
       $state.go('login');
-    });
-  }
-
+  };
+  
   this.toast = function(){
     ionicToast.show(message, 'middle', true, 2500);
   }

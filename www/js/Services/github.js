@@ -85,17 +85,20 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
   // @return: promise (rejects if $cordovaOauth fails)
   // Logs user into GitHub via inAppBroswer. sets authToken
 	self.authenticate = function(){
-		var deferred = $q.defer();
-      var redirect = 'http://cyclop.se/help';
+      var token, deferred, uri;
+
+		deferred = $q.defer();
+      uri = 'http://cyclop.se/help';
 		
       $ionicPlatform.ready(function() {
 
-         $cordovaOauth.github(id, secret, perm, {redirect_uri: redirect}).then(
+         $cordovaOauth.github(id, secret, perm, {redirect_uri: uri}).then(
 
             function(result) {
 
-              authToken = result.split('&')[0].split('=')[1];
-               $github.setOauthCreds(authToken);
+               token = result.split('&')[0].split('=')[1];
+               self.setAuthToken(token);
+
                MSLog('@GitHub:authenticate: authToken = ' + authToken);
            		deferred.resolve();
          	}, 
@@ -114,19 +117,22 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
 
 		var deferred = $q.defer();
 		
+      // Get API for user object
       $github.getUser().then(
 
          function(user){
 
             self.api = user;
+
+            // Get user profile
             self.api.show(null).then(
                
                function(info){
                   self.me = info;
-                  self.authToken = authToken;
                   gh_debug = info;
                   
-                  self.api.repos({visibility: 'public'}).then(
+                  // Get repos list
+                  self.api.repos({visibility: 'public', sort: 'updated'}).then(
 
                      function(repos){
                         self.repos = repos;
@@ -143,27 +149,13 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                   MSLog('@Github:getMe: api.show() failed');
                   deferred.reject(error);
                });
-
          }, 
          function(error){
             MSLog('@Github:getMe: $github.getUser() failed');
             deferred.reject(error);
          });
     
-		/*$http.jsonp(url)
-      .success(function(result) {
-
-      	 self.me = result;
-      	 self.me.name = result.firstName + " " + result.lastName;
-         self.me.authToken = authToken;
-      	 deferred.resolve(self.me);
-      })
-      .error(function(error){
-      	 deferred.reject(error);
-      });*/
-
       return deferred.promise;		
-
 	}
 
    // DEVELOPMENT INIT;

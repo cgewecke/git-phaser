@@ -62,12 +62,11 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
       
       // User object
       var user = {
-        username: GitHub.me.id,
-        password: GitHub.me.id + '_' + appHash,
+        username: GitHub.me.login,
+        password: GitHub.me.id.toString(),
         email: null,
         profile: {
-          authToken: GitHub.me.authToken,
-          profileUrl: GitHub.me.publicProfileUrl,
+          authToken: GitHub.getAuthToken(),
           notifications: [],
           contacts: [],
           notifyCount: 0,
@@ -90,7 +89,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
         
         } else {
           $scope.loggingIn = false;
-          MSLog('Registration error');
+          MSLog('Meteor hasRegistered error: ' + err);
         }
       })            
       
@@ -154,7 +153,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
 
           user.email = val.major + '_' + val.minor + '_' + user.profile.appId;
           
-          MSLog("new account: " + user.email + ': ' + user.profile.profileUrl);
+          MSLog("new account: " + user.email + ': ' + user.username);
 
           Accounts.createUser(user, function(err){
             if (!err){

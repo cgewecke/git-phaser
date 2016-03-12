@@ -4,7 +4,7 @@ angular
   .module('gitphaser')
   .config(config);
 
-function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings) {
+function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
 
   // Disables write of warnings to console
   $angularMeteorSettings.suppressWarnings = true; 
