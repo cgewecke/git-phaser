@@ -1,11 +1,10 @@
 //utilities.js
 
-function MSLog(message){
-	
+function logger(where, message){
 	//if (GLOBAL_TESTING) return;
-
 	if (Meteor){
-		Meteor.call('ping', 'client: ' + message);
+		Meteor.call('ping', 'client: ' + where + ' ' + message);
 	};
-	console.log(message);
+
+	console.log(where + ': ' + message);
 };

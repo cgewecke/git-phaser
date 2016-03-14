@@ -43,12 +43,13 @@ function Beacons($rootScope, $q, $cordovaBeacon){
     // have already run as user navigates around. Rejects if user does not authorize.
 	self.initialize = function(){
 
+        var where = "Beacons:initialize";
         var deferred = $q.defer();
 
         // Return if initialized. Also beacons cannot run in browser + output is annoying in XCode.
         if ($rootScope.DEV || $rootScope.beaconsOFF || self.initialized  ) { deferred.resolve(); return deferred; }
            
-        MSLog('@beacons:initialize');
+        logger(where, '');
 
 		var profile, appBeacon;
 
@@ -117,8 +118,6 @@ function Beacons($rootScope, $q, $cordovaBeacon){
     // Stub. Called when monitoring enters a region. This is not run if waking up from the background, so
     // basically useless.
     function onEntry(result){
-   
-       MSLog('@beacons:onEntry');
     };
 
     // @function: onExit
@@ -128,9 +127,8 @@ function Beacons($rootScope, $q, $cordovaBeacon){
     // has the uuid specified by 'result'.   
     function onExit(result){
 
-        MSLog('@beacons:onExit');
-
         var transmitter, pkg, beacon;
+        var where = 'Beacons:onExit';
         var localId = window.localStorage['pl_id']
         var receiver = (localId != undefined) ? localId : Meteor.user().emails[0].address;
         
@@ -138,15 +136,11 @@ function Beacons($rootScope, $q, $cordovaBeacon){
         
         if (receiver && beacon){
 
-            pkg = {
-               transmitter: beacon.uuid,
-               receiver: receiver,
-            };
-            
+            pkg = { transmitter: beacon.uuid, receiver: receiver }; 
             Meteor.call('disconnect', pkg);
 
         } else {
-            MSLog("@beacon:disconnect. Error: receiver - " + receiver);
+            logger(where, 'error: receiver or beacon null');
         }        
     };
 

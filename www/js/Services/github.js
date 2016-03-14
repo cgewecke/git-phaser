@@ -50,6 +50,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    // if self.me doesn't exist yet.
    self.initialize = function(){
 
+      var where = 'GitHub:initialize';
       var d = $q.defer();
 
       if (!self.me){
@@ -61,16 +62,15 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                self.getMe().then(
 
                   function(success){
-                     MSLog('@GitHub:initialize: autologged in');
                      d.resolve(true);
                   }, 
                   function(error){
-                     MSLog('@GitHub:initialize: couldnt get profile')
+                     logger(where, error);
                      d.reject('AUTH_REQUIRED');
                   });
             }, 
             function(userLoggedOut){
-               MSLog('@GitHub:initialize: Failed: requireUser: ' + userLoggedOut);
+               logger(where, userLoggedOut);
                d.reject('AUTH_REQUIRED');
             });
 
@@ -86,6 +86,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
   // Logs user into GitHub via inAppBroswer. sets authToken
 	self.authenticate = function(){
       var token, deferred, uri;
+      var where = 'GitHub:authenticate';
 
 		deferred = $q.defer();
       uri = 'http://cyclop.se/help';
@@ -99,10 +100,11 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                token = result.split('&')[0].split('=')[1];
                self.setAuthToken(token);
 
-               MSLog('@GitHub:authenticate: authToken = ' + authToken);
+               logger(where, authToken);
            		deferred.resolve();
          	}, 
             function(error) {
+               logger(where, error);
                deferred.reject(error);
             });
       });
@@ -115,6 +117,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    // GitHub API call to get the user profile. Resolves self.me.
 	self.getMe = function(){
 
+      var where = "GitHub:getMe";
 		var deferred = $q.defer();
 		
       // Get API for user object
@@ -141,17 +144,17 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                      },
 
                      function(error){
-                        MSLog('@Github:getMe: api.repos() failed');
+                        logger(where, error);
                         deferred.reject(error);
                      });
                },
                function(error){
-                  MSLog('@Github:getMe: api.show() failed');
+                  logger(where, error);
                   deferred.reject(error);
                });
          }, 
          function(error){
-            MSLog('@Github:getMe: $github.getUser() failed');
+            logger(where, error);
             deferred.reject(error);
          });
     

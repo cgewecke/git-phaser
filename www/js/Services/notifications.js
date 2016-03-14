@@ -14,14 +14,17 @@ function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPush){
 	// It seems like the tokens are somehow linked to that - possibly through the device settings or 
 	// something. Resolves in the nearby route.
 	self.initialize = function(){
-	
+
+		var where = 'Notify:initialize';
 		var deferred = $q.defer();
 
-		if($rootScope.DEV || !Meteor.user()){ deferred.resolve(); return deferred.promise }
+		if($rootScope.DEV || !Meteor.user()){ 
+			deferred.resolve(); 
+			return deferred.promise 
+		};
 
 		if (!Meteor.user().profile.pushToken || window.localStorage['pl_newInstall'] === 'true') {
-			MSLog('@Notify:initialize - attempting to register for APNS');
-
+	
 			var iosConfig = {
 			    "sound": true,
 			    "alert": true,
@@ -29,17 +32,17 @@ function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPush){
 	 		
 		    $cordovaPush.register(iosConfig).then(function(deviceToken) {
 		 
-		      Meteor.users.update({ _id: Meteor.userId() }, {$set: {'profile.pushToken' : deviceToken}});
-		      window.localStorage['pl_newInstall'] = 'false';
-		      deferred.resolve();
+		      	Meteor.users.update({ _id: Meteor.userId() }, {$set: {'profile.pushToken' : deviceToken}});
+		      	window.localStorage['pl_newInstall'] = 'false';
+		     	deferred.resolve();
 
 		    }, function(err) {
-		       MSLog('@Notify:initialize: failed push-notification register: ' + err);
-		       deferred.resolve();
+		        logger(where, err);
+		        deferred.resolve();
 		    });
 		    
 		} else {
-			MSLog('@Notify:initialize - already registered for APNS');
+			logger(where, 'already registered for APNS');
 			deferred.resolve();
 		}
 
@@ -66,8 +69,7 @@ function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPush){
 					profile: GitHub.me,
 					location: location, 
 					timestamp: new Date()
-				}
-				
+				}	
 			};
 
 			Meteor.call('notify', info);

@@ -31,11 +31,12 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
 	//
 	// Runs in the nearby route resolve block to trigger permissions, detect whether
 	// geolocation is enabled.
-	self.setup = function(){
+	self.isEnabled = function(){
+		var where = 'GeoLocate:isEnabled'
 		var deferred = $q.defer();
 
 		if ($rootScope.DEV){
-			deferred.resolve(self.address); 
+			deferred.resolve(true); 
 			return deferred.promise; 
 		}
 		
@@ -43,12 +44,12 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
 
 			function (success){
 		    	self.enabled = true;
-		    	MSLog('@GeoLocate:setup. Geolocation enabled')
-		    	deferred.resolve();
+		    	logger(where, 'enabled')
+		    	deferred.resolve(true);
 		    }, function (error){
 		    	self.enabled = false;
-		    	MSLog('@GeoLocate:setup. Geolocation disabled');
-		    	deferred.resolve();
+		    	logger(where, 'disabled');
+		    	deferred.resolve(false);
 		    }
 		);
 		return deferred.promise;
@@ -92,6 +93,7 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
 	// Error states set lat, long and address to 0,0,'' respectively.
 	self.getAddress = function(){
 
+		var where = "GeoLocate:getAddress";
 		var deferred = $q.defer();
 
 		if ($rootScope.DEV){
@@ -127,7 +129,7 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
 			                    
 			                  // OK
 			                  if (results[1]) {
-			                    	MSLog('@GeoLocate: ' + JSON.stringify(results[1].formatted_address));
+			                    	logger(where, JSON.stringify(results[1].formatted_address));
 			                    	self.address = results[1].formatted_address.split(',').slice(0, -2).join(', '),
 			                     	deferred.resolve(self.address);
 
@@ -135,27 +137,27 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
 			                  } else {
 			                    	self.address = '';
 			                    	deferred.resolve('');
-			                    	MSLog('@GeoLocate: failed: no maps results for position');
+			                    	logger(where, 'no maps results for position');
 			                  }
 
 			               // Geocoder call fail
 			               } else {
 			                	self.address = '';
 			                 	deferred.resolve('');
-			                	MSLog('@GeoLocate: failed: google.maps.geocode error: ' + status);
+			                	logger(where, 'google.maps.geocode error');
 			               }
 			            });
 			        // Maps or vals bad    
            			} else {
            				self.address = '';
            				deferred.resolve('');
-           				MSLog('@GeoLocate: failed: no position vals or no google.maps');
+           				logger(where, 'no position vals or no google.maps');
            			}	
            	    // No coordinates in position
       			} else {
       				self.address = '';
       				deferred.resolve('');
-      				MSLog('@GeoLocate: failed: no $cordova.geolocation position object');
+      				logger(where, 'no $cordova.geolocation position object');
       			}    	
 
       		// $cordova layer failure	
@@ -165,7 +167,7 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
 		      self.lng = 0;
 		      self.enabled = false;
 		      deferred.resolve('');
-		      MSLog('@GeoLocate: failed: $cordovaGeolocation error:' + JSON.stringify(err))
+		      logger(where, err);
 		    }
 		);
 

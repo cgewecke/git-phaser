@@ -9,8 +9,9 @@ angular
 // to the Nearby tab - if those resolves fail they will trigger the $stateChangeError event. 
 function run ($rootScope, $state) {
 
+
 	$rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
-		MSLog('@stateChangeError: ' + error);
+		log('@stateChangeError: ', error);
 
 		if (error === 'AUTH_REQUIRED') {
 		  $state.go('login');

@@ -20,7 +20,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
     // Authenticates with GitHub, loads GitHub profile and passes to meteor login handlers. 
     // Shows toast on authentication failure.
     $scope.login = function(){
-      MSLog('@login');
+      var where = 'LoginCtrl:login';
       
       $scope.loggingIn = true;
       GitHub.authenticate().then(function(){
@@ -31,13 +31,13 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
         function(error){
           $scope.loggingIn = false;
           ionicToast.show(toastMessage, 'top', true, 2500);
-          MSLog('GitHub data api failed: ' + error)
+          logger( where, error);
         });
 
       }, function(error){
         $scope.loggingIn = false;
         ionicToast.show(toastMessage, 'top', true, 2500);
-        MSLog('GitHub login failed: ' + JSON.stringify(error));
+        logger(where, error);
 
       });
     };
@@ -46,7 +46,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
     // DEVELOPMENT ONLY: Bypasses authentication call which cannot run in browser because cordova
     // inAppBrowser is device/simulator only
     $scope.devLogin = function(){
-      MSLog('@devLogin');
+      logger('LoginCtrl:devLogin', '');
       
       GitHub.getMe().then(function(){
         meteorLogin();
@@ -58,7 +58,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
     // Generates user object stub, then checks Meteor to see if account exists. 
     // Logs in w/password or creates based on result
     function meteorLogin(){
-      MSLog('@meteorLogin')
+     logger('LoginCtrl:meteorLogin', '');
       
       // User object
       var user = {
@@ -80,6 +80,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
 
       // Check registration
       Meteor.call('hasRegistered', user.username, function(err, registered ){
+        var where = 'LoginCtrl:hasRegistered';
         
         if (!err){
 
@@ -89,7 +90,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
         
         } else {
           $scope.loggingIn = false;
-          MSLog('Meteor hasRegistered error: ' + err);
+          logger(where, err);
         }
       })            
       
@@ -101,7 +102,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
     // the beacon delegate and used to self-identify with server when woken up in the
     // background.  Redirect to setup if app is a new install, nearby otherwise.
     function loginWithAccount(user){
-      MSLog('@loginWithAccount');
+      logger('LoginCtrl:loginWithAccount', '');
 
       Meteor.loginWithPassword(user.username, user.password, function(err){
         if (!err){
@@ -139,8 +140,10 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
     // if for some reason two app simultaneously create accounts and generate the same email
     // address. Email is guaranteed to be unique.
     function createAccount(user){
-      var toastMessage = "There was a problem creating an account. Try Again";
 
+      var where = 'LoginCtrl:createAccount';
+      var toastMessage = "There was a problem creating an account. Try Again";
+      
       Meteor.call( 'getUniqueAppId', function(err, val){ 
         if (!err && val ){
 
@@ -150,11 +153,8 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
           user.profile.beaconName = 'r_' + i;
           user.profile.major = val.major;
           user.profile.minor = val.minor;
-
           user.email = val.major + '_' + val.minor + '_' + user.profile.appId;
-          
-          MSLog("new account: " + user.email + ': ' + user.username);
-
+      
           Accounts.createUser(user, function(err){
             if (!err){
   
@@ -168,14 +168,14 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
               
             } else{
               $scope.loggingIn = false;
-              MSLog("@LoginCtrl: Accounts.createUser failed: " + err);
+              logger(where, err);
               ionicToast.show(toastMessage, 'top', true, 2500);
             }
           })
 
         } else{
           $scope.loggingIn = false;
-          MSLog("@LoginCtrl: getUniqueAppId failed: " + err);
+          logger(where, err);
           ionicToast.show(toastMessage, 'top', true, 2500);
         }
       });

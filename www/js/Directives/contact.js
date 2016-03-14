@@ -50,9 +50,8 @@ function AddContact($cordovaContacts, $timeout, $auth){
           // Adds profile to native contacts, calls meteor to push this contact id
           // onto the users list of added contacts
           scope.createContact = function(){
-            
-            //MSLog('@NearbyProfileCtrl:createContact');
-
+          
+            var where = 'AddContact:createContact';
             var contactInfo ={
               "displayName": scope.user.name,
               "emails": (scope.user.emailAddress) ? 
@@ -81,7 +80,7 @@ function AddContact($cordovaContacts, $timeout, $auth){
 
             }, function(error) {
                 scope.flasher = false;
-                MSLog('@NearbyProfileCtrl:createContact: failed: ' + error);
+                logger(where, error);
             });    
           }
         }
