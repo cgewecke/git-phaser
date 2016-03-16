@@ -5,44 +5,113 @@
   Generates a LinkedIn profile view from fields in object vm.user.
   Shows an addContact footer (see directive.contact.js) 
 -->
-<ion-view view-title="{{vm.viewTitle}}">
-  <ion-content class="profile-content">
-    <div class="list card">
-      
-      <div class="item item-thumbnail-left profile-header">
-        <img ng-src="{{vm.user.pictureUrl}}">
-        <h2 class="profile-header-txt profile-bold" ng-bind="vm.user.name"></h2>
-        <br>
-        <p class="profile-header-txt" ng-bind="vm.user.positions.values[0].title"></p>
-        <p class="profile-header-txt" ng-bind="vm.user.positions.values[0].company.name"></p>
-      </div>
 
-      <div class="item">
-          <span ng-bind="vm.user.industry"></span>
-           &nbsp|&nbsp
-          <span ng-bind="vm.user.location.name"></span>
-          
-      </div>
+<ion-view view-title="{{vm.viewTitle}}" has-tabs-top>
+  
+   <!-- GitHub Icon -->
+   <ion-nav-buttons side="left">
+      <button class="button button-clear icon ion-social-github"></button>
+   </ion-nav-buttons>
+  
+   <!-- Inner Tabs -->
+   <ion-tabs class="tabs-top tabs-light tabs-striped">
+    
+      <!-- Tab: About -->
+      <ion-tab title="About">
+         <ion-content class="sub-content">
 
-      <div class="item"> 
-          Connections: 
-          <span ng-bind="vm.user.numConnections"></span>
-      </div>
-      <div class="item profile-content">
-        <span> Background </span>
-      </div>
-      <div class="item item-body">
-        <p class="profile-bold"> Summary </p>
-        <p ng-bind="vm.user.summary"></p>
-      </div>
-      <div ng-show="vm.user.emailAddress" class="item profile-content">
-        <span> Email </span>
-      </div>
-      <div ng-show="vm.user.emailAddress" class="item item-button-right">
-        {{vm.user.emailAddress}}
-      </div>
-      
-    </div>
-  </ion-content>
-  <add-contact user="vm.user"></add-contact>
+           <!-- Basic Profile Info -->
+            <div class="item item-thumbnail-left top">
+               <img ng-src="{{vm.user.avatar_url}}">
+               <h2 class="bold" ng-bind="vm.user.name"></h2>
+               <p ng-bind="vm.user.login"></p>
+               <p class="black no-wrap"> 
+                  <i class="ion-ios-location-outline profile"></i>
+                  {{vm.user.location}} 
+               </p>
+               <p ng-show="vm.user.email" class="profile"> 
+                  <i class="ion-ios-email-outline profile"></i>
+                  {{vm.user.email}} 
+               </p>
+            </div>
+
+           <!-- Followers/Following -->
+            <div class="item wider thinner">
+               <div class="row">
+                  <div class="col center">
+                     <div class="bold larger"> {{vm.user.followers}} </div>
+                     <p> Followers </p>
+                  </div>
+                  <div class="col center">
+                     <div class="bold larger"> {{vm.user.following}} </div>
+                     <p> Following </p>
+                  </div>  
+               </div>    
+            </div>
+
+           <!-- Contributions Graph -->
+            <div class="item item-divider bold">
+               Contributions 
+            </div>
+            <div class="item smaller widest contrib-wrapper">
+               <div class="contrib-mask"></div>
+               <ion-scroll class="contrib-scroll" direction="x" delegate-handle="graph">
+                  <contributions name="vm.user.login"></contributions>
+               </ion-scroll>
+            </div>
+         </ion-content> 
+      </ion-tab>
+      <!-- END TAB -->
+
+      <!-- Tab: Repositories -->
+      <ion-tab title="Repositories">
+         <ion-content class="sub-content">
+           <!-- List Card -->
+           <div ng-show="vm.repos.length" class="card">
+               <div class="item bold"> 
+                  Repositories
+               </div>
+               <!-- Item Def -->
+               <div class="item wider" ng-repeat="repo in vm.repos">
+               <!-- Name/Type -->
+               <div class="row">
+                  <div class="col col-10">
+                     <i ng-show="!repo.fork" class="ion-ios-bookmarks-outline"></i>
+                      <i ng-show="repo.fork" class="ion-network"></i>
+                  </div>
+                  <div class="col col-90 bold link no-wrap"> 
+                     {{repo.name}} 
+                  </div>
+               </div>
+               <!-- Language/Stars -->
+               <div class="row">
+                  <div class="col col-80 grey smaller bold">
+                     {{repo.language}}
+                  </div>
+                  <div class="col col-20 grey right">
+                     <span class="smaller"> 
+                        {{repo.stargazers_count}} 
+                     </span>
+                     <i class="smaller ion-star"></i>
+                  </div>
+               </div>
+               <!-- Description -->
+               <div class="row">
+                  <div class="col smaller grey wrap"> 
+                     {{repo.description}} 
+                  </div>
+               </div>
+               <!-- Updated At --> 
+               <div class="row">
+                  <div class="call smallest grey italic"> 
+                     Updated {{repo.updated_at | timeFilter}} </div>
+                  </div>
+               </div>
+            </div>
+         </ion-content> 
+      </ion-tab>
+    <!-- END TAB -->
+  </ion-tabs>
 </ion-view>
+      
+<!-- <add-contact user="vm.user"></add-contact> -->

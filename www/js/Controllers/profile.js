@@ -9,7 +9,8 @@ angular.module('gitphaser')
 function ProfileCtrl ($scope, GitHub){
     
   this.user = GitHub.me;
-  this.user.name = this.user.firstName + ' ' + this.user.lastName;
-  this.viewTitle = "You";
+  this.repos = GitHub.repos;
+  this.activity = GitHub.activity;
+  this.viewTitle = GitHub.me.login;
   
 };

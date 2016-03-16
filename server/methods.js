@@ -12,6 +12,21 @@ Meteor.methods({
     Push.sendAPN("79b229d8a40309c5498c75fba2b2c16a5cf6065be976c89e3c0f25ec2870633a", 
       {from: 'push',title: 'Congratulations',text: 'You can now Push to this device!'});
   },
+
+  getContributions(url){
+    
+    var response;
+
+    try  {
+
+      response = HTTP.get(url);
+      return response.content;
+
+    } catch(error){
+      return error
+    }
+    
+  },
   //---------------- Notifications -------------------------
   // @function: notify
   // @param: info {target: _id, notification: {} }

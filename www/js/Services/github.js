@@ -1,6 +1,6 @@
 // @service: GitHub
 // A service for interacting w/ the GitHub api
-var gh_debug, gh_debugII;
+var gh_debug, gh_debugII, gh_debugIII;
 angular.module('gitphaser')
   .service("GitHub", GitHub);
 
@@ -112,53 +112,62 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
 		return deferred.promise;	
 	}
 
-	// @function: getMe
+   // @function: getMe
    // @return: promise 
-   // GitHub API call to get the user profile. Resolves self.me.
-	self.getMe = function(){
+   //
+   // Configures user with Github.js API and
+   // collects profile info
+   self.getMe = function(){
+      var where = "GitHub:getMe";
+      var d = $q.defer();
+
+       // Get API, then get current user profile, then get full account info.
+      $github.getUser().then( function(user){
+         user.show(null).then( function(info){   
+            self.getAccount(info.login, user).then(function(account){
+               
+               self.api = user;
+               self.me = account.info;
+               self.repos = account.repos;
+               self.events = account.events;
+               d.resolve(true);
+
+            }, function(e){ logger(where, e); d.reject(e)});
+         }, function(e){ logger(where,e); d.reject(e)});
+      }, function(e){ logger(where, e); d.reject(e)});
+
+      return d.promise
+
+   };
+
+	// @function: getAccount
+   // @param: username - a users github username
+   // @return: promise
+   // 
+   // Gets GitHub profile, public repos and public events for
+   // an arbitrary user
+	self.getAccount = function(username, api){
 
       var where = "GitHub:getMe";
-		var deferred = $q.defer();
-		
-      // Get API for user object
-      $github.getUser().then(
+		var d = $q.defer();
+      var account = {};
 
-         function(user){
-
-            self.api = user;
-
-            // Get user profile
-            self.api.show(null).then(
-               
-               function(info){
-                  self.me = info;
-                  gh_debug = info;
-                  
-                  // Get repos list
-                  self.api.repos({visibility: 'public', sort: 'updated'}).then(
-
-                     function(repos){
-                        self.repos = repos;
-                        deferred.resolve(true);
-                        gh_debugII = repos;
-                     },
-
-                     function(error){
-                        logger(where, error);
-                        deferred.reject(error);
-                     });
+      // Get profile, then repos, then events
+      api.show(username).then( function(info){
+         api.userRepos(username).then( function(repos){
+            api.userEvents(username).then(function(events){
+                        
+                  account.info = info;
+                  account.repos = repos;
+                  account.events = events;
+                  d.resolve(account);
+                  gh_debug = account;
                },
-               function(error){
-                  logger(where, error);
-                  deferred.reject(error);
-               });
-         }, 
-         function(error){
-            logger(where, error);
-            deferred.reject(error);
-         });
-    
-      return deferred.promise;		
+               function(e){ logger(where, e); d.reject(e);});
+         }, function(e){ logger(where, e); d.reject(e); });
+      }, function(e){ logger(where, e); d.reject(e); });  
+
+      return d.promise;		
 	}
 
    // DEVELOPMENT INIT;

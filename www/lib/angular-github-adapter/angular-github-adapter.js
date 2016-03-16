@@ -540,6 +540,19 @@ angular.module('pascalprecht.github-adapter').factory('$githubUser', [
               });
             });
             return deferred.promise;
+          },
+          userEvents: function (username) {
+            var deferred = $q.defer();
+            user.userEvents(username, function (err, data) {
+              $rootScope.$apply(function () {
+                if (err) {
+                  deferred.reject(err);
+                } else {
+                  deferred.resolve(data);
+                }
+              });
+            });
+            return deferred.promise;
           }
         };
       return userPromiseAdapter;

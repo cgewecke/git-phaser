@@ -1,4 +1,95 @@
-/* Empty. Add your own CSS if you like */
+
+/*---------*/
+/* UTILITY */
+/*---------*/
+
+/* Font-weights */
+.bold{ font-weight: bold !important; }
+.italic{ font-style: italic; }
+
+/* Text Positions */
+.left { text-align: left;}
+.center{ text-align: center;}
+.right{ text-align: right;}
+
+/* Colors */
+.link { color: #4078c0; }
+.grey { color: #666 !important; }
+.black { color: black;}
+
+/* Font-sizes */   
+.larger{ font-size: 150% !important; }
+.smaller{ font-size: 13px !important; }
+.smallest{ font-size: 11px !important; }
+
+/* Wrap */
+.no-wrap{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wrap{ word-wrap: break-word; white-space: normal}
+
+
+/*-------------------*/
+/* PROFILE TEMPLATE  */
+/*-------------------*/
+
+.graph {
+    position: relative;
+    left: calc(100% - 710px);
+    clip-path: inset(100px 50px);
+}
+
+.contrib-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 20px;
+    z-index: 2;
+    opacity: .7;
+    background-color: white;
+}
+
+.contrib-wrapper{
+    height: 150px;
+    position: relative;
+}
+
+.contrib-scroll{
+    height: 150px;
+}
+
+.inner{
+    border-top-width: 2px !important;
+    border-left-width: 1px !important;
+    border-right-width: 1px !important;
+
+    border-top-color: red !important;
+    border-left-color: #eee !important;
+    border-right-color: #eee !important;
+}
+
+.sub-content{
+    margin-top: 92px;
+}
+
+.item.wider{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.item.widest{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.item.thinner{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.item.top{
+    padding-top: 5px;
+}
+
 .profile-add-contact {
 	opacity: 8;
     -webkit-animation: flash 1s;
@@ -19,18 +110,20 @@
     animation: slideInLeft 500ms;
 }
 
+/*----------------*/
+/* LOGIN TEMPLATE */
+/*----------------*/
+
+
 .authenticate-container {
 	color: white;
     background-color: rgba(2, 119, 189, 0.7);
-    /*background-color: #BECDDE;*/
     display: -webkit-flex;
     -webkit-flex-direction: column;
     height: 100%;
 }
 
-.authenticate-container.spacer {
-    -webkit-flex: 1;
-}
+.authenticate-container.spacer {  -webkit-flex: 1; }
 
 .phaser{
     position: relative;
@@ -38,14 +131,13 @@
     -webkit-transform: translateY(-150%);
 }
 
-.phaser-wrapper{
-    position: absolute;
-}
+.phaser-wrapper{ position: absolute; }
 
-button.login{
-    font-weight: bold;
-    /*background-color: white !important;*/
-}
+button.login{ font-weight: bold; }
+
+p.login{ font-size: 105% }
+
+.spinner svg { width: 96px !important; height: 96px !important; }
 
 h1.login{
     color: white !important;
@@ -54,14 +146,7 @@ h1.login{
     transform: translateY(50%);
     -webkit-transform: translateY(50%);
 }
-p.login{
-    font-size: 105%
-}
 
-.spinner svg {
-  	width: 96px !important;
- 	height: 96px !important;
-}
 
 .align-left{
     text-align: left;
@@ -78,9 +163,7 @@ p.login{
 .item-icon-left.setup{
     padding-left: 70px; 
 }
-.smaller{
-    font-size: 11px !important;
-}
+
 
 i.icon.setup{
     font-size: 49px;
