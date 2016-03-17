@@ -1,8 +1,8 @@
 <!--
   tab.profile:
-  @controllers: NearbyProfileCtrl, NotificationsProfileCtrl, ProfileCtrl. (All as vm)
+  @controllers: NearbyProfileCtrl, NotificationsProfileCtrl, ProfileCtrl. (as vm)
   @url: '/nearby/:userId', /notifications/:sender, 'profile' 
-  Generates a LinkedIn profile view from fields in object vm.user.
+  Generates a Github profile view from fields in object vm.user.
   Shows an addContact footer (see directive.contact.js) 
 -->
 
@@ -22,13 +22,18 @@
 
            <!-- Basic Profile Info -->
             <div class="item item-thumbnail-left no-top">
+              <!-- Avatar -->
                <img ng-src="{{vm.user.avatar_url}}">
+               <!-- Name -->
                <h2 class="bold" ng-bind="vm.user.name"></h2>
+               <!-- Login -->
                <p ng-bind="vm.user.login"></p>
-               <p class="black no-wrap"> 
+               <!-- Location -->
+               <p ng-show="vm.user.location" class="black no-wrap"> 
                   <i class="ion-ios-location-outline profile"></i>
                   {{vm.user.location}} 
                </p>
+               <!-- Email -->
                <p ng-show="vm.user.email" class="profile"> 
                   <i class="ion-ios-email-outline profile"></i>
                   {{vm.user.email}} 
@@ -38,10 +43,19 @@
            <!-- Followers/Following -->
             <div class="item wider thinner">
                <div class="row">
+                  <!-- Followers -->
                   <div class="col center">
                      <div class="bold larger"> {{vm.user.followers}} </div>
                      <p> Followers </p>
                   </div>
+                  <!-- Follow Button -->
+                  <div ng-show="vm.canFollow" class="col center">
+                     <button class="button button-balanced button-outline thinner" 
+                             ng-click="vm.follow()">
+                       Follow
+                     </button>
+                  </div>
+                  <!-- Following -->
                   <div class="col center">
                      <div class="bold larger"> {{vm.user.following}} </div>
                      <p> Following </p>
@@ -109,11 +123,11 @@
 
               <div class="row">
                 <div class="col col-25 center">
-                  <button class="button button-block button-balanced bold smaller thinner" 
+                  <button class="button button-block button-balanced bold smaller thinnest" 
                           ng-show="issue.action === 'opened'">
                     Open
                   </button>
-                  <button class="button button-block button-assertive bold smaller thinner" 
+                  <button class="button button-block button-assertive bold smaller thinnest" 
                           ng-show="issue.action != 'opened'">
                     Closed
                   </button>

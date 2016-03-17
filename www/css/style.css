@@ -38,13 +38,23 @@
     padding-left: 16px;
 }
 
-.button.thinner{
+.button.thinnest{
     padding-left: 7px;
     padding-right: 7px;
     margin-top: 0px;
     margin-bottom: 0px;
     max-height: 30px;
     min-height: 30px;
+    line-height: normal;
+}
+
+.button.thinner{
+    padding-left: 7px;
+    padding-right: 7px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    max-height: 40px;
+    min-height: 40px;
     line-height: normal;
 }
 .contrib-mask {

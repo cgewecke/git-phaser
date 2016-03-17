@@ -13,15 +13,19 @@ Meteor.methods({
       {from: 'push',title: 'Congratulations',text: 'You can now Push to this device!'});
   },
 
+
+  //---------------- Git Contributions -------------------------
+  // @function: getContributions
+  // @param: String - the address of the svg chart to scrape)
+  // @return: String - html string
+  // 
+  // Synchronous call to GitHub to get users contributions chart
   getContributions(url){
     
     var response;
-
     try  {
-
       response = HTTP.get(url);
       return response.content;
-
     } catch(error){
       return error
     }
@@ -106,12 +110,13 @@ Meteor.methods({
           transmitter: transmitter._id, 
           receiver: receiver._id,
           transUUID: transmitter.profile.appId,
-          proximity: beaconIds.proximity }
+          proximity: beaconIds.proximity,
+          receiver_name: receiver.username,
+          created_at: new Date() }
         }
       );
-    
+  
     } else {
-
       console.log("Beacons ids are bad: " + JSON.stringify(beaconIds));
       return;
     }

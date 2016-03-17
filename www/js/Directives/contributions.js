@@ -25,7 +25,7 @@ function Contributions($http, $window, $reactive, $ionicScrollDelegate){
 
        		var graph, where, url, width;
 
-       		where = 'Contributions:';
+       		where = '<contributions>:';
       		url = "https://github.com/users/" + scope.name + "/contributions";
       		width = 721 - $window.screen.width;
 

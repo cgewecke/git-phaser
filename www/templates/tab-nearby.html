@@ -2,6 +2,7 @@
   tab.nearby:
   @controller: NearbyCtrl as vm
   @state: 'tab.nearby'
+
   Slidebox where slide '0' is a list view of all connections to this phone, and 
   slide '1' is a map view of users current location, address. There is a footer 
   button bar to toggle between these. Shows scanning cover if there are no connections.
@@ -18,26 +19,14 @@
   <ion-content> 
     <!-- SLIDES -->
     <ion-slide-box id="nearby-slidebox" active-slide="vm.slide" auto-play="false" show-pager="false">
+      
       <!-- List Slide -->
       <ion-slide id="nearby-list-slide">
         <ion-list>
-          <ion-item
-            ng-repeat="user in vm.connections"
-            class="item-chat item-avatar item-icon-right"
-            ng-class="{'new-item': user.isNew }"
-            type="item-text-wrap"
-            href="#/tab/nearby/{{user.profile.id}}"
-            ng-click="vm.notify.sawProfile(user.receiver)"
-            ng-show="user.profile">
-            <img ng-src="{{user.profile.pictureUrl}}">
-            <h2>{{user.profile.firstName}}&nbsp{{user.profile.lastName}}</h2>
-            <p>{{user.profile.headline}}</p>
-            <span class="last-message-timestamp">{{user.proximity | proximityFilter }}</span>
-            <i class="icon ion-chevron-right icon-accessory"></i>
-          </ion-item>
+            <nearby-user ng-repeat="item in vm.connections" model="item"> </nearby-user> 
         </ion-list>
-       
       </ion-slide>
+      
       <!-- Map Slide -->
       <ion-slide id="nearby-map-slide"> 
          <ion-header-bar align-title="left" class="bar-grey"> 
@@ -52,6 +41,8 @@
         </ion-header-bar>
         <beacon-map slide="vm.slide"></beacon-map>
       </ion-slide>
+    
+     <!-- END SLIDES -->
     </ion-slide-box>
   </ion-content> 
 

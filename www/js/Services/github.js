@@ -22,6 +22,36 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    // PRODUCTION 
    var authToken = null;
 
+   // @function: accountCached
+   // @param: String (github login value)
+   // @return: account object || null if not found
+   //
+   // Checks cache to see if we have recently loaded this profile
+   // Clears cache every hour
+   function accountCached(username){
+
+      var account;
+      var now = new Date();
+
+      for(var i = 0; i < self.cache.length; i++){
+
+         account = self.cache[i];
+
+         if (account.info.login === username){
+            if(moment(account.cached_at).isSame(now, 'hour')){
+               console.log("account cached");
+               return account;
+            } else {
+               console.log("cache old");
+               self.cache.splice(i, 1);
+               return null;
+            }
+         }
+      };
+      
+      // Not Found
+      return null;
+   }
 
    // @function: parseEvents
    // @param: JSON array of GitHub events
@@ -30,7 +60,9 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    // Compiles commit metrics and generates list of issues open/closed from
    // events object returned by GitHub
    function parseEvents(events){
-      gh_debugII = events;
+      
+      var duplicate = false;
+
       var parsed = {
          commits: {},
          commits_total: 0,
@@ -86,7 +118,18 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                   issue_url: event.payload.issue.url,
                   date: event.payload.issue.updated_at
                }
-               parsed.issues.push(issue);
+
+               // Eliminate stale issues 
+               // Github lists in 'most recent' order.
+               duplicate = false;
+               angular.forEach(parsed.issues, function(item){
+                  if(item.number === issue.number){
+                     duplicate = true;
+                  }                  
+               }); 
+
+               if (!duplicate)
+                  parsed.issues.push(issue);     
             }
          }
 
@@ -102,6 +145,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    self.me = null; // The user profile;
    self.repos = null; // The user's public repos;
    self.api = null; // GitHub.js api 
+   self.cache = [];
 	
 	// @function: setAuthToken: 
    // @param: token
@@ -209,31 +253,46 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    };
 
 	// @function: getAccount
-   // @param: username - a users github username
+   // @param: username - a users github username, 
+   //         auth_api - the initialized github.js api 
    // @return: promise
    // 
    // Gets GitHub profile, public repos and public events for
    // an arbitrary user
-	self.getAccount = function(username, api){
+	self.getAccount = function(username, auth_api ){
 
+      var cached, api;
       var where = "GitHub:getMe";
 		var d = $q.defer();
       var account = {};
+      
+      // Service either initializing or already initialized
+      (auth_api === undefined) ? api = self.api : api = auth_api;
+      
+      cached = accountCached(username);
+      
+      // Check cache
+      if (cached){
+         d.resolve(cached)
+      } else {     
+         // Get profile, then repos, then events
+         api.show(username).then( function(info){
+            api.userRepos(username).then( function(repos){
+               api.userEvents(username).then(function(events){
+                           
+                     account.info = info;
+                     account.repos = repos;
+                     account.events = parseEvents(events);
+                     account.cached_at = new Date();
+                     self.cache.push(account);
+                     d.resolve(account);
 
-      // Get profile, then repos, then events
-      api.show(username).then( function(info){
-         api.userRepos(username).then( function(repos){
-            api.userEvents(username).then(function(events){
-                        
-                  account.info = info;
-                  account.repos = repos;
-                  account.events = parseEvents(events);
-                  d.resolve(account);
-                  gh_debug = account;
-               },
-               function(e){ logger(where, e); d.reject(e);});
-         }, function(e){ logger(where, e); d.reject(e); });
-      }, function(e){ logger(where, e); d.reject(e); });  
+                     gh_debug = account;
+                  },
+                  function(e){ logger(where, e); d.reject(e);});
+            }, function(e){ logger(where, e); d.reject(e); });
+         }, function(e){ logger(where, e); d.reject(e); });  
+      }
 
       return d.promise;		
 	}
