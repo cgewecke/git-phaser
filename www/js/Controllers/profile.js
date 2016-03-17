@@ -10,7 +10,7 @@ function ProfileCtrl ($scope, GitHub){
     
   this.user = GitHub.me;
   this.repos = GitHub.repos;
-  this.activity = GitHub.activity;
+  this.events = GitHub.events;
   this.viewTitle = GitHub.me.login;
   
 };

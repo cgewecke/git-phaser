@@ -21,7 +21,7 @@
          <ion-content class="sub-content">
 
            <!-- Basic Profile Info -->
-            <div class="item item-thumbnail-left top">
+            <div class="item item-thumbnail-left no-top">
                <img ng-src="{{vm.user.avatar_url}}">
                <h2 class="bold" ng-bind="vm.user.name"></h2>
                <p ng-bind="vm.user.login"></p>
@@ -59,7 +59,77 @@
                   <contributions name="vm.user.login"></contributions>
                </ion-scroll>
             </div>
-         </ion-content> 
+
+            <!-- Activity -->
+            <div class="item-title bold">
+                Activity 
+            </div> 
+
+            <div class="line-item-wrapper center ">
+              <span class="line-item"> 
+                <span class="bold"> {{vm.events.commits_total}} </span>
+                <span> Commits </span>
+              </span> 
+            </div> 
+
+            <div class="item thinner" 
+                 ng-repeat="commit in vm.events.commits"
+                 ng-class="{'no-top': $first, 'no-bottom': $last }">
+              <div class="row">
+                <div class="col bold link">
+                  <span> {{commit.name}} </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col col-50 left smaller light">
+                  <span> Pushed {{commit.size}} </span> 
+                  <span> {{ (commit.size > 1) ? 'commits' : 'commit' }}</span> 
+                </div>
+                <div class="col col-50 right smaller light">
+                  <span> 
+                    {{commit.first | dateFilter }} 
+                  </span>
+                  <span ng-show="!(commit.first === commit.last)"> 
+                    - {{commit.last | dateFilter}} 
+                  </span>
+                </div>
+              </div>
+            </div>  
+
+            <div class="line-item-wrapper center ">
+              <span class="line-item"> 
+                <span class="bold"> {{vm.events.issues_total}} </span>
+                <span> Issues reported </span>
+              </span> 
+            </div> 
+
+            <div class="item thinner wider" 
+                 ng-repeat="issue in vm.events.issues"
+                 ng-class="{'no-top': $first, 'no-bottom': $last }">
+
+              <div class="row">
+                <div class="col col-25 center">
+                  <button class="button button-block button-balanced bold smaller thinner" 
+                          ng-show="issue.action === 'opened'">
+                    Open
+                  </button>
+                  <button class="button button-block button-assertive bold smaller thinner" 
+                          ng-show="issue.action != 'opened'">
+                    Closed
+                  </button>
+                </div>
+                <div class="col col-75 grey smaller">
+                  <div class="no-wrap"> 
+                    <span class="bold"> #{{issue.number}} </span> 
+                    <span class="bold link"> {{issue.title}} </span>
+                  </div>
+                  <div> {{issue.repo}} </div>      
+                </div>
+              </div>
+            </div>
+
+            <div class="bar-spacer"></div>
+         </ion-content>  
       </ion-tab>
       <!-- END TAB -->
 
@@ -73,20 +143,14 @@
                </div>
                <!-- Item Def -->
                <div class="item wider" ng-repeat="repo in vm.repos">
-               <!-- Name/Type -->
+               <!-- Type / Name / Stars -->
                <div class="row">
                   <div class="col col-10">
                      <i ng-show="!repo.fork" class="ion-ios-bookmarks-outline"></i>
                       <i ng-show="repo.fork" class="ion-network"></i>
                   </div>
-                  <div class="col col-90 bold link no-wrap"> 
+                  <div class="col col-70 bold link no-wrap"> 
                      {{repo.name}} 
-                  </div>
-               </div>
-               <!-- Language/Stars -->
-               <div class="row">
-                  <div class="col col-80 grey smaller bold">
-                     {{repo.language}}
                   </div>
                   <div class="col col-20 grey right">
                      <span class="smaller"> 
@@ -101,13 +165,17 @@
                      {{repo.description}} 
                   </div>
                </div>
-               <!-- Updated At --> 
+               <!-- Updated At / Language--> 
                <div class="row">
-                  <div class="call smallest grey italic"> 
-                     Updated {{repo.updated_at | timeFilter}} </div>
+                  <div class="col col-60 smallest grey italic"> 
+                     Updated {{repo.updated_at | timeFilter}} 
+                  </div>
+                  <div class="col col-40 grey smaller bold right">
+                     {{repo.language}}
                   </div>
                </div>
             </div>
+            <div class="bar-spacer"></div>
          </ion-content> 
       </ion-tab>
     <!-- END TAB -->

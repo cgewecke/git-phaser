@@ -1,7 +1,8 @@
 angular
   .module('gitphaser')
   .filter('proximityFilter', proximityFilter)
-  .filter('timeFilter', timeFilter);
+  .filter('timeFilter', timeFilter)
+  .filter('dateFilter', dateFilter);
  
 function proximityFilter ($rootScope) {
   return function (proximity) {
@@ -16,7 +17,15 @@ function proximityFilter ($rootScope) {
 function timeFilter () {
   return function (time) {
     if (!time) return;
- 
+
     return moment(time).fromNow();
   };
 };
+
+function dateFilter(){
+  return function (time) {
+    if (!time) return;
+
+    return moment(time).format('MMM D');
+  };
+}

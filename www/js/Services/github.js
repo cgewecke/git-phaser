@@ -1,5 +1,7 @@
+//
 // @service: GitHub
-// A service for interacting w/ the GitHub api
+// A service for interacting w/ the github.js api and
+//
 var gh_debug, gh_debugII, gh_debugIII;
 angular.module('gitphaser')
   .service("GitHub", GitHub);
@@ -19,6 +21,80 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
 
    // PRODUCTION 
    var authToken = null;
+
+
+   // @function: parseEvents
+   // @param: JSON array of GitHub events
+   // @return: {commits: {}, issues: []}
+   //
+   // Compiles commit metrics and generates list of issues open/closed from
+   // events object returned by GitHub
+   function parseEvents(events){
+      gh_debugII = events;
+      var parsed = {
+         commits: {},
+         commits_total: 0,
+         issues: [],
+         issues_total: 0
+      };
+
+      angular.forEach(events, function(event){
+
+         // Commits
+         if (event.type === 'PushEvent'){
+
+            var name = event.repo.name;
+            var date = event.created_at;
+
+            if (!parsed.commits[name]){
+
+               parsed.commits[name] = {};
+               parsed.commits[name].name = name;
+               parsed.commits[name].url = event.repo.url;
+               parsed.commits[name].size = event.payload.distinct_size;
+               parsed.commits[name].first = date;
+               parsed.commits[name].last = date;
+
+            } else {
+               parsed.commits[name].size += event.payload.distinct_size
+            }
+
+            // Update total commits
+            parsed.commits_total += event.payload.distinct_size;
+
+            // Update timespan
+            if (moment(date).isBefore(parsed.commits[name].first)){
+               parsed.commits[name].first = date;
+            }; 
+
+            if (moment(date).isAfter(parsed.commits[name].last)) {
+               parsed.commits[name].last = date;
+            };
+
+         // Issues
+         } else if (event.type === 'IssuesEvent'){
+
+            if (event.payload.action === 'opened' || event.payload.action == 'closed'){
+
+               var issue = {
+                  repo: event.repo.name,
+                  repo_url: event.repo.url,
+                  action: event.payload.action,
+                  title: event.payload.issue.title,
+                  state: event.payload.issue.state,
+                  number: event.payload.issue.number,
+                  issue_url: event.payload.issue.url,
+                  date: event.payload.issue.updated_at
+               }
+               parsed.issues.push(issue);
+            }
+         }
+
+      });  
+      parsed.issues_total = parsed.issues.length; 
+      return parsed;
+
+   };
 
    // ------------------------------   PUBLIC ------------------------------------
 	
@@ -54,25 +130,23 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
       var d = $q.defer();
 
       if (!self.me){
-         $auth.requireUser().then(
+         $auth.requireUser().then(function(userLoggedIn){
 
-            function(userLoggedIn){
+            self.setAuthToken(Meteor.user().profile.authToken);          
+            self.getMe().then( 
 
-               self.setAuthToken(Meteor.user().profile.authToken);          
-               self.getMe().then(
-
-                  function(success){
-                     d.resolve(true);
-                  }, 
-                  function(error){
-                     logger(where, error);
-                     d.reject('AUTH_REQUIRED');
-                  });
-            }, 
-            function(userLoggedOut){
-               logger(where, userLoggedOut);
-               d.reject('AUTH_REQUIRED');
-            });
+               function(success){
+                  d.resolve(true);
+               }, 
+               function(error){
+                  logger(where, error);
+                  d.reject('AUTH_REQUIRED');
+               });
+         }, 
+         function(userLoggedOut){
+            logger(where, userLoggedOut);
+            d.reject('AUTH_REQUIRED');
+         });
 
       } else {
          d.resolve(true);
@@ -85,28 +159,22 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
   // @return: promise (rejects if $cordovaOauth fails)
   // Logs user into GitHub via inAppBroswer. sets authToken
 	self.authenticate = function(){
-      var token, deferred, uri;
+      var token, d, uri;
       var where = 'GitHub:authenticate';
 
-		deferred = $q.defer();
-      uri = 'http://cyclop.se/help';
+		d = $q.defer();
+      uri = { redirect_uri: 'http://cyclop.se/help'};
 		
-      $ionicPlatform.ready(function() {
-
-         $cordovaOauth.github(id, secret, perm, {redirect_uri: uri}).then(
-
-            function(result) {
+      $ionicPlatform.ready( function() {
+         $cordovaOauth.github(id, secret, perm, uri).then( function(result) {
 
                token = result.split('&')[0].split('=')[1];
                self.setAuthToken(token);
 
                logger(where, authToken);
-           		deferred.resolve();
+           		d.resolve();
          	}, 
-            function(error) {
-               logger(where, error);
-               deferred.reject(error);
-            });
+            function(e) { logger(where, e); d.reject(e)});
       });
 
 		return deferred.promise;	
@@ -121,7 +189,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
       var where = "GitHub:getMe";
       var d = $q.defer();
 
-       // Get API, then get current user profile, then get full account info.
+       // Get API, then current user profile, then full account info.
       $github.getUser().then( function(user){
          user.show(null).then( function(info){   
             self.getAccount(info.login, user).then(function(account){
@@ -159,7 +227,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                         
                   account.info = info;
                   account.repos = repos;
-                  account.events = events;
+                  account.events = parseEvents(events);
                   d.resolve(account);
                   gh_debug = account;
                },

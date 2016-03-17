@@ -14,7 +14,8 @@
 
 /* Colors */
 .link { color: #4078c0; }
-.grey { color: #666 !important; }
+.grey { color: #666 !important;}
+.light { color: #999;}
 .black { color: black;}
 
 /* Font-sizes */   
@@ -31,12 +32,21 @@
 /* PROFILE TEMPLATE  */
 /*-------------------*/
 
-.graph {
-    position: relative;
-    left: calc(100% - 710px);
-    clip-path: inset(100px 50px);
+.item-title{
+    font-size: 16px !important;
+    padding-top: 16px; 
+    padding-left: 16px;
 }
 
+.button.thinner{
+    padding-left: 7px;
+    padding-right: 7px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    max-height: 30px;
+    min-height: 30px;
+    line-height: normal;
+}
 .contrib-mask {
     position: absolute;
     top: 0;
@@ -57,18 +67,8 @@
     height: 150px;
 }
 
-.inner{
-    border-top-width: 2px !important;
-    border-left-width: 1px !important;
-    border-right-width: 1px !important;
-
-    border-top-color: red !important;
-    border-left-color: #eee !important;
-    border-right-color: #eee !important;
-}
-
 .sub-content{
-    margin-top: 92px;
+    margin-top: 100px;
 }
 
 .item.wider{
@@ -86,24 +86,31 @@
     padding-bottom: 5px;
 }
 
-.item.top{
-    padding-top: 5px;
+.item.no-top{
+    border-top-width: 0px; 
+}
+.item.no-bottom{
+    border-bottom-width: 0px;
 }
 
-.profile-add-contact {
-	opacity: 8;
-    -webkit-animation: flash 1s;
-    animation: flash 1s;
+.line-item-wrapper {
+    height: 0;
+    margin: 16px 0 10px;
+    font-size: 15px;
+    font-weight: normal;
+    color: #999;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
 }
 
-.profile-footer{
-	-webkit-animation: slideOutDown 300ms;
-    animation: slideOutDown 300ms;
+.line-item{
+    position: relative;
+    top: -10px;
+    display: inline-block;
+    padding: 0 5px;
+    background: #fff;
 }
 
-.directive-footer{
-    bottom: 49px !important;
-}
 
 .item-chat.new-item.ng-enter {
     -webkit-animation: slideInLeft 500ms;
@@ -198,6 +205,10 @@ beacon-map.ipad{
 
 .bar-center{
     margin-top: 10px !important;
+}
+
+.bar-spacer{
+    height: 150px;
 }   
 
 .bar.bar-transparent{
