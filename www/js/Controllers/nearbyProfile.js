@@ -27,7 +27,10 @@ function NearbyProfileCtrl ($scope, $stateParams, $state, GitHub, account ){
       $state.go('tab.nearby') 
   }
   
+  // Follow: (Not doing any error checking here)
   self.follow = function(){
+    this.canFollow = false;
+    GitHub.follow(self.user);
   }
 
 };

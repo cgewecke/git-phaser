@@ -13,17 +13,5 @@ function ProfileCtrl ($scope, GitHub){
   this.events = GitHub.events;
   this.viewTitle = GitHub.me.login;
   this.canFollow = false;
-
-  // @function: follow()
-  //
-  // Follows a user
-  this.follow = function(){
-  	this.canFollow = false;
-  	// update the targets followers count
-  	// update the users following count
-  	// spinner
-  	// ng-animate leave
-  	// handle error
-  };
   
 };

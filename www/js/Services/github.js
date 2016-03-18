@@ -277,6 +277,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                self.me = account.info;
                self.repos = account.repos;
                self.events = account.events;
+               self.followers = account.followers;
                d.resolve(true);
 
             }, function(e){ logger(where, e); d.reject(e)});
@@ -310,23 +311,26 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
       if (cached){
          d.resolve(cached)
       } else {     
-         // Get profile, then repos, then events
+         // Get profile, then repos, then events, then followers
          api.show(username).then( function(info){
             api.userRepos(username).then( function(repos){
                api.userEvents(username).then(function(events){
+                  api.userFollowers(username).then(function(followers){
                            
                      account.info = info;
                      account.repos = repos;
+                     account.followers = followers;
                      account.events = parseEvents(events);
                      account.cached_at = new Date();
                      self.cache.push(account);
                      d.resolve(account);
 
                      gh_debug = account;
-                  },
-                  function(e){ logger(where, e); d.reject(e);});
-            }, function(e){ logger(where, e); d.reject(e); });
-         }, function(e){ logger(where, e); d.reject(e); });  
+
+                  },function(e){ logger(where, e); d.reject(e) });
+               }, function(e){ logger(where, e); d.reject(e) });
+            }, function(e){ logger(where, e); d.reject(e) });
+         }, function(e){ logger(where, e); d.reject(e) });  
       }
 
       return d.promise;		
@@ -372,15 +376,41 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    // Searches the users following list to see if target is 
    // already followed.  
    self.canFollow = function(username){
+
+      angular.forEach(self.followers, function(follower){
+         if (follower.login === username){
+            return false;
+         }
+      })
       return true;
+   };
+
+   // @function: follow
+   // @param: user - the account's info object, 
+   //         
+   // @return: promise 
+   // 
+   // Attempts to follow the user specified by param username. 
+   // Increments follower/following metrics and adds a mock follower
+   // to the followers array to keep cache current w/ GitHub remote.  
+   self.follow = function(username){
+      var d = $q.defer();
+
+      self.api.follow(username).then(
+         function(){
+            self.me.following++;
+            user.followers++;
+            self.followers.push({login: user.login}); 
+            d.resolve()
+         },
+         function(e){ d.reject()}
+      );
+      return d.promise;
    }
 
    // DEVELOPMENT INIT;
    if ($rootScope.DEV){
       self.setAuthToken('4b6e119a5365ffdbe93f523a6a98bc8c2adf278f');
    };
-
-   
-
 
 };

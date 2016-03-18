@@ -170,6 +170,16 @@
         });
       };
 
+      // List user followers
+      // -----      
+      this.userFollowers = function(username, cb) {
+        var command = "/users/"+ username + "/followers";
+
+        _request("GET", command, null, function(err, res) {
+          cb(err, res);
+        });
+      };
+
       // List a user's gists
       // -------
 
@@ -191,7 +201,6 @@
 
       // Follow user
       // -------
-
       this.follow = function(username, cb) {
         _request("PUT", "/user/following/"+username, null, function(err, res) {
           cb(err, res);

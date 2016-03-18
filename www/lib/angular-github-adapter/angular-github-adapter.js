@@ -450,6 +450,19 @@ angular.module('pascalprecht.github-adapter').factory('$githubUser', [
             });
             return deferred.promise;
           },
+          follow: function (name) {
+            var deferred = $q.defer();
+            user.follow(name, function (err, data) {
+              $rootScope.$apply(function () {
+                if (err) {
+                  deferred.reject(err);
+                } else {
+                  deferred.resolve(data);
+                }
+              });
+            });
+            return deferred.promise;
+          },
           gists: function () {
             var deferred = $q.defer();
             user.gists(function (err, data) {
@@ -475,7 +488,7 @@ angular.module('pascalprecht.github-adapter').factory('$githubUser', [
               });
             });
             return deferred.promise;
-          },
+          }, 
           orgs: function () {
             var deferred = $q.defer();
             user.orgs(function (err, data) {
@@ -544,6 +557,19 @@ angular.module('pascalprecht.github-adapter').factory('$githubUser', [
           userEvents: function (username) {
             var deferred = $q.defer();
             user.userEvents(username, function (err, data) {
+              $rootScope.$apply(function () {
+                if (err) {
+                  deferred.reject(err);
+                } else {
+                  deferred.resolve(data);
+                }
+              });
+            });
+            return deferred.promise;
+          },
+          userFollowers: function (username) {
+            var deferred = $q.defer();
+            user.userFollowers(username, function (err, data) {
               $rootScope.$apply(function () {
                 if (err) {
                   deferred.reject(err);
