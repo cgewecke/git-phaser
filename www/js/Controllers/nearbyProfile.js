@@ -8,33 +8,26 @@ angular.module('gitphaser')
 // For child view of nearby which shows profile of tapped nearby list item. 
 // Locates/caches profile object stored as part of Meteor mongo connections record
 // and populates the default profile template. 
-function NearbyProfileCtrl ($scope, $reactive, $stateParams ){
-  $reactive(this).attach($scope);
-
+function NearbyProfileCtrl ($scope, $stateParams, $state, GitHub, account ){
+  
   var self = this;
+    
+  self.user = account.info;
+  self.repos = account.repos;
+  self.events = account.events;
+  self.viewTitle = account.info.login;
+  self.state = $state;
+  self.nav = true;
   
-  // DB: Connections, get profile
-  this.subscribe('connections');
+  // Follow button init
+  self.canFollow = GitHub.canFollow(account.info.login);
 
-  this.helpers({
-    connection: function () {
-      return Connections.findOne({'profile.id': $stateParams.userId});
-    }
-  });
-
-  $scope.connection = self.connection;
-
-  $scope.$watch('connection', function(newVal, oldVal){
-    if (newVal){
-      self.user = self.connection.profile;
-      self.user.name = self.user.firstName + ' ' + self.user.lastName;
-      self.viewTitle = self.user.name;
-    }
-  });
-
-  /* Template vars
-  self.user = self.connection.profile;
-  self.user.name = self.user.firstName + ' ' + self.user.lastName;
-  self.viewTitle = self.user.name;*/
+  // Back arrow
+  self.back = function(){ 
+      $state.go('tab.nearby') 
+  }
   
+  self.follow = function(){
+  }
+
 };

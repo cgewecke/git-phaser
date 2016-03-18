@@ -12,7 +12,7 @@ function nearbyUser(GitHub){
        template: 
         
         '<ion-item class="item-chat item-avatar item-icon-right" type="item-text-wrap"' +
-       			   'href="#/tab/nearby/{{user.info.login}}"' +
+       			   'href="#/others/{{user.info.login}}"' +
             	   'ng-show="user">' +
             '<img ng-src="{{user.info.avatar_url}}">' +
             '<h2>{{user.info.name}}</h2>' +

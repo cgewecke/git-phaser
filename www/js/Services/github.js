@@ -27,7 +27,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    // @return: account object || null if not found
    //
    // Checks cache to see if we have recently loaded this profile
-   // Clears cache every hour
+   // Clears cache every 'cache_time'
    function accountCached(username){
 
       var account;
@@ -38,17 +38,51 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
          account = self.cache[i];
 
          if (account.info.login === username){
-            if(moment(account.cached_at).isSame(now, 'hour')){
-               console.log("account cached");
+
+            if(moment(account.cached_at).isSame(now, self.cache_time )){
                return account;
-            } else {
-               console.log("cache old");
+            } else {   
                self.cache.splice(i, 1);
                return null;
             }
          }
       };
       
+      // Not Found
+      return null;
+   }
+
+   // @function: graphCached
+   // @param: String (github login value)
+   // @return: String (svg) || null if not found
+   //
+   // Attempts to retrieve graph from account cache 
+   function graphCached(username){
+
+      for(var i = 0; i < self.cache.length; i++){
+
+         if (self.cache[i].info.login === username && self.cache[i].graph ){
+               return self.cache[i].graph;
+         }
+      };  
+      // Not Found
+      return null;
+   }
+
+   // @function: graphCached
+   // @param: String (github.info.login), String (svg html string)
+   // @return: true on success, false on failure
+   //
+   // Attempts to retrieve graph from account cache 
+   function cacheGraph(username, svg){
+
+      for(var i = 0; i < self.cache.length; i++){
+
+         if (self.cache[i].info.login === username){
+               self.cache[i].graph = svg;
+               return true;
+         }
+      };  
       // Not Found
       return null;
    }
@@ -146,6 +180,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    self.repos = null; // The user's public repos;
    self.api = null; // GitHub.js api 
    self.cache = [];
+   self.cache_time = "hour" // Options are: second, minute, hour, week
 	
 	// @function: setAuthToken: 
    // @param: token
@@ -200,8 +235,8 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    }
 
 	// @function: authenticate: 
-  // @return: promise (rejects if $cordovaOauth fails)
-  // Logs user into GitHub via inAppBroswer. sets authToken
+   // @return: promise (rejects if $cordovaOauth fails)
+   // Logs user into GitHub via inAppBroswer. sets authToken
 	self.authenticate = function(){
       var token, d, uri;
       var where = 'GitHub:authenticate';
@@ -297,9 +332,55 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
       return d.promise;		
 	}
 
+   // @function: getContribGraph
+   // @param: username - a users github username, 
+   //         auth_api - the initialized github.js api 
+   // @return: promise resolving string
+   // 
+   // Retrieves svg string from cache or meteor call 
+   self.getContribGraph = function(username){
+
+      var d = $q.defer();
+      var url = 'https://github.com/users/' + username + '/contributions';
+      var where = 'GitHub:getContribGraph';
+      var cached = graphCached(username);
+
+      if (cached){
+         d.resolve(cached)
+      
+      } else {
+         Meteor.call('getContributions', url, function(err, response){
+            
+            if (err){
+               logger(where, err);
+               d.reject(err);
+            
+            } else {
+               cacheGraph(username, response);
+               d.resolve(response);
+            }   
+         });
+      }
+      return d.promise;
+   };
+
+   // @function: canFollow()
+   // @param: String - the target's github login name, 
+   //         
+   // @return: true || false
+   // 
+   // Searches the users following list to see if target is 
+   // already followed.  
+   self.canFollow = function(username){
+      return true;
+   }
+
    // DEVELOPMENT INIT;
    if ($rootScope.DEV){
       self.setAuthToken('4b6e119a5365ffdbe93f523a6a98bc8c2adf278f');
    };
+
+   
+
 
 };

@@ -11,7 +11,7 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
 
   $stateProvider
 
-  // Each tab has its own nav history stack:
+  // Admin Views
   .state('loading', {
       url: '/loading',
       templateUrl: 'templates/loading.html',
@@ -29,7 +29,23 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
       controllerAs: 'vm'
   })
 
-  // setup an abstract state for the tabs directive
+  // Profile Views
+  .state('others', {
+      url: '/others/:username',
+      templateUrl: 'templates/tab-profile.html',
+      controller: 'NearbyProfileCtrl',
+      controllerAs: 'vm',
+      resolve: {
+        user: ['$auth', function($auth){
+            return $auth.requireUser();
+        }],
+        account: ['GitHub', '$stateParams', function(GitHub, $stateParams){
+            return GitHub.getAccount($stateParams.username);
+        }] 
+      }
+  })
+
+  // Tab Views
   .state('tab', {
     url: '/tab',
     abstract: true,
@@ -43,7 +59,6 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
     }
 
   })
-
 
   .state('tab.nearby', {
       url: '/nearby',
@@ -77,24 +92,10 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
             });
      
             return deferred.promise;
-        }], 
+        }] 
       }
   })
-  .state('tab.nearby-profile', {
-    url: '/nearby/:userId',
-    views: {
-      'tab-nearby': {
-        templateUrl: 'templates/tab-profile.html',
-        controller: 'NearbyProfileCtrl',
-        controllerAs: 'vm'
-      }
-    },
-    resolve: {
-      user: ['$auth', function($auth){
-          return $auth.requireUser();
-      }]
-    }
-  })
+  
   .state('tab.profile', {
       url: '/profile',
       views: {

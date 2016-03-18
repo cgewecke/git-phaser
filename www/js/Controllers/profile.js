@@ -12,7 +12,6 @@ function ProfileCtrl ($scope, GitHub){
   this.repos = GitHub.repos;
   this.events = GitHub.events;
   this.viewTitle = GitHub.me.login;
-
   this.canFollow = false;
 
   // @function: follow()
