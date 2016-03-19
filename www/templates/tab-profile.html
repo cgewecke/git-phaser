@@ -9,10 +9,13 @@
 <ion-view view-title="{{vm.viewTitle}}" has-tabs-top>
   
    <!-- GitHub Icon -->
-   <ion-nav-buttons ng-show="vm.nav" side="left">
-      <button class="button button-clear icon ion-ios-arrow-thin-left" ng-click="vm.back()"></button>
+   <ion-nav-buttons side="left">
+      <button class="button button-clear icon ion-ios-arrow-thin-left" 
+              ng-show="vm.nav" ng-click="vm.back()">
+      </button>
    </ion-nav-buttons>
    <ion-nav-buttons side="right">
+      <hireable available="vm.user.hireable" name="vm.user.login"></hireable>
       <button class="button button-clear icon ion-social-github"></button>
    </ion-nav-buttons>
   

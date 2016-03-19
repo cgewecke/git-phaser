@@ -13,6 +13,7 @@ function ProfileCtrl ($scope, GitHub){
   this.events = GitHub.events;
   this.viewTitle = GitHub.me.login;
   this.canFollow = false;
+  this.nav = false;
 
   // Show order logic: There are four optional profile info fields
   // and two spaces to show them in. In order of importance:
