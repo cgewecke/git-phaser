@@ -32,14 +32,24 @@
                <!-- Login -->
                <p ng-bind="vm.user.login"></p>
                <!-- Location -->
-               <p ng-show="vm.user.location" class="black no-wrap"> 
-                  <i class="ion-ios-location-outline profile"></i>
-                  {{vm.user.location}} 
+               <p ng-show="vm.location"> 
+                  <i class="ion-ios-location-outline"></i>
+                   {{vm.user.location}} 
                </p>
                <!-- Email -->
-               <p ng-show="vm.user.email" class="profile"> 
-                  <i class="ion-ios-email-outline profile"></i>
-                  {{vm.user.email}} 
+               <p ng-show="vm.email"> 
+                  <i class="ion-ios-email-outline"></i>
+                  <span class="link"> {{vm.user.email}} </span> 
+               </p>
+               <!-- Blog -->
+               <p ng-show="vm.blog"> 
+                  <i class="ion-link"></i>
+                  <span class="link"> {{vm.user.blog}} </span> 
+               </p>
+               <!-- Company -->
+               <p ng-show="vm.company"> 
+                  <i class="ion-ios-home-outline"></i>
+                  {{vm.user.company}} 
                </p>
             </div>
 
@@ -85,7 +95,9 @@
             <!-- Commit Header -->
             <div class="line-item-wrapper center ">
               <span class="line-item"> 
-                <span class="bold"> {{vm.events.commits_total}} </span>
+                <span class="bold" ng-show="vm.events.commits_total"> 
+                  {{vm.events.commits_total}} 
+                </span>
                 <span> Commits </span>
               </span> 
             </div> 
@@ -113,13 +125,19 @@
                   </span>
                 </div>
               </div>
-            </div> 
+            </div>
+            <!-- No Commits --> 
+            <div class="item no-top no-bottom" ng-show="!vm.events.commits_total">
+              <div class="light center"> No recent commits. </div>
+            </div>  
             <!-- END COMMIT --> 
 
             <!-- Issues Header -->
             <div class="line-item-wrapper center ">
               <span class="line-item"> 
-                <span class="bold"> {{vm.events.issues_total}} </span>
+                <span class="bold" ng-show="vm.events.issues_total"> 
+                  {{vm.events.issues_total}} 
+                </span>
                 <span> Issues reported </span>
               </span> 
             </div> 
@@ -145,6 +163,10 @@
                 </div>
               </div>
             </div>
+            <!-- No Issues --> 
+            <div class="item no-top" ng-show="!vm.events.issues_total">
+              <div class="light center"> No recent issues. </div>
+            </div> 
             <!-- END ISSUES -->
 
             <div class="bar-spacer"></div>
