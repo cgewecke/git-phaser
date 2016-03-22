@@ -33,21 +33,20 @@ module.exports = function(config) {
         'www/lib/ionic-toast/dist/ionic-toast.bundle.min.js',
         'www/lib/leaflet/leaflet.js',
         'www/lib/leaflet-pulse-icon/src/L.Icon.Pulse.js',
+        'www/lib/github/github.js',
+        'www/lib/angular-github-adapter/angular-github-adapter.js',
         
         // Misc app
         'www/js/*.js',
         'www/js/mongo/*.js',
         'www/js/filters/*.js',
 
-        // Core w/specs
+        // Core w/specs: If services are not first, there is a cascade of
+        // failures. Weird
         'www/js/config/*.js',
-        'www/js/config/specs/*.js',
-        'www/js/controllers/*.js',
-        'www/js/controllers/specs/*.js',
-        'www/js/directives/*.js',
-        'www/js/directives/specs/*.js',
         'www/js/services/*.js',
-        'www/js/services/specs/*.js',
+        'www/js/controllers/*.js',
+        'www/js/directives/*.js',        
 
         // Templates
         'www/templates/*.html',
@@ -55,11 +54,18 @@ module.exports = function(config) {
         // Test utilities & mocks
         'tests/mocks/*.js',
         'tests/util/*.js',
+
+        'www/js/config/specs/*.js',
+        'www/js/services/specs/*.js',
+        'www/js/controllers/specs/*.js',
+        'www/js/directives/specs/*.js'
+
     ],
 
 
     // list of files to exclude
     exclude: [
+        'www/js/directives/specs/beaconmap.spec.js'
 
     ],
 
@@ -99,7 +105,7 @@ module.exports = function(config) {
 
 
     // web server port
-    port: 8080,
+    port: 9876,
 
 
     // enable / disable colors in the output (reporters and logs)
@@ -117,6 +123,8 @@ module.exports = function(config) {
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
+
+    restartOnFileChange: true,
 
     // Concurrency level
     // how many browser should be started simultaneous

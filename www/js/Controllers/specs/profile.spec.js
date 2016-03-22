@@ -9,7 +9,7 @@ describe('ProfileCtrl', function(){
         $provide.value('$ionicTemplateCache', function(){} );
         $urlRouterProvider.deferIntercept();
     }));
-
+    
     beforeEach(inject(function(_$controller_, _$rootScope_, _GitHub_){
         $controller = _$controller_;
         $scope = _$rootScope_;
@@ -22,8 +22,10 @@ describe('ProfileCtrl', function(){
         var vm = $controller('ProfileCtrl', {$scope, GitHub});
 
         expect(vm.user).toEqual(GitHub.me);
-        expect(vm.user.name).toEqual(vm.user.firstName + ' ' + vm.user.lastName);
-        expect(vm.viewTitle).toEqual('You');
+        expect(vm.repos).toEqual(GitHub.repos);
+        expect(vm.events).toEqual(GitHub.events);
+        expect(vm.canFollow).toEqual(false);
+        expect(vm.viewTitle).toEqual(GitHub.me.login);
     })
 
 }); 

@@ -21,7 +21,7 @@ describe('NearbyCtrl', function(){
     }));
 
     beforeEach(inject(function(_$controller_, _$rootScope_, _GeoLocate_, _Notify_, _$compile_, 
-                               _$templateCache_, _$ionicSlideBoxDelegate_ ){
+                               _$templateCache_, _$ionicSlideBoxDelegate_, _Mock_ ){
         $controller = _$controller_;
         $scope = _$rootScope_;
         $compile = _$compile_;
@@ -30,6 +30,7 @@ describe('NearbyCtrl', function(){
         Notify = _Notify_;
         GeoLocate = _GeoLocate_;
         slidebox = _$ionicSlideBoxDelegate_;
+        Meteor.userId = _Mock_.Meteor.userId;
 
         // Compile /tab-notifications
         compileProvider.directive('nearbyTest', nearbyTest);

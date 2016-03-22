@@ -22,7 +22,7 @@ function Hireable(ionicToast){
           var message = scope.name + ' is available for hire.';
 
           scope.toast = function(){
-            ionicToast.show(message, 'middle', false, 1500);
+            ionicToast.show(message, 'middle', false, 1250);
           };
         }
     }

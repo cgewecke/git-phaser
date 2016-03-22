@@ -15,7 +15,7 @@ function LoadingCtrl ($ionicPlatform, $state, $timeout, ionicToast ){
   var self = this;
 
   $ionicPlatform.ready(function(){
-      console.log('in platform ready'); 
+      
       $state.go('tab.nearby');
       
       $timeout(function(){
