@@ -33,7 +33,7 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
   .state('others', {
       url: '/others/:username',
       templateUrl: 'templates/tab-profile.html',
-      controller: 'NearbyProfileCtrl',
+      controller: 'ProfileCtrl',
       controllerAs: 'vm',
       resolve: {
         user: ['$auth', function($auth){
@@ -108,7 +108,8 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
       resolve: {
         user: ['GitHub',function(GitHub){
             return GitHub.initialize();
-        }]
+        }],
+        account: function(){return false; }
       }
   })
   .state('tab.notifications', {

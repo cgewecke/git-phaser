@@ -62,11 +62,10 @@ module.exports = function(config) {
 
     ],
 
-
     // list of files to exclude
     exclude: [
-        'www/js/directives/specs/beaconmap.spec.js'
-
+        //'www/js/directives/specs/beaconmap.spec.js',
+        //'www/js/controllers/specs/profile.spec.js',
     ],
 
     browsers: [

@@ -58,19 +58,20 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
 	// @function: loadMap
 	// Loads a Leaflet map with MapBox titles using devices current coordinate
 	self.loadMap = function(){
+
 		self.getAddress().then(function(){
 
-          self.map = L.map('map');
-          self.map.setView([self.lat, self.lng], 16);
-          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-              attribution: '',
-              zoomControl: false,
-              id: id,
-              accessToken: token 
-          }).addTo(self.map);
+			self.map = L.map('map');
+			self.map.setView([self.lat, self.lng], 16);
+			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+			  attribution: '',
+			  zoomControl: false,
+			  id: id,
+			  accessToken: token 
+			}).addTo(self.map);
 
-          icon = L.icon.pulse({iconSize:[17,17], color:'#387EF5'});
-          self.marker = L.marker([self.lat, self.lng],{icon: icon}).addTo(self.map);
+			icon = L.icon.pulse({iconSize:[17,17], color:'#387EF5'});
+			self.marker = L.marker([self.lat, self.lng],{icon: icon}).addTo(self.map);
 
         });
 	};

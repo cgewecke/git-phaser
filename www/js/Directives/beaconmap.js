@@ -6,11 +6,11 @@ angular.module('gitphaser')
 //  		the map is either initialized or updated. e.g. updates triggered on the slide
 //  		coming into view.
 function BeaconMap(GeoLocate){
-    return {
-       restrict: 'E',   
-       scope: {slide: '=slide'},
-       template: '<div id="map"></div>',
-       link: function searchboxEventHandlers(scope, elem, attrs){
+   return {
+      restrict: 'E',   
+      scope: {slide: '=slide'},
+      template: '<div id="map"></div>',
+      link: function searchboxEventHandlers(scope, elem, attrs){
 
    		// Unit Testing exposure
    		scope.GeoLocate = GeoLocate;
@@ -21,12 +21,14 @@ function BeaconMap(GeoLocate){
 			// Load or update map when slide view is toggled to map	
 			scope.$watch('slide', function(newVal, oldVal){
 
+            if (GLOBAL_TESTING) return;
+
 				if (newVal === 1){
 					(GeoLocate.map === null) ? 
 						GeoLocate.loadMap(): 
 						GeoLocate.updateMap();
 				};
 			})
-       }
-    };
- };
+      }
+   };
+};
