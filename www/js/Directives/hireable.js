@@ -8,22 +8,32 @@ angular.module('gitphaser')
 // Cash icon visible if attr 'available' is true. Tapping icon shows a brief toast
 // with message: {{name}} is available for hire
 function Hireable(ionicToast){
-    return {
-        restrict: 'E',   
-        //replace: true,
-        scope: {available: '=', name: '=' },
-        template:
-          '<button ng-show="available" ng-click="toast()"' +
-                  'class="button button-clear button-balanced icon ion-cash">' +
-          '</button>',
+   return {
+      restrict: 'E',   
+      //replace: true,
+      scope: {available: '=', name: '=' },
+      template:
+         '<button id="hireable-btn" ng-show="available" ng-click="toast()"' +
+               'class="button button-clear button-balanced icon ion-cash">' +
+         '</button>',
 
-        link: function(scope, elem, attrs){
+      link: function(scope, elem, attrs){
 
-          var message = scope.name + ' is available for hire.';
+         var message;
+         var where = '<hireable>: ';
 
-          scope.toast = function(){
-            ionicToast.show(message, 'middle', false, 1250);
-          };
-        }
-    }
+         if (scope.name){
+
+            message = scope.name + ' is available for hire.';
+
+            scope.toast = function(){
+               ionicToast.show(message, 'middle', false, 1250);
+            };
+
+         } else {
+            logger(where, 'missing name attribute');
+         }
+  
+      }
+   }
 };

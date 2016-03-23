@@ -10,7 +10,7 @@
   
    <!-- GitHub Icon -->
    <ion-nav-buttons side="left">
-      <button class="button button-clear icon ion-ios-arrow-thin-left" 
+      <button id="profile-back-btn" class="button button-clear icon ion-ios-arrow-thin-left" 
               ng-show="vm.nav" ng-click="vm.back()">
       </button>
    </ion-nav-buttons>
@@ -65,7 +65,7 @@
                      <p> Followers </p>
                   </div>
                   <!-- Follow Button -->
-                  <div ng-show="vm.canFollow" class="col center">
+                  <div id="profile-follow-button" ng-show="vm.canFollow" class="col center">
                      <button class="button button-balanced button-outline thinner" 
                              ng-click="vm.follow()">
                        Follow
@@ -174,9 +174,8 @@
 
             <div class="bar-spacer"></div>
           </ion-content>  
-          <simu-tab ng-show="vm.nav"></simu-tab>
-
-          <!-- <ion-footer-bar class="bar-assertive"> HELLO </ion-footer-bar> -->
+          <simu-tab id="profile-simutab" ng-show="vm.nav"></simu-tab>
+          
        </ion-tab> 
       <!-- END TAB -->
 

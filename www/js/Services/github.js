@@ -14,10 +14,11 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    // ------------------------------   PRIVATE  ------------------------------------
 	
    // Keys
-   var id = 'cc2cd9f335b94412c764';
-   var secret = '1f4838b6f17c07b6d91761930a2f484adc25762f';
-   var perm = [];
+   var id = secure.github.id;
+   var secret = secure.github.secret;
    var state = "u79z234c06nq";
+   var perm = [];
+   
 
    // PRODUCTION 
    var authToken = null;
@@ -394,9 +395,10 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    // Increments follower/following metrics and adds a mock follower
    // to the followers array to keep cache current w/ GitHub remote.  
    self.follow = function(username){
+
       var d = $q.defer();
 
-      self.api.follow(username).then(
+      self.api && self.api.follow(username).then(
          function(){
             self.me.following++;
             user.followers++;
@@ -410,7 +412,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
 
    // DEVELOPMENT INIT;
    if ($rootScope.DEV){
-      self.setAuthToken('4b6e119a5365ffdbe93f523a6a98bc8c2adf278f');
+      self.setAuthToken(secure.github.auth);
    };
 
 };

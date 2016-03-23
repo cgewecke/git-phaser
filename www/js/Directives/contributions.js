@@ -17,7 +17,7 @@ function Contributions($http, $window, $ionicScrollDelegate, GitHub){
         template:
 
        		'<div class="center grey">' +
-       			'<ion-spinner ng-show="loading" icon="dots"></ion-spinner>' + 
+       			'<ion-spinner id="contrib-spinner" ng-show="loading" icon="dots"></ion-spinner>' + 
        		'</div>',
 
         link: function(scope, elem, attrs){
@@ -32,7 +32,6 @@ function Contributions($http, $window, $ionicScrollDelegate, GitHub){
 
        			GitHub.getContribGraph(scope.name).then(function(svg){
                 
-                console.log('in get contrib callback')
                 graph = angular.element(svg);
                 elem.append(graph);
                 $ionicScrollDelegate.$getByHandle('graph').scrollTo(width, 0, true);

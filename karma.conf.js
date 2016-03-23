@@ -55,17 +55,16 @@ module.exports = function(config) {
         'tests/mocks/*.js',
         'tests/util/*.js',
 
-        'www/js/config/specs/*.js',
-        'www/js/services/specs/*.js',
-        'www/js/controllers/specs/*.js',
+        //'www/js/config/specs/*.js',
+        //'www/js/services/specs/*.js',
+        //'www/js/controllers/specs/*.js',
         'www/js/directives/specs/*.js'
 
     ],
 
     // list of files to exclude
     exclude: [
-        //'www/js/directives/specs/beaconmap.spec.js',
-        //'www/js/controllers/specs/profile.spec.js',
+        
     ],
 
     browsers: [
@@ -123,7 +122,7 @@ module.exports = function(config) {
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
 
-    restartOnFileChange: true,
+    usePolling: true,
 
     // Concurrency level
     // how many browser should be started simultaneous

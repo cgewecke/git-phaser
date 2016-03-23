@@ -16,8 +16,8 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
 	var posOptions = {timeout: 60000, enableHighAccuracy: false};
 
 	// Mapbox API
-	var token = 'pk.eyJ1IjoiZXBpbGVwb25lIiwiYSI6ImNpanRyY3IwMjA2cmp0YWtzdnFoenhkbjkifQ._Sg2cIhMaGfU6gpKMmrGBA';
-    var id = 'epilepone.2f443807';
+	var token = secure.mapbox.token;
+    var id = secure.mapbox.id;
 	
 	// Public 
 	self.lat = null;

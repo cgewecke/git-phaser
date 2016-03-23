@@ -31,5 +31,6 @@ function NearbyCtrl ($scope, $reactive, Notify, GeoLocate ){
           return Connections.find( {transmitter: Meteor.userId() } )
       }
   });
+  
 
 };
