@@ -40,10 +40,7 @@
                    {{vm.user.location}} 
                </p>
                <!-- Email -->
-               <p ng-show="vm.email"> 
-                  <i class="ion-ios-email-outline"></i>
-                  <span class="link"> {{vm.user.email}} </span> 
-               </p>
+               <contact user="vm.user" ng-show="vm.email"></contact> 
                <!-- Blog -->
                <p ng-show="vm.blog"> 
                   <i class="ion-link"></i>

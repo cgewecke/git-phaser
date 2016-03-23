@@ -45,6 +45,24 @@
     opacity: 1 !important;
 }
 
+
+/*-------------------*/
+/* CONTACT POPUP     */
+/*-------------------*/
+
+.contact-modal .modal {
+    min-height: 0 !important;
+}
+
+.contact-popup {
+    width: 90%;
+    height: 60%;
+    top: 20%;
+    bottom: 20%;
+    right: 5%;
+    left: 5%;
+    background-color: #ffffff;
+}
 /*-------------------*/
 /* PROFILE TEMPLATE  */
 /*-------------------*/

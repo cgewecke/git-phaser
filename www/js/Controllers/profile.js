@@ -50,16 +50,19 @@ function ProfileCtrl ($scope, $stateParams, $state, GitHub, account){
    // Case: One exists - one space, pick blog, or location
    } else if ( (!self.company && self.email) || (self.company && !self.email) ){
 
-     (self.blog) ? self.location = false : true;
+      (self.blog) ? self.location = false : true;
 
    } 
 
-   // Back arrow
+   // @function: back 
+   // Navigates to tab.nearby - for nav back arrow visible in the
+   // others/ route use of this template
    self.back = function(){ 
       $state.go('tab.nearby') 
    }
 
-   // Follow: (Not doing any error checking here)
+   // @function: follow 
+   // Wraps GitHub.follow - hides follow button when clicked
    self.follow = function(){
       this.canFollow = false;
       GitHub.follow(self.user);

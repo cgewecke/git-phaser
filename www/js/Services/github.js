@@ -1,7 +1,7 @@
 //
 // @service: GitHub
-// A service for interacting w/ the github.js api and
-//
+// A service for interacting w/ the github.js api
+
 var gh_debug, gh_debugII, gh_debugIII;
 angular.module('gitphaser')
   .service("GitHub", GitHub);
@@ -386,6 +386,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
       return true;
    };
 
+   // THIS IS FUCKED. WHAT/WHERE IS 'USER'
    // @function: follow
    // @param: user - the account's info object, 
    //         
