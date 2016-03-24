@@ -11,6 +11,8 @@ function ProfileCtrl ($scope, $stateParams, $state, GitHub, account){
   
    var self = this;
 
+   self.modalOpen = false;
+
    // Arbitrary profile
    if (account){
 

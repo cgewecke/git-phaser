@@ -12,6 +12,9 @@
 .center{ text-align: center;}
 .right{ text-align: right;}
 
+/* Element Positions */
+.relative { position: relative;}
+
 /* Colors */
 .link { color: #4078c0; }
 .grey { color: #666 !important;}
@@ -22,6 +25,13 @@
 .larger{ font-size: 150% !important; }
 .smaller{ font-size: 13px !important; }
 .smallest{ font-size: 11px !important; }
+
+/* Spacing */
+.align-center{ align-self: center; }
+.right-20 { margin-right: 20px;}
+
+/* Opacity */
+.opaque {opacity: .5 !important;}
 
 /* Wrap */
 .no-wrap{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -55,14 +65,16 @@
 }
 
 .contact-popup {
+    border-radius: 16px;  
     width: 90%;
-    height: 60%;
-    top: 20%;
-    bottom: 20%;
+    height: 10%;
+    top: 40%;
+    bottom: 40%;
     right: 5%;
     left: 5%;
-    background-color: #ffffff;
+    background-color: #fafad2;
 }
+
 /*-------------------*/
 /* PROFILE TEMPLATE  */
 /*-------------------*/
@@ -254,7 +266,7 @@ beacon-map.ipad{ height: 1000px;}
 
 
 .icon-badge {
-  position: absolute;
+    position: absolute;
     top: 4%;
     right: 33%;
     right: calc(50% - 21px);

@@ -13,24 +13,28 @@ function Contact($cordovaContacts, $ionicModal, ionicToast, GitHub){
    return {
       restrict: 'E',   
       replace: true,
+      require: 'ngModel',
       scope: {user: '='},
       template: 
          '<p ng-click="confirm()">' + 
             '<i class="ion-ios-email-outline"></i>' +
             '<span class="link"> {{user.email}} </span>' +
-            '<span class="badge badge-balanced icon-badge bold" ng-show="!contactAdded">+</span>' +
+            '<i class="ion-plus-circled balanced" ng-show="!contactAdded"></i>' +
          '</p>',
      
-      link: function(scope, elem, attrs){
+      link: function(scope, elem, attrs, ngModel){
 
-         c_debug = $ionicModal;
-
-         var modalTemplate =
+         var template =
+            
             '<div class="contact-modal">' + 
-               '<ion-modal-view class="contact-popup">' +
-                  '<span class="bold left"> Add to contacts? </span>' +
-                  '<button class="button button-outline button-assertive right" ng-click="modal.hide()">No</button>' +
-                  '<button class="button button-outline button-balanced right" ng-click="createContact()">Yes</button>' +
+               '<ion-modal-view class="row contact-popup">' +
+                  '<div class="bold col align-center"> Add to contacts? </div>' +
+                  '<div class="col align-center">' +
+                     '<button class="button button-outline button-assertive thinner right-20"' +
+                              'ng-click="modal.hide()">No</button>' +
+                     '<button class="button button-outline button-balanced thinner"' +
+                              'ng-click="createContact()">Yes</button>' +
+                  '</div>' +
                '</ion-modal-view>' +
             '</div>';   
 
@@ -39,13 +43,18 @@ function Contact($cordovaContacts, $ionicModal, ionicToast, GitHub){
          // User addable?
          scope.contactAdded = hasContact(); 
 
-         // Define Modal
-         scope.modal = $ionicModal.fromTemplate(modalTemplate, {scope: scope});
-
-         // Modal cleanup
+         // Define Modal, turn bg opacity off on hide, destroy on destroy
+         scope.modal = $ionicModal.fromTemplate(template, {scope: scope});
+         
          scope.$on('$destroy', function() {
             scope.modal.remove();
          });
+
+         scope.$on('modal.hidden', function() {
+            ngModel.$setViewValue(false);
+         });
+
+
 
          // ------------------------- PRIVATE -------------------------
          // @function: hasContact
@@ -85,7 +94,8 @@ function Contact($cordovaContacts, $ionicModal, ionicToast, GitHub){
             } else if (scope.contactAdded) {
                ionicToast.show(message, middle, false, 1250);
             } else{
-               scope.modal.show()
+               ngModel.$setViewValue(true);
+               scope.modal.show();
             }
          }
     		
@@ -110,11 +120,21 @@ function Contact($cordovaContacts, $ionicModal, ionicToast, GitHub){
             
             $cordovaContacts.save(contactInfo).then(
                function(result){ 
+                  
+                  scope.contactAdded = true;
                   Meteor.call('addContact', scope.user.login); 
+                  scope.modal.hide();
+
             }, function(error){ 
+
+                  scope.modal.hide();
                   logger(where, error) 
-            });    
+            });
+
          }
       }
    };
 };
+
+/*
+*/

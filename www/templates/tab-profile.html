@@ -6,7 +6,7 @@
   Shows an addContact footer (see directive.contact.js) 
 -->
 
-<ion-view view-title="{{vm.viewTitle}}" has-tabs-top>
+<ion-view view-title="{{vm.viewTitle}}" ng-class="{'opaque' : vm.modalOpen}" has-tabs-top>
   
    <!-- GitHub Icon -->
    <ion-nav-buttons side="left">
@@ -40,7 +40,7 @@
                    {{vm.user.location}} 
                </p>
                <!-- Email -->
-               <contact user="vm.user" ng-show="vm.email"></contact> 
+               <contact user="vm.user" ng-model="vm.modalOpen" ng-show="vm.email"></contact> 
                <!-- Blog -->
                <p ng-show="vm.blog"> 
                   <i class="ion-link"></i>
