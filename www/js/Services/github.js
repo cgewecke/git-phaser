@@ -257,7 +257,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
             function(e) { logger(where, e); d.reject(e)});
       });
 
-		return deferred.promise;	
+		return d.promise;	
 	}
 
    // @function: getMe

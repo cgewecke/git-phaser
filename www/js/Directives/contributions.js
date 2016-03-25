@@ -3,8 +3,8 @@ var cb_debug;
 angular.module('gitphaser')
   .directive("contributions", Contributions);
 
-// @directive: <contributions name='github.me.login'></contributions>
-// @params: name (the value of the login key in the github user object). 
+// @directive: <contributions name='account.info.login'></contributions>
+// @params: name (the value of the login key in an arbitrary github account.info object). 
 //
 // The github contributions graph scraped from the svg resource. This has to be obtained
 // by server proxy. The directive shows a spinner until the svg is received. SVG is embedded

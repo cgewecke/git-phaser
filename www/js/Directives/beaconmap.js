@@ -21,8 +21,6 @@ function BeaconMap(GeoLocate){
 			// Load or update map when slide view is toggled to map	
 			scope.$watch('slide', function(newVal, oldVal){
 
-            if (GLOBAL_TESTING) return;
-
 				if (newVal === 1){
 					(GeoLocate.map === null) ? 
 						GeoLocate.loadMap(): 

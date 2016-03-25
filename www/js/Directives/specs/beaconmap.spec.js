@@ -25,13 +25,20 @@ describe('Directive: <beacon-map>', function () {
 
         initTemplate = function(){
 
-            template = angular.element('<beacon-map slide="slide"></beacon-map>');            
+            template = angular.element('<beacon-map id="test" slide="slide"></beacon-map>');            
             $compile(template)($scope);
+            angular.element(document.body).append(template);
             $scope.$digest();
             scope = template.scope();
         }
                 
     }));
+
+    afterEach(function(){
+        var node  = document.getElementById("test");
+        node.parentNode.removeChild(node);
+        $scope.$digest();
+    })
 
     it('should add class "ipad" to element IFF device is an ipad', function(){
 

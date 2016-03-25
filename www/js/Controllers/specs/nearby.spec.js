@@ -42,12 +42,19 @@ describe('NearbyCtrl', function(){
             }
         };
         
-        template = angular.element('<ion-nav-bar><nearby-test></nearby-test></ion-nav-bar>');            
+        template = angular.element('<ion-nav-bar id="test"><nearby-test></nearby-test></ion-nav-bar>');            
         $compile(template)($scope);
+        angular.element(document.body).append(template);
         $scope.$digest();
 
         ctrl = template.find('nearby-test').controller('nearbyTest');
     }));
+
+    afterEach(function(){
+        var node  = document.getElementById("test");
+        node.parentNode.removeChild(node);
+        $scope.$digest();
+    });
 
 
     it('should initialize slides & bind injected/reactive services to ctrl', function(){

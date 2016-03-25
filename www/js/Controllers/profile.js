@@ -59,14 +59,12 @@ function ProfileCtrl ($scope, $stateParams, $state, GitHub, account){
    // @function: back 
    // Navigates to tab.nearby - for nav back arrow visible in the
    // others/ route use of this template
-   self.back = function(){ 
-      $state.go('tab.nearby') 
-   }
+   self.back = function(){  $state.go('tab.nearby') };
 
    // @function: follow 
    // Wraps GitHub.follow - hides follow button when clicked
    self.follow = function(){
-      this.canFollow = false;
+      self.canFollow = false;
       GitHub.follow(self.user);
    }
 

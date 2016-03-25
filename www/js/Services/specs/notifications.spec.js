@@ -1,4 +1,4 @@
-"use strict"
+
 var nt_debug;
 
 describe('Service: Notify', function () {

@@ -24,7 +24,6 @@ function Contact($cordovaContacts, $ionicModal, ionicToast, GitHub){
      
       link: function(scope, elem, attrs, ngModel){
 
-         c_debug = scope;
          var template =
             
             '<div class="contact-modal">' + 
@@ -42,13 +41,13 @@ function Contact($cordovaContacts, $ionicModal, ionicToast, GitHub){
          // Determine if user can be added
          scope.contactAdded = hasContact(); 
 
-         // Define Modal
+         // Get a modal instance
          scope.modal = $ionicModal.fromTemplate(template, {scope: scope});
          
-         // Destroy on destruction
+         // Modal event: destroy
          scope.$on('$destroy', function() { scope.modal.remove(); });
          
-         // Turn background opacity off on modal hide
+         // Modal event: hide - turn background opacity off on modal hide
          scope.$on('modal.hidden', function() { ngModel.$setViewValue(false); });
 
 

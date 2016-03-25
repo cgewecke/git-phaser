@@ -39,6 +39,9 @@ describe('ProfileCtrl', function(){
         account = _account_;
         $state = _$state_;
     
+        // Mock Github.me
+        GitHub.me = { login: 'alberto' };
+        
         // Compile Template
         compileProvider.directive('profileTest', function (){
             return {

@@ -121,9 +121,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
 
             // Delay turning spinner off - statechange sometimes takes a while because
             // nearby route has tons to resolve
-            $timeout(function(){
-              $scope.loggingIn = false;
-            }, 3000);
+            $timeout(function(){ $scope.loggingIn = false }, 3000);
           })
         
         } else {
@@ -137,7 +135,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
     // Get next beacon major/minor for this app instance, create user and save
     // email string composed of uuid, beacon major and minor there and in local storage.  
     // Redirect to setup or kick back to login if there is an error. This could happen
-    // if for some reason two app simultaneously create accounts and generate the same email
+    // if for some reason two apps simultaneously create accounts and generate the same email
     // address. Email is guaranteed to be unique.
     function createAccount(user){
 
@@ -162,9 +160,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
               window.localStorage['pl_newInstall'] = 'true';
               $state.go('setup');
 
-              $timeout(function(){
-                $scope.loggingIn = false;
-              }, 3000);
+              $timeout(function(){ $scope.loggingIn = false }, 3000);
               
             } else{
               $scope.loggingIn = false;
