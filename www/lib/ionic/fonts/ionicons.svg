@@ -25,6 +25,8 @@ Created by Adam Bradley with FontForge 2.0 (http://fontforge.sf.net)
     unicode-range="U+F100-F4F7"
   />
     <missing-glyph />
+    <!-- Added Glyphs -->
+    <!-- -->
     <glyph glyph-name="ion-alert-circled" unicode="&#xf100;" 
 d="M445 26c3 -5 5 -13 2 -18s-8 -8 -14 -8h-418c-6 0 -11 3 -14 8s-1 13 2 18l207 349c3 5 8 9 14 9s11 -4 14 -9zM256 48v48h-64v-48h64zM256 128v144h-64v-144h64z" />
     <glyph glyph-name="ion-alert" unicode="&#xf101;" horiz-adv-x="128" 

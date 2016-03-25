@@ -41,8 +41,7 @@ module.exports = function(config) {
         'www/js/mongo/*.js',
         'www/js/filters/*.js',
 
-        // Core w/specs: If services are not first, there is a cascade of
-        // failures. Weird
+        // Core: 
         'www/js/config/*.js',
         'www/js/services/*.js',
         'www/js/controllers/*.js',

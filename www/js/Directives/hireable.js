@@ -14,7 +14,7 @@ function Hireable(ionicToast){
       scope: {available: '=', name: '=' },
       template:
          '<button id="hireable-btn" ng-show="available" ng-click="toast()"' +
-               'class="button button-clear button-balanced icon ion-cash">' +
+               'class="button button-clear button-balanced icon ion-card">' +
          '</button>',
 
       link: function(scope, elem, attrs){
@@ -29,7 +29,7 @@ function Hireable(ionicToast){
             scope.toast = function(){
                ionicToast.show(message, 'middle', false, 1250);
             };
-
+            
          } else {
             logger(where, 'missing name attribute');
          }

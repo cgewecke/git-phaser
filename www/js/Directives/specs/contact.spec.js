@@ -1,94 +1,173 @@
-describe('Directive: <add-contact>', function () {
+"use strict"
+
+var ct_debug, ct_debugII, ct_debugIII;
+
+describe('Directive: <contact>', function () {
     
     beforeEach(module('templates'));   // ng-html2js template cache
     beforeEach(module('gitphaser'));    // Application
     beforeEach(module('mocks'));  // Mocked Meteor services, collections
 
-    var $scope, $compile,  
-    	user, template, initTemplate, scope;
+    var $scope, $compile, $ionicModal, ionicToast, GitHub, 
+    	user, template, initTemplate, scope, localScope;
 
     var penelope = {
-    	id: 'aaa',
+    	login: 'plp',
     	name: 'penelope',
-    	emailAddress: 'penelope@cyclop.se',
-    	positions: {
-    		values: [{company: 'cyclopse', title: 'engineer'}]
-    	},
+    	email: 'penelope@cyclop.se',
+    	company: 'cyclopse',
     	pictureUrl: 'http://hello.com'
     };
 
-    beforeEach(inject(function(_$rootScope_, _$compile_, _Mock_ ){
+    beforeEach(inject(function(_$rootScope_, _$compile_, _$ionicModal_, _ionicToast_,
+                               _Mock_, _GitHub_ ){
         
         $scope = _$rootScope_;
         $compile = _$compile_;
+        $ionicModal = _$ionicModal_;
+        ionicToast = _ionicToast_;
+        GitHub = _GitHub_;
 
-        // Meteor
+        // Mock GitHub
+        GitHub.me = { login: 'someoneElse'};
+        // Mock Meteor
         Meteor.user = _Mock_.Meteor.user;
         user = _Mock_.user;
 
         // Potential contact
         $scope.penelope = penelope;
+
+        // ng-Model
+        $scope.modalIsOpen = false;
         
         // Allows us to initialize template against different mock users
         initTemplate = function(){
-        	template = angular.element('<add-contact user="penelope"></add-contact>');            
+        	template = angular.element('<contact user="penelope" ng-model="modalIsOpen"></contact>');            
         	$compile(template)($scope);
         	$scope.$digest();
+
         	scope = template.isolateScope();
+            localScope = template.scope();
         };
     }));
 
-    it('should initialize correctly when current user DOES NOT have contact', function(){
+    
+    it('should initialize a modal object', function(){
+        spyOn($ionicModal, 'fromTemplate').and.callThrough();
+        initTemplate();
+    
+        expect(scope.modal).not.toBe(undefined);
+    });
+
+    it('should initialize correctly when user DOES NOT have contact', function(){
 
     	initTemplate();
-    	expect(scope.currentUserId).toEqual(user.username);
     	expect(scope.contactAdded).toEqual(false);
-    	expect(scope.flasher).toEqual(false);
     	
     });
 
     it('should initialize correctly when user DOES have contact', function(){
 
-    	user.profile.contacts.push(scope.user.id);
+    	user.profile.contacts.push(scope.user.login);
     	initTemplate();
 
     	expect(scope.contactAdded).toBe(true);
 
     });
 
-    it('should hide itself if contact already exists', function(){
+    it('should show/hide email icon if contact added/not added', function(){
 
-    	initTemplate();
-    	
+    	var icon;
+
+        initTemplate();
+    	icon = template.find('#contact-added');
     	scope.contactAdded = false;
     	$scope.$digest();
-    	expect(template.hasClass('ng-hide')).toBe(false);
+    	expect(icon.hasClass('ng-hide')).toBe(true);
 
     	scope.contactAdded = true;
     	$scope.$digest();
-    	expect(template.hasClass('ng-hide')).toBe(true);
+    	expect(icon.hasClass('ng-hide')).toBe(false);
 
     });
 
-    it('should hide itself if the current view is the users own profile', function(){
-    	initTemplate();
-    	scope.user.id = user.username;
+    it('should hide/show plus icon if contact added/not added', function(){
 
-    	$scope.$digest();
-    	expect(template.hasClass('ng-hide')).toBe(true);
+        var icon;
+
+        initTemplate();
+
+        icon = template.find('#contact-addable');
+        scope.contactAdded = false;
+        $scope.$digest();
+        expect(icon.hasClass('ng-hide')).toBe(false);
+
+        scope.contactAdded = true;
+        $scope.$digest();
+        expect(icon.hasClass('ng-hide')).toBe(true);
+
     });
 
-    it('should wire its button to fn: createContact()', function(){
-    	var button;
 
-    	initTemplate();
-    	spyOn(scope, 'createContact');
+    describe('confirm()', function(){
 
-    	button = template.find('button#contact-button');
-    	button.triggerHandler('click');
-    	$scope.$digest();
+        it('should be called when user taps the email field', function(){
+            
+            var contact;    
+            initTemplate();
 
-    	expect(scope.createContact).toHaveBeenCalled();
+            spyOn(scope, 'confirm');
+            template.triggerHandler('click');
+            $scope.$digest();
+            expect(scope.confirm).toHaveBeenCalled();
+        });
+
+        it('should do nothing if user is the current user', function(){
+                
+            
+
+            initTemplate();
+            GitHub.me = { login: scope.user.login };
+            spyOn(ionicToast, 'show');
+            spyOn(scope.modal, 'show');
+    
+            scope.confirm();
+            expect(ionicToast.show).not.toHaveBeenCalled();
+            expect(scope.modal.show).not.toHaveBeenCalled();
+        });
+
+        it('should show a toast saying the contact has already been added (when true)', function(){
+
+            spyOn(ionicToast, 'show');
+
+            initTemplate();
+            scope.contactAdded = true;
+
+            scope.confirm();
+            expect(ionicToast.show).toHaveBeenCalled();
+        });
+
+        it('should open a modal prompt if the contact can be added', function(){
+
+            
+            initTemplate();
+            spyOn(scope.modal, 'show');
+            scope.contactAdded = false;
+            scope.confirm();
+
+            expect(scope.modal.show).toHaveBeenCalled();
+        });
+
+        it('should set outer scope background opacity flag to true when opening modal', function(){
+
+            var ctrl;
+
+            initTemplate();
+            scope.contactAdded = false;
+            scope.confirm();
+
+            expect($scope.modalIsOpen).toBe(true);
+        });
 
     });
 
@@ -104,15 +183,14 @@ describe('Directive: <add-contact>', function () {
 
 	        expected_info = {
     			"displayName": scope.user.name,
-				"emails": (scope.user.emailAddress) ? 
-				[{ "value": scope.user.emailAddress, 
+				"emails": (scope.user.email) ? 
+				[{ "value": scope.user.email, 
 				   "type": "business" }] : null,
-				"organizations": (scope.user.positions) ?
+				"organizations": (scope.user.company) ?
 				[{"type": "Company", 
-				  "name": scope.user.positions.values[0].company.name,
-				  "title": scope.user.positions.values[0].title 
+				  "name": scope.user.company,
 				}] : null,
-				"photos": [{"value": scope.user.pictureUrl}],
+				"photos": [{"value": scope.user.avatarUrl}],
 				"birthday": Date('5/5/1973')
 			};
 
@@ -143,11 +221,25 @@ describe('Directive: <add-contact>', function () {
             scope.createContact();
 
             $scope.$digest();
-            $timeout.flush(1200);
 
             expect(scope.contactAdded).toEqual(true);
-            expect(Meteor.call).toHaveBeenCalledWith('addContact', scope.user.id)
+            expect(Meteor.call).toHaveBeenCalledWith('addContact', scope.user.login)
             
-    	})
-    })
+    	});
+    });
+
+    describe('$on(): modal.hidden', function(){
+
+        it('should set outer scope background opacity flag to false when modal closes', function(){
+
+            initTemplate();
+
+            scope.contactAdded = false;
+            scope.confirm();
+
+            $scope.$broadcast('modal.hidden');
+            $scope.$digest();
+            expect($scope.modalIsOpen).toBe(false);
+        })
+    });
 });
