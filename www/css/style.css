@@ -14,6 +14,7 @@
 
 /* Element Positions */
 .relative { position: relative;}
+.absolute { position: absolute;}
 
 /* Colors */
 .link { color: #4078c0; }
@@ -190,14 +191,22 @@
 .authenticate-container.spacer {  -webkit-flex: 1; }
 
 .phaser{
-    position: relative;
-    transform: translateY(-150%);
-    -webkit-transform: translateY(-150%);
+    position: absolute;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+
 }
 
-.phaser-wrapper{ position: absolute; }
+.phaser-wrapper{ position: relative;}
 
-button.login{ font-weight: bold; }
+button.login{ 
+    transform: translateY(50%);
+    -webkit-transform: translateY(50%);
+    font-weight: bold; 
+}
 
 p.login{ font-size: 105% }
 

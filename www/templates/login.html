@@ -21,35 +21,42 @@
             the repos around you. 
         </p>
     </div> 
+    
 
     <!-- Phaser Image -->
-    <div class = "col button-row text-center">
-      <div class="phaser-wrapper">
+  
+    <div class = "col spacer button-row text-center">
+      <div class="phaser-wrapper text-center">
         <svg height="256" width="256">
           <circle cx="128" cy="128" r="100" stroke="white" stroke-width="1" fill="white" />
         </svg>
         <img class="phaser" src="./img/phaser256.png" />
       </div> 
     </div>
+    
 
     <!-- Spacer -->
-    <div class="col spacer"></div>  
+    <!-- <div class="col spacer"></div>  -->
     
     <!-- Login Button -->    
     <!-- DEVELOPMENT -->
+    
     <div class = "col spacer text-center" ng-show="DEV">
         <button ng-click="devLogin()" 
                 class="button button-large button-outline button-light icon-right ion-social-github login">
           Sign in with GitHub &nbsp
         </button>
     </div>  
+    
     <!-- PRODUCTION -->  
+    
     <div class = "col spacer text-center" ng-show="!DEV">
         <button ng-click="login()" 
                 class="button button-large button-outline button-light icon-right ion-social-github login">
           Sign in with GitHub &nbsp
         </button>
-    </div>  
+    </div>
+    
   </section>
 
   <!-- Authenticating cover -->

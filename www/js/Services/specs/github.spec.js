@@ -159,12 +159,62 @@ describe('Service: GitHub', function () {
 
     describe('authenticate()', function(){
 
-        /*it ('should wait for platform ready before trying to open inAppBrowser', function(){
+        it ('should wait for platform ready before trying to open inAppBrowser', function(){
             spyOn($ionicPlatform, 'ready');
             GitHub.authenticate();
             expect($ionicPlatform.ready).toHaveBeenCalled();
-        });*/
+        });
+
+        it('should call $cordovaOauth correctly, redirecting through cyclop.se/help', function(){
+
+            spyOn($ionicPlatform, 'ready').and.callThrough();
+            spyOn($cordovaOauth, 'github').and.callThrough();
+            GitHub.authenticate();
+
+            $scope.$digest();
+            expect($cordovaOauth.github).toHaveBeenCalledWith(
+
+                secure.github.id,
+                secure.github.secret,
+                [],
+                { redirect_uri: 'http://cyclop.se/help'}
+            );
+        });
+
+        it('should parse/set the authToken it receives and resolve', function(){
+            
+            spyOn($ionicPlatform, 'ready').and.callThrough();
+            spyOn($cordovaOauth, 'github').and.callThrough();
+            spyOn(GitHub, 'setAuthToken');
+
+            d1.resolve('access_token=ABCD&other_stuff=898989');
+
+            GitHub.authenticate();
+            $scope.$digest();
+            expect(GitHub.setAuthToken).toHaveBeenCalledWith('ABCD');
+            
+        });
+
+
+        it('should reject on failure', function(){
+
+            var promise;
+
+            spyOn($ionicPlatform, 'ready').and.callThrough();
+            spyOn($cordovaOauth, 'github').and.callThrough();
+
+            d1.reject();
+
+            promise =  GitHub.authenticate();
+            $scope.$digest();
+            expect(promise.$$state.status).toEqual(2);
+
+        });
     });
+
+    describe('getMe()', function(){
+
+    })
 });
 
 

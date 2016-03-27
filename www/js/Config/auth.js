@@ -15,7 +15,7 @@ function run ($rootScope, $state) {
 	});
 
 	$rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
-		log('@stateChangeError: ', error);
+		logger('$on:stateChangeError: ', error);
 
 		if (error === 'AUTH_REQUIRED') {
 		  $state.go('login');
