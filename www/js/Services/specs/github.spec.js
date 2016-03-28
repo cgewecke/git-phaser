@@ -214,6 +214,253 @@ describe('Service: GitHub', function () {
 
     describe('getMe()', function(){
 
+        var user;
+
+        beforeEach(function(){
+            $github.getUser = function(){ return d1.promise};
+            user = { show: function(){ return d2.promise } };
+            GitHub.getAccount = function(){ return d3.promise};
+        });
+
+        it('should get a $github api instance', function(){
+            spyOn($github, 'getUser').and.callThrough();
+            GitHub.getMe();
+            expect($github.getUser).toHaveBeenCalled();
+
+        });
+
+        it('should reject if getting $github instance fails', function(){
+            var promise;
+
+            spyOn($github, 'getUser').and.callThrough();
+            d1.reject();
+            promise = GitHub.getMe();
+            $scope.$digest();
+
+            expect(promise.$$state.status).toEqual(2);
+        })
+
+
+        it('should get public info for the user', function(){
+
+            spyOn($github, 'getUser').and.callThrough();
+            spyOn(user, 'show').and.callThrough();
+
+            d1.resolve(user);
+            GitHub.getMe();
+            $scope.$digest();
+
+            expect(user.show).toHaveBeenCalled();
+
+        });
+
+        it('should reject if getting users public info fails', function(){
+
+            var promise;
+
+            spyOn($github, 'getUser').and.callThrough();
+            spyOn(user, 'show').and.callThrough();
+
+            d1.resolve(user);
+            d2.reject();
+            promise = GitHub.getMe();
+            $scope.$digest();
+
+            expect(promise.$$state.status).toEqual(2);
+        });
+
+        it('should get the rest of the users account data and resolve true', function(){
+
+            var info = {login: 'somename'};
+            var account = {info: 'a', repos: 'b', events: 'c', followers: 'd'};
+
+            var promise;
+
+            spyOn($github, 'getUser').and.callThrough();
+            spyOn(user, 'show').and.callThrough();
+            spyOn(GitHub, 'getAccount').and.callThrough();
+
+            d1.resolve(user);
+            d2.resolve(info);
+            d3.resolve(account);
+            
+            promise = GitHub.getMe();
+            $scope.$digest();
+
+            expect(GitHub.getAccount).toHaveBeenCalledWith(info.login, user);
+
+            expect(GitHub.api).toEqual(user);
+            expect(GitHub.me).toEqual(account.info);
+            expect(GitHub.repos).toEqual(account.repos);
+            expect(GitHub.events).toEqual(account.events);
+            expect(GitHub.followers).toEqual(account.followers);
+            expect(promise.$$state.value).toBe(true);
+
+        });
+
+        it('should reject if getting users account data fails', function(){
+
+            var info = {login: 'somename'};
+            var account = {info: 'a', repos: 'b', events: 'c', followers: 'd'};
+
+            var promise;
+
+            spyOn($github, 'getUser').and.callThrough();
+            spyOn(user, 'show').and.callThrough();
+            spyOn(GitHub, 'getAccount').and.callThrough();
+
+            d1.resolve(user);
+            d2.resolve(info);
+            d3.reject();
+            
+            promise = GitHub.getMe();
+            $scope.$digest();
+
+            expect(promise.$$state.status).toEqual(2);
+        });
+    });
+
+    describe('getAccount()', function(){
+
+        var user;
+
+        beforeEach(function(){
+            
+            user = { 
+                show: function(){ return d1.promise },
+                userRepos: function(){ return d2.promise},
+                userEvents: function(){ return d3.promise},
+                userFollowers: function(){ return d4.promise} 
+            };
+            
+        });
+
+        it ('should resolve a cached account if there is one', function(){
+            var promise;
+            var expected_account = { info: {login: 'penelope'}, cached_at: new Date() };
+            GitHub.cache.push(expected_account);
+            promise = GitHub.getAccount('penelope', null);
+            $scope.$digest();
+
+            expect(promise.$$state.value).toEqual(expected_account);
+
+        });
+
+        it ('should NOT resolve a cached account if the cached item is stale', function(){
+            var promise;
+            var expected_account = { info: {login: 'penelope'}, cached_at: new Date(1980, 5, 18) };
+
+            GitHub.cache.push(expected_account);
+            promise = GitHub.getAccount('penelope', user);
+            $scope.$digest();
+
+            expect(promise.$$state.status).toEqual(0);
+        });
+
+        it('should remove the stale item from the cache when discovered', function(){
+
+            var promise;
+            var expected_account = { info: {login: 'penelope'}, cached_at: new Date(1980, 5, 18) };
+
+            GitHub.cache.push(expected_account);
+            promise = GitHub.getAccount('penelope', user);
+            $scope.$digest();
+
+            expect(GitHub.cache.length).toEqual(0);
+
+        });
+
+        it('should get, cache and resolve necessary data from github', function(){
+
+            var promise;
+
+            var expected_account = {
+
+                info: 'a',
+                repos: 'b',
+                events: { commits: {}, commits_total: 0, issues: [], issues_total: 0 },
+                followers: 'd'
+            };
+
+            spyOn(user, 'show').and.callThrough();
+            spyOn(user, 'userRepos').and.callThrough();
+            spyOn(user, 'userEvents').and.callThrough();
+            spyOn(user, 'userFollowers').and.callThrough();
+
+            d1.resolve(expected_account.info);
+            d2.resolve(expected_account.repos);
+            d3.resolve(expected_account.events);
+            d4.resolve(expected_account.followers);
+
+            promise = GitHub.getAccount('penelope', user);
+            $scope.$digest();
+
+            expect(promise.$$state.value.info).toEqual(expected_account.info);
+            expect(promise.$$state.value.repos).toEqual(expected_account.repos);
+            expect(promise.$$state.value.events).toEqual(expected_account.events);
+            expect(promise.$$state.value.followers).toEqual(expected_account.followers);
+            expect(promise.$$state.value.cached_at instanceof Date).toBe(true);
+
+            expect(GitHub.cache.length).toBe(1);
+        
+        });
+    });
+
+    describe('getContribGraph', function(){
+
+        it('should resolve a graph from cache if available', function(){
+            var promise;
+            var expected_account = { info: {login: 'penelope'}, cached_at: new Date(), graph: 'a' };
+            GitHub.cache.push(expected_account);
+            promise = GitHub.getContribGraph('penelope');
+            $scope.$digest();
+
+            expect(promise.$$state.value).toEqual(expected_account.graph);
+        });
+
+        it('should fetch by server proxy, cache, and resolve the graph', function(){
+
+            var promise;
+            var temp = Meteor.call;
+
+            var expected_account = { info: {login: 'penelope'}, cached_at: new Date() };
+            var expected_response = '<etc></etc>';
+
+            Meteor.call = function(name, param, fn){
+                (fn)(false, expected_response);
+            }
+            GitHub.cache.push(expected_account);
+            
+            promise = GitHub.getContribGraph('penelope');
+            $scope.$digest();
+
+            expect(promise.$$state.value).toEqual(expected_response);
+            expect(GitHub.cache[0].graph).toEqual(expected_response);
+
+            // Reset mock
+            Meteor.call = temp;
+
+        });
+
+    });
+
+    describe('canFollow', function(){
+
+        it('should return false if the user is already followed', function(){
+
+            GitHub.followers = [{login: 'penelope'}];
+            expect(GitHub.canFollow('penelope')).toBe(false);
+        });
+
+        it('should return true if the user is NOT already followed', function(){
+            GitHub.followers = [{login: 'antonio'}];
+            expect(GitHub.canFollow('penelope')).toBe(true);
+        });
+
+    });
+
+    describe('follow', function(){
+
     })
 });
 
