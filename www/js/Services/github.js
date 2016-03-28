@@ -303,15 +303,17 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
 		var d = $q.defer();
       var account = {};
       
-      // Service either initializing or already initialized
-      (auth_api === undefined) ? api = self.api : api = auth_api;
-      
       cached = accountCached(username);
       
       // Check cache
       if (cached){
          d.resolve(cached)
+      
       } else {     
+
+         // Service either initialized or initializing with auth_api param
+         (auth_api === undefined) ? api = self.api : api = auth_api;
+
          // Get profile, then repos, then events, then followers
          api.show(username).then( function(info){
             api.userRepos(username).then( function(repos){
@@ -378,12 +380,13 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    // already followed.  
    self.canFollow = function(username){
 
+      var can = true;
       angular.forEach(self.followers, function(follower){
          if (follower.login === username){
-            return false;
+            can = false;
          }
       })
-      return true;
+      return can;
    };
 
    // THIS IS FUCKED. WHAT/WHERE IS 'USER'
@@ -395,11 +398,11 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
    // Attempts to follow the user specified by param username. 
    // Increments follower/following metrics and adds a mock follower
    // to the followers array to keep cache current w/ GitHub remote.  
-   self.follow = function(username){
+   self.follow = function(user){
 
       var d = $q.defer();
 
-      self.api && self.api.follow(username).then(
+      self.api && self.api.follow(user.login).then(
          function(){
             self.me.following++;
             user.followers++;

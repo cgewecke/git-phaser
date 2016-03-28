@@ -74,7 +74,7 @@ describe('Service: GitHub', function () {
 
     describe('initialize()', function(){
         
-        it('should resolve true immedidately if service has already initialized', function(){
+        it('should resolve true immediately if service has already initialized', function(){
             var promise;
             GitHub.me = {something: 'already happened'};
             promise = GitHub.initialize();
@@ -404,6 +404,114 @@ describe('Service: GitHub', function () {
             expect(GitHub.cache.length).toBe(1);
         
         });
+
+            
+        it('should reject if the github follower api call fails', function(){
+
+            var promise;
+
+            var expected_account = {
+
+                info: 'a',
+                repos: 'b',
+                events: { commits: {}, commits_total: 0, issues: [], issues_total: 0 },
+                followers: 'd'
+            };
+
+            spyOn(user, 'show').and.callThrough();
+            spyOn(user, 'userRepos').and.callThrough();
+            spyOn(user, 'userEvents').and.callThrough();
+            spyOn(user, 'userFollowers').and.callThrough();
+
+            d1.resolve(expected_account.info);
+            d2.resolve(expected_account.repos);
+            d3.resolve(expected_account.events);
+            d4.reject('followers');
+
+            promise = GitHub.getAccount('penelope', user);
+            $scope.$digest();
+
+            expect(promise.$$state.value).toEqual('followers');
+
+        });
+
+        it('should reject if the github event api call fails', function(){
+
+            var promise;
+
+            var expected_account = {
+
+                info: 'a',
+                repos: 'b',
+                events: { commits: {}, commits_total: 0, issues: [], issues_total: 0 },
+                followers: 'd'
+            };
+
+            spyOn(user, 'show').and.callThrough();
+            spyOn(user, 'userRepos').and.callThrough();
+            spyOn(user, 'userEvents').and.callThrough();
+
+            d1.resolve(expected_account.info);
+            d2.resolve(expected_account.repos);
+            d3.reject('events')
+
+            promise = GitHub.getAccount('penelope', user);
+            $scope.$digest();
+
+            expect(promise.$$state.value).toEqual('events');
+
+        });
+
+        it('should reject if the github repos api call fails', function(){
+
+            var promise;
+
+            var expected_account = {
+
+                info: 'a',
+                repos: 'b',
+                events: { commits: {}, commits_total: 0, issues: [], issues_total: 0 },
+                followers: 'd'
+            };
+
+            spyOn(user, 'show').and.callThrough();
+            spyOn(user, 'userRepos').and.callThrough();
+            
+
+            d1.resolve(expected_account.info);
+            d2.reject('repos')
+
+            promise = GitHub.getAccount('penelope', user);
+            $scope.$digest();
+
+            expect(promise.$$state.value).toEqual('repos');
+
+        });
+
+        it('should reject if the github info api call fails', function(){
+
+            var promise;
+
+            var expected_account = {
+
+                info: 'a',
+                repos: 'b',
+                events: { commits: {}, commits_total: 0, issues: [], issues_total: 0 },
+                followers: 'd'
+            };
+
+            spyOn(user, 'show').and.callThrough();
+            
+
+            d1.reject('info');
+
+            promise = GitHub.getAccount('penelope', user);
+            $scope.$digest();
+
+            expect(promise.$$state.value).toEqual('info');
+
+        });
+
     });
 
     describe('getContribGraph', function(){
@@ -426,9 +534,7 @@ describe('Service: GitHub', function () {
             var expected_account = { info: {login: 'penelope'}, cached_at: new Date() };
             var expected_response = '<etc></etc>';
 
-            Meteor.call = function(name, param, fn){
-                (fn)(false, expected_response);
-            }
+            Meteor.call = function(name, param, fn){(fn)(false, expected_response)}
             GitHub.cache.push(expected_account);
             
             promise = GitHub.getContribGraph('penelope');
@@ -461,6 +567,37 @@ describe('Service: GitHub', function () {
 
     describe('follow', function(){
 
+        var user;
+
+        beforeEach(function(){
+            user = {login: 'penelope', followers: []};
+            GitHub.api = { follow: function(){return d1.promise}};
+        });
+
+        it('should follow the user', function(){
+            spyOn(GitHub.api, 'follow').and.callThrough();
+            GitHub.follow(user);
+            $scope.$digest();
+
+            expect(GitHub.api.follow).toHaveBeenCalledWith(user.login);
+
+        });
+
+        it('should update local following/followers data', function(){
+
+            GitHub.me = {following: 0};
+            GitHub.followers = [];
+
+            spyOn(GitHub.api, 'follow').and.callThrough();
+            d1.resolve();
+            GitHub.follow(user);
+            $scope.$digest();
+
+            expect(GitHub.me.following).toEqual(1);
+            expect(user.followers).toEqual(1);
+            expect(GitHub.followers.pop()).toEqual({login: user.login});
+            
+        });
     })
 });
 
