@@ -51,7 +51,7 @@ describe('Service: Notify', function () {
 
         	// Setup
         	Meteor.user = function(){ return false };
-            spyOn($cordovaPush, 'register').and.returnValue(defer.promise);
+            spyOn($cordovaPush, 'register').and.callThrough();
 
             // Test
             Notify.initialize();
@@ -65,7 +65,7 @@ describe('Service: Notify', function () {
         	// Setup
         	user.profile.pushToken = '12345';
         	$window.localStorage['pl_newInstall'] = 'false';
-        	spyOn($cordovaPush, 'register').and.returnValue(defer.promise);
+        	spyOn($cordovaPush, 'register').and.callThrough();
 
         	// Test
         	Notify.initialize();
@@ -81,7 +81,7 @@ describe('Service: Notify', function () {
         	
         	// Setup
         	user.profile.pushToken = null;
-        	spyOn($cordovaPush, 'register').and.returnValue(defer.promise);
+        	spyOn($cordovaPush, 'register').and.callThrough();
 
         	// Test
         	Notify.initialize();
@@ -94,7 +94,7 @@ describe('Service: Notify', function () {
         	// Setup
         	user.profile.pushToken = '12345';
         	$window.localStorage['pl_newInstall'] = 'true';
-        	spyOn($cordovaPush, 'register').and.returnValue(defer.promise);
+        	spyOn($cordovaPush, 'register').and.callThrough();
 
         	// Test
         	Notify.initialize();

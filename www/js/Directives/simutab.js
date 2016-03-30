@@ -6,13 +6,12 @@ angular.module('gitphaser')
 // Nav bar that is decoupled from the main tab stack for 'others' profiles,
 // which have their own tabs.
 function simuTab(GitHub){
-  return {
-    restrict: 'E',   
-    replace: true,
-    templateUrl: 'templates/simutab.html',
-    link: function(scope, elem, attrs){
+    return {
+        restrict: 'E',   
+        replace: true,
+        templateUrl: 'templates/simutab.html',
+        link: function(scope, elem, attrs){}
     }
-  }
 }
         
       

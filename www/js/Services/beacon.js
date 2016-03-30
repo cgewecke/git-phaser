@@ -6,27 +6,27 @@ angular.module('gitphaser')
 
 function Beacons($rootScope, $q, $cordovaBeacon){
 
-	var self = this;
+    var self = this;
 
     // The set of uuids to monitor for
-	var uuids = [
-		"4F7C5946-87BB-4C50-8051-D503CEBA2F19", //1
-		"D4FB5D93-B1EF-42CE-8C08-CF11685714EB", //2
-		"98983597-F322-4DC3-A36C-72052BF6D612", //3
-		"8960D5AB-3CFA-46E8-ADE2-26A3FB462053", //4
-		"458735FA-E270-4746-B73E-E0C88EA6BEE0", //5
-		"01EC8B5B-B7DB-4D65-949C-81F4FD808A1A", //6
-		"33A93F3C-9CAA-4D39-942A-6659AD039232", //7
-		"774D64CA-91C9-4C3A-8DA3-221D9CF755E7", //8
-		"9BD991F7-0CB9-4FA7-A075-B3AB1B9CFAC8", //9
-		"05DEE885-E723-438F-B733-409E4DBFA694", //10
-	];
+    var uuids = [
+        "4F7C5946-87BB-4C50-8051-D503CEBA2F19", //1
+        "D4FB5D93-B1EF-42CE-8C08-CF11685714EB", //2
+        "98983597-F322-4DC3-A36C-72052BF6D612", //3
+        "8960D5AB-3CFA-46E8-ADE2-26A3FB462053", //4
+        "458735FA-E270-4746-B73E-E0C88EA6BEE0", //5
+        "01EC8B5B-B7DB-4D65-949C-81F4FD808A1A", //6
+        "33A93F3C-9CAA-4D39-942A-6659AD039232", //7
+        "774D64CA-91C9-4C3A-8DA3-221D9CF755E7", //8
+        "9BD991F7-0CB9-4FA7-A075-B3AB1B9CFAC8", //9
+        "05DEE885-E723-438F-B733-409E4DBFA694", //10
+    ];
 
 
     self.regions = [];
     
     // ------------------------  Public ---------------------------------
-	self.quantity = uuids.length;
+    self.quantity = uuids.length;
     self.initialized = false;
     
     // @function: getUUID 
@@ -38,10 +38,10 @@ function Beacons($rootScope, $q, $cordovaBeacon){
         return uuids[index];
     };
 
-	// @function initialize() 
+    // @function initialize() 
     // Sets up beaconing in app. This method resolves on the Nearby tab, so it may
     // have already run as user navigates around. Rejects if user does not authorize.
-	self.initialize = function(){
+    self.initialize = function(){
 
         var where = "Beacons:initialize";
         var deferred = $q.defer();
@@ -51,14 +51,14 @@ function Beacons($rootScope, $q, $cordovaBeacon){
            
         logger(where, '');
 
-		var profile, appBeacon;
+        var profile, appBeacon;
 
         // Init region array. Set device to wake app up when killed/backgrounded
         setUpRegions();
-		$cordovaBeacon.requestAlwaysAuthorization();
+        $cordovaBeacon.requestAlwaysAuthorization();
 
-		// Monitor all uuids
-		angular.forEach(self.regions, function(region){
+        // Monitor all uuids
+        angular.forEach(self.regions, function(region){
             $cordovaBeacon.startMonitoringForRegion(region);
         });
 
@@ -71,7 +71,7 @@ function Beacons($rootScope, $q, $cordovaBeacon){
         $rootScope.$on("$cordovaBeacon:didEnterRegion", function(event, result){
             onEntry(result);
         });
-		$rootScope.$on("$cordovaBeacon:didExitRegion", function(event, result){
+        $rootScope.$on("$cordovaBeacon:didExitRegion", function(event, result){
             onExit(result);
         });
         $rootScope.$on("$cordovaBeacon:didRangeBeaconsInRegion", function(event, result){
@@ -104,7 +104,7 @@ function Beacons($rootScope, $q, $cordovaBeacon){
         );
         
         return deferred;
-	};
+    };
 
     // ------------------------  Private ---------------------------------
     // setUpRegions(): initialize an array beaconRegion obj of all our possible uuid vals

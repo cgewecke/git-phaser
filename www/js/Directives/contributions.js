@@ -16,34 +16,33 @@ function Contributions($http, $window, $ionicScrollDelegate, GitHub){
         scope: {name: '='},
         template:
 
-       		'<div class="center grey">' +
-       			'<ion-spinner id="contrib-spinner" ng-show="loading" icon="dots"></ion-spinner>' + 
-       		'</div>',
+            '<div class="center grey">' +
+                '<ion-spinner id="contrib-spinner" ng-show="loading" icon="dots"></ion-spinner>' + 
+            '</div>',
 
         link: function(scope, elem, attrs){
 
-       		var graph, where, url, width;
+            var graph, where, url, width;
 
-       		where = '<contributions>:';
-      		width = 721 - $window.screen.width;
-      		scope.loading = true;
+            where = '<contributions>:';
+            width = 721 - $window.screen.width;
+            scope.loading = true;
       
-       		if (scope.name){
+            if (scope.name){
 
-       			GitHub.getContribGraph(scope.name).then(function(svg){
+                GitHub.getContribGraph(scope.name).then(function(svg){
                 
-                graph = angular.element(svg);
-                elem.append(graph);
-                $ionicScrollDelegate.$getByHandle('graph').scrollTo(width, 0, true);
-                scope.loading = false;
+                    graph = angular.element(svg);
+                    elem.append(graph);
+                    $ionicScrollDelegate.$getByHandle('graph').scrollTo(width, 0, true);
+                    scope.loading = false;
 
             }, function(){ logger(where, err) } )
 
-       		} else {
-       			logger(where, 'attribute value missing');
-       		}
-
-       }
+            } else {
+                logger(where, 'attribute value missing');
+            }
+        }
     }
 };
 

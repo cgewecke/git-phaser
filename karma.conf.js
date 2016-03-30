@@ -54,10 +54,10 @@ module.exports = function(config) {
         'tests/mocks/*.js',
         'tests/util/*.js',
 
-        //'www/js/config/specs/*.js',
+        'www/js/config/specs/*.js',
         'www/js/services/specs/*.js',
-        //'www/js/controllers/specs/*.js',
-        //'www/js/directives/specs/*.js'
+        'www/js/controllers/specs/*.js',
+        'www/js/directives/specs/*.js'
 
     ],
 
