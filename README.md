@@ -5,7 +5,18 @@ A Github-based proximity app for iOS that lets you browse the profiles and repos
 
 ## Tests: 
 ----------
+Individual tests are located in spec folders near their related js file e.g:
 
+```
+Controllers
+| - specs
+  | - controller_a.spec.js
+  | - controller_b.spec.js
+| - controller_a.js
+| - controller_b.js
+```
+
+To run all:
 ```
 $ gulp test
 ```
