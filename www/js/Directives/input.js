@@ -1,5 +1,5 @@
 angular
-  .module('whatsapp')
+  .module('gitphaser')
   .directive('input', input);
 
 // The directive enable sending message when tapping return

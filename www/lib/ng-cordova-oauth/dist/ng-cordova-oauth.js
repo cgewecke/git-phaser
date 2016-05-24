@@ -607,7 +607,7 @@ function foursquare($q, $http, $cordovaOauthUtility) {
 foursquare.$inject = ['$q', '$http', '$cordovaOauthUtility'];
 
 angular.module('oauth.github', ['oauth.utils'])
-  .factory('$github', github);
+  .factory('$Github', github);
 
 function github($q, $http, $cordovaOauthUtility) {
   return { signin: oauthGithub };
@@ -957,7 +957,7 @@ angular.module("oauth.providers", [
 
 function cordovaOauth(
   $q, $http, $cordovaOauthUtility, $azureAD, $adfs, $dropbox, $digitalOcean,
-  $google, $github, $facebook, $linkedin, $instagram, $box, $reddit, $slack,
+  $google, $Github, $facebook, $linkedin, $instagram, $box, $reddit, $slack,
   $twitter, $meetup, $salesforce, $strava, $withings, $foursquare, $magento,
   $vkontakte, $odnoklassniki, $imgur, $spotify, $uber, $windowslive, $yammer,
   $venmo, $stripe, $rally, $familySearch, $envato, $weibo, $jawbone, $untappd,
@@ -969,7 +969,7 @@ function cordovaOauth(
     dropbox: $dropbox.signin,
     digitalOcean: $digitalOcean.signin,
     google: $google.signin,
-    github: $github.signin,
+    github: $Github.signin,
     facebook: $facebook.signin,
     linkedin: $linkedin.signin,
     instagram: $instagram.signin,
@@ -1010,7 +1010,7 @@ cordovaOauth.$inject = [
   '$dropbox',
   '$digitalOcean',
   '$google',
-  '$github',
+  '$Github',
   '$facebook',
   '$linkedin',
   '$instagram',

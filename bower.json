@@ -6,7 +6,8 @@
     "angular-mocks": "~1.4.8",
     "accounts-base-client-side": "~0.1.1",
     "accounts-password-client-side": "~0.3.1",
-    "ionic-toast": "~0.2.0"
+    "ionic-toast": "~0.2.0",
+    "ng-cordova-oauth": "~0.2.8"
   },
   "dependencies": {
     "moment": "~2.11.1",

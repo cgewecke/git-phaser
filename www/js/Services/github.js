@@ -22,6 +22,8 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
 
     // PRODUCTION 
     var authToken = null;
+    // DEVELOPMENT
+    authToken = '4b6e119a5365ffdbe93f523a6a98bc8c2adf278f';
 
     // @function: accountCached
     // @param: String (github login value)
@@ -245,10 +247,13 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
         d = $q.defer();
         uri = { redirect_uri: 'http://cyclop.se/help'};
         
+        gh_debug = $cordovaOauth;
+
         $ionicPlatform.ready( function() {
             $cordovaOauth.github(id, secret, perm, uri).then( function(result) {
 
                 token = result.split('&')[0].split('=')[1];
+                console.log('Token: ' + token);
                 self.setAuthToken(token);
 
                 logger(where, authToken);
