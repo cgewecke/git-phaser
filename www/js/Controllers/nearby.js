@@ -1,3 +1,5 @@
+var nc_debug;
+
 angular.module('gitphaser') 
   .controller('NearbyCtrl', NearbyCtrl);  
 
@@ -13,7 +15,7 @@ function NearbyCtrl ($scope, $reactive, Notify, GeoLocate ){
   $reactive(this).attach($scope);
   
   var self = this;
-
+  
   // Slide constants bound to the GeoLocate directive
   // and other DOM events, trigger updates based on 
   // whether we are looking at List || Map view. 
@@ -28,9 +30,11 @@ function NearbyCtrl ($scope, $reactive, Notify, GeoLocate ){
   self.helpers({
       connections: function () {
         if (Meteor.userId())
-          return Connections.find( {transmitter: Meteor.userId() } )
+         return Connections.find( {transmitter: Meteor.userId() } );
       }
   });
+
+  nc_debug = Connections;
   
 
 };

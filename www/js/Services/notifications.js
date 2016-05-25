@@ -3,7 +3,7 @@
 angular.module('gitphaser')
   .service("Notify", Notify);
 
-function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPush){
+function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPushV5){
     
     var self = this;
     var error;
@@ -18,7 +18,8 @@ function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPush){
         var where = 'Notify:initialize';
         var deferred = $q.defer();
 
-        if($rootScope.DEV || !Meteor.user()){ 
+        // THIS WHOLE THING IS DISABLED PENDING FIX IN ISSUE #31 (cf. 'true')
+        if($rootScope.DEV || !Meteor.user() || true ){ 
             deferred.resolve(); 
             return deferred.promise 
         };
@@ -30,7 +31,7 @@ function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPush){
                 "alert": true,
             };
             
-            $cordovaPush.register(iosConfig).then(function(deviceToken) {
+            $cordovaPushV5.register(iosConfig).then(function(deviceToken) {
          
                 Meteor.users.update({ _id: Meteor.userId() }, {$set: {'profile.pushToken' : deviceToken}});
                 window.localStorage['pl_newInstall'] = 'false';

@@ -6,14 +6,15 @@ describe('Directive: <server-status>', function () {
     beforeEach(module('gitphaser'));    // Application
     beforeEach(module('mocks'));  // Mocked Meteor services, collections
 
-    var $scope, $compile, ionicToast, 
+    var $scope, $compile, $controller, ionicToast, 
         user, ctrl, template, initTemplate, scope, mock_status;
 
 
-    beforeEach(inject(function(_$rootScope_, _$compile_, _Mock_, _ionicToast_ ){
+    beforeEach(inject(function(_$rootScope_, _$compile_, _Mock_, _ionicToast_, _$controller_ ){
         
         $scope = _$rootScope_;
         $compile = _$compile_;
+        $controller = _$controller_;
         ionicToast = _ionicToast_;
 
         // Meteor
@@ -27,6 +28,8 @@ describe('Directive: <server-status>', function () {
             $compile(template)($scope);
             $scope.$digest();
             scope = template.find('ion-nav-buttons').scope();
+            scope.self = $controller('SettingsCtrl');
+
         };
 
     }));

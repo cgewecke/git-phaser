@@ -1,3 +1,5 @@
+var ss_debug, ss_debugII;
+
 angular.module('gitphaser')
   .directive("serverStatus", ServerStatus);
 
@@ -14,9 +16,8 @@ function ServerStatus($reactive, ionicToast){
                 '</button>' +
             '</ion-nav-buttons>',
 
-       link: function(scope, elem, attrs){
-            $reactive(this).attach(scope);
-
+         link: function(scope, elem, attrs){
+   
             scope.status = false;
             scope.self = this; // Unit testing
 
@@ -30,12 +31,12 @@ function ServerStatus($reactive, ionicToast){
                 ionicToast.show(message, 'middle', false, 1000);
             };
 
-            this.autorun(function(){
+            scope.vm.autorun(function(){
              
                 (Meteor.status().status === "connected") ?
                     scope.status = true:
                     scope.status = false;
-            });             
+            });              
         }
     };
 };

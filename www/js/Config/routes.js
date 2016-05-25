@@ -92,7 +92,7 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
             });
      
             return deferred.promise;
-        }] 
+        }]
       }
   })
   

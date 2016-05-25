@@ -15,5 +15,5 @@ function TabsCtrl ($scope, $reactive){
         if(Meteor.user()) 
           return Meteor.user().profile.notifyCount;
       }
-  });  
+  }); 
 };  
