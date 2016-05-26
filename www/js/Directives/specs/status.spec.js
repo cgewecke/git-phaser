@@ -19,6 +19,7 @@ describe('Directive: <server-status>', function () {
 
         // Meteor
         Meteor.status = function(){ return {status: mock_status }}
+        $scope.vm = { autorun: function(fn){(fn)()} };
 
         // Allows us to initialize template against different mock users
         initTemplate = function(){
@@ -28,8 +29,7 @@ describe('Directive: <server-status>', function () {
             $compile(template)($scope);
             $scope.$digest();
             scope = template.find('ion-nav-buttons').scope();
-            scope.self = $controller('SettingsCtrl');
-
+           
         };
 
     }));
@@ -46,10 +46,11 @@ describe('Directive: <server-status>', function () {
     // directive scope to make the test work. 
     it('should make the cloud icon green if app is connected to Meteor', function(){
         
-        spyOn( scope.self, 'autorun').and.callThrough();
+        
         mock_status = 'connected';
         
         initTemplate();
+        spyOn( scope.vm, 'autorun').and.callThrough();
         var button = template.find('button#status-button');
         var childScope = button.scope();
         childScope.status = scope.status;
@@ -61,7 +62,7 @@ describe('Directive: <server-status>', function () {
 
     it('should make the cloud icon red if app is NOT connected to Meteor', function(){
         
-        spyOn( scope.self, 'autorun').and.callThrough();
+        spyOn( scope.vm, 'autorun').and.callThrough();
         mock_status = 'disconnected';
         
         initTemplate();

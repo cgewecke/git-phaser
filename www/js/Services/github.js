@@ -253,7 +253,6 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
             $cordovaOauth.github(id, secret, perm, uri).then( function(result) {
 
                 token = result.split('&')[0].split('=')[1];
-                console.log('Token: ' + token);
                 self.setAuthToken(token);
 
                 logger(where, authToken);

@@ -19,7 +19,7 @@ function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPushV5){
         var deferred = $q.defer();
 
         // THIS WHOLE THING IS DISABLED PENDING FIX IN ISSUE #31 (cf. 'true')
-        if($rootScope.DEV || !Meteor.user() || true ){ 
+        if($rootScope.DEV || !Meteor.user()){ 
             deferred.resolve(); 
             return deferred.promise 
         };

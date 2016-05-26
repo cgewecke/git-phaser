@@ -12,14 +12,14 @@ describe('Service: Notify', function () {
         $urlRouterProvider.deferIntercept();
     }));
 
-    var $scope, $q, $cordovaPush, $window,
+    var $scope, $q, $cordovaPushV5, $window,
         Notify, GeoLocate, GitHub, defer, user;
 
-    beforeEach(inject(function(_$rootScope_, _$q_, _$cordovaPush_, _$window_, 
+    beforeEach(inject(function(_$rootScope_, _$q_, _$cordovaPushV5_, _$window_, 
     						   _Mock_, _Notify_, _GeoLocate_, _GitHub_ ){
         
         $scope = _$rootScope_;
-        $cordovaPush = _$cordovaPush_;
+        $cordovaPushV5 = _$cordovaPushV5_;
         $q = _$q_;
         $window = _$window_;
     
@@ -33,7 +33,7 @@ describe('Service: Notify', function () {
         defer = $q.defer();
 
         //$cordovaPush mocks
-        $cordovaPush.register = function(config){return defer.promise };
+        $cordovaPushV5.register = function(config){return defer.promise };
         
         // GitHub mocks
         GitHub.me = {
@@ -51,12 +51,12 @@ describe('Service: Notify', function () {
 
         	// Setup
         	Meteor.user = function(){ return false };
-            spyOn($cordovaPush, 'register').and.callThrough();
+            spyOn($cordovaPushV5, 'register').and.callThrough();
 
             // Test
             Notify.initialize();
             $scope.$digest();
-            expect($cordovaPush.register).not.toHaveBeenCalled();
+            expect($cordovaPushV5.register).not.toHaveBeenCalled();
 
         });
 
@@ -65,12 +65,12 @@ describe('Service: Notify', function () {
         	// Setup
         	user.profile.pushToken = '12345';
         	$window.localStorage['pl_newInstall'] = 'false';
-        	spyOn($cordovaPush, 'register').and.callThrough();
+        	spyOn($cordovaPushV5, 'register').and.callThrough();
 
         	// Test
         	Notify.initialize();
         	$scope.$digest();
-        	expect($cordovaPush.register).not.toHaveBeenCalled();
+        	expect($cordovaPushV5.register).not.toHaveBeenCalled();
 
         	// Clean up
         	window.localStorage.removeItem('pl_newInstall');
@@ -81,12 +81,12 @@ describe('Service: Notify', function () {
         	
         	// Setup
         	user.profile.pushToken = null;
-        	spyOn($cordovaPush, 'register').and.callThrough();
+        	spyOn($cordovaPushV5, 'register').and.callThrough();
 
         	// Test
         	Notify.initialize();
         	$scope.$digest();
-        	expect($cordovaPush.register).toHaveBeenCalled();
+        	expect($cordovaPushV5.register).toHaveBeenCalled();
 
         });
 
@@ -94,12 +94,12 @@ describe('Service: Notify', function () {
         	// Setup
         	user.profile.pushToken = '12345';
         	$window.localStorage['pl_newInstall'] = 'true';
-        	spyOn($cordovaPush, 'register').and.callThrough();
+        	spyOn($cordovaPushV5, 'register').and.callThrough();
 
         	// Test
         	Notify.initialize();
         	$scope.$digest();
-        	expect($cordovaPush.register).toHaveBeenCalled();
+        	expect($cordovaPushV5.register).toHaveBeenCalled();
 
         	// Clean up
         	window.localStorage.removeItem('pl_newInstall');
@@ -121,7 +121,7 @@ describe('Service: Notify', function () {
         	user.profile.pushToken = null;
         	Meteor.users = { update: function(){}};
         	
-        	spyOn($cordovaPush, 'register').and.callThrough();
+        	spyOn($cordovaPushV5, 'register').and.callThrough();
         	spyOn(Meteor.users, 'update');
 
         	Notify.initialize();
@@ -138,7 +138,7 @@ describe('Service: Notify', function () {
         	// Successful register
         	defer.resolve('xyz');
         	user.profile.pushToken = null;
-        	spyOn($cordovaPush, 'register').and.callThrough();
+        	spyOn($cordovaPushV5, 'register').and.callThrough();
 
         	result = Notify.initialize();
         	$scope.$digest();
