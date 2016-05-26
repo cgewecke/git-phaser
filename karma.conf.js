@@ -77,8 +77,8 @@ module.exports = function(config) {
       },
 
       Chrome_travis_ci: {
-            base: 'Chrome',
-            flags: ['--no-sandbox']
+        base: 'Chrome',
+        flags: ['--no-sandbox']
       }
     },
 
@@ -116,7 +116,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_DISABLE,
+    logLevel: config.LOG_INFO,
 
 
     // enable / disable watching file and executing tests whenever any file changes
