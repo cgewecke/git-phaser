@@ -1,6 +1,8 @@
 # git-phaser
 -------------
 
+[![Build Status](https://travis-ci.org/cgewecke/git-phaser.svg?branch=master)](https://travis-ci.org/cgewecke/git-phaser)
+
 A Github-based proximity app for iOS that lets you browse the profiles and repos of people near you. Written in Ionic with a Meteor back end, using iBeacons for proximity detection.
 
 ## Tests: 
@@ -20,6 +22,8 @@ To run all:
 ```
 $ gulp test
 ```
+
+WARNING: Tests will fail if the $rootscope.DEV is set in config/platform.js
 
 ## Launch Meteor
 ----------------
