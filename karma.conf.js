@@ -38,14 +38,14 @@ module.exports = function(config) {
         
         // Misc app
         'www/js/*.js',
-        'www/js/mongo/*.js',
-        'www/js/filters/*.js',
+        'www/js/Mongo/*.js',
+        'www/js/Filters/*.js',
 
         // Core: 
-        'www/js/config/*.js',
-        'www/js/services/*.js',
-        'www/js/controllers/*.js',
-        'www/js/directives/*.js',        
+        'www/js/Config/*.js',
+        'www/js/Services/*.js',
+        'www/js/Controllers/*.js',
+        'www/js/Directives/*.js',        
 
         // Templates
         'www/templates/*.html',
@@ -54,10 +54,9 @@ module.exports = function(config) {
         'tests/mocks/*.js',
         'tests/util/*.js',
 
-        'www/js/config/specs/*.js',
-        'www/js/services/specs/*.js',
-        'www/js/controllers/specs/*.js',
-        'www/js/directives/specs/*.js'
+        'www/js/Services/specs/*.js',
+        'www/js/Controllers/specs/*.js',
+        'www/js/Directives/specs/*.js'
 
     ],
 
