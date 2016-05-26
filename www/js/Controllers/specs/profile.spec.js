@@ -69,9 +69,15 @@ describe('ProfileCtrl', function(){
     
         it('should initialize with the GitHub user', function(){
             
-            GitHub.me = { login: 'alberto' }, GitHub.repos = 2, GitHub.events = 3;
+            GitHub.me = { login: 'alberto' }, GitHub.repos = 2, GitHub.events = 3; 
             account = false;
-            ctrl = $controller('ProfileCtrl', {$scope, $stateParams, $state, GitHub, account: account});
+            ctrl = $controller('ProfileCtrl', {
+                $scope: $scope, 
+                $stateParams: $stateParams, 
+                $state: $state, 
+                GitHub: GitHub, 
+                account: account
+            });
 
             expect(ctrl.user).toEqual(GitHub.me);
             expect(ctrl.repos).toEqual(GitHub.repos);

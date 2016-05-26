@@ -28,7 +28,7 @@ describe('NotificationsProfileCtrl', function(){
         $stateParams.sender = 'yyy';
         Meteor.user = MeteorMock.user;
 
-        var vm = $controller('NotificationsProfileCtrl', {$scope, $stateParams});
+        var vm = $controller('NotificationsProfileCtrl', {$scope: $scope, $stateParams: $stateParams});
 
         expect(vm.user).toEqual(user.profile.notifications[0].profile);
         expect(vm.user.name).toEqual(vm.user.firstName + ' ' + vm.user.lastName);

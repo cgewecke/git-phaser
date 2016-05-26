@@ -31,13 +31,18 @@ describe('LoadingCtrl', function(){
         $httpBackend = _$httpBackend_;
 
         Meteor.status = function() { return {status: mock_status } };
-        $ionicPlatform.ready = function(fn){ (fn)();}
+        $ionicPlatform.ready = function(fn){ (fn)();};
 
         spyOn($ionicPlatform, 'ready').and.callThrough();
         spyOn($state, 'go');
         spyOn(ionicToast, 'show');
 
-        var vm = $controller('LoadingCtrl', {$ionicPlatform, $state, $timeout, ionicToast });
+        var vm = $controller('LoadingCtrl', {
+            $ionicPlatform: $ionicPlatform, 
+            $state: $state, 
+            $timeout: $timeout, 
+            ionicToast: ionicToast 
+        });
         $scope.$digest();
 
         
@@ -65,7 +70,6 @@ describe('LoadingCtrl', function(){
         $timeout.flush();
         expect(ionicToast.show).not.toHaveBeenCalled();
         expect($state.go).not.toHaveBeenCalledWith('login');
-    })
+    });
     
-
 });
