@@ -1,3 +1,5 @@
+var nu_debug;
+
 angular.module('gitphaser')
   .directive("nearbyUser", nearbyUser);
 
@@ -22,24 +24,32 @@ function nearbyUser(GitHub){
             '</ion-item>', 
 
         link: function(scope, elem, attrs){
-
-            var where = "<nearby-user>: ";
-            var model = scope.$eval(attrs.model);
+            
+            var where = "<nearby-user>: ";            
+            scope.model = scope.$eval(attrs.model);
             scope.user = null;
 
-            if (model && model.receiver_name ){
+            // Initialize
+            if (scope.model && scope.model.receiver_name ){
 
-                scope.proximity = model.proximity;
+                scope.proximity = scope.model.proximity;
                 
-                GitHub.getAccount(model.receiver_name).then( 
+                GitHub.getAccount(scope.model.receiver_name).then( 
                     
                     function(account){ scope.user = account },
                     function(error){ logger(where, error) }
                 );
             } else {
                 logger(where, 'no model value');
-            }
-
+            } 
+        
+            // Update Proximity
+            scope.$watch('model.proximity', function(newVal, oldVal){
+                if (newVal)
+                    scope.proximity = newVal;
+            });
+            
         }
+            
     }
 }

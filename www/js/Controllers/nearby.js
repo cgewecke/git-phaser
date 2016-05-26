@@ -29,12 +29,10 @@ function NearbyCtrl ($scope, $reactive, Notify, GeoLocate ){
 
   self.helpers({
       connections: function () {
-        if (Meteor.userId())
-         return Connections.find( {transmitter: Meteor.userId() } );
+        if (Meteor.userId()){
+          return Connections.find( {transmitter: Meteor.userId() } );
+        }
       }
   });
-
-  nc_debug = Connections;
-  
 
 };

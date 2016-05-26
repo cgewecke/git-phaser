@@ -7,7 +7,7 @@ angular
 function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
 
   // Disables write of warnings to console
-  $angularMeteorSettings.suppressWarnings = true; 
+  //$angularMeteorSettings.suppressWarnings = true; 
 
   $stateProvider
 

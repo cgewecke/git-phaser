@@ -190,6 +190,7 @@
 
 .authenticate-container.spacer {  -webkit-flex: 1; }
 
+
 .phaser{
     position: absolute;
     left: 0 !important;
@@ -201,6 +202,7 @@
 }
 
 .phaser-wrapper{ position: relative;}
+.phaser-col{ min-height: 256px; }
 
 button.login{ 
     transform: translateY(50%);

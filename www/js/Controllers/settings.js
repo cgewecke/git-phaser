@@ -57,6 +57,17 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, ionicToast) 
     Meteor.call('newConnection', pkg, function(err, connections){})
   };
 
+  this.testChangeProximity = function(){
+    var pkg = {
+      transmitter: Meteor.user().emails[0].address,
+      receiver: Meteor.user().emails[0].address,
+      proximity: Math.random().toString()
+    }
+
+    Connections.update({transmitter: pkg.transmitter}, {$set: {proximity: pkg.proximity}});
+
+  };
+
   // Test Notify.sawProfile method by notifying self
   this.testNotify = function(){
     Notify.sawProfile(Meteor.userId());
