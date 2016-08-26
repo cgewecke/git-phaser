@@ -1,14 +1,13 @@
-angular.module('gitphaser') 
-  .controller('NearbyCtrl', NearbyCtrl);  
+angular.module('gitphaser').controller('NearbyCtrl', NearbyCtrl);  
 
-// @controller NearbyCtrl
-// @params: $scope, $reactive
-// @route: /tab/nearby
-//
-// Exposes Meteor mongo 'connections' to DOM, filtered against current user as 'transmitter'
-// Subscription to 'connections' is handled in the route resolve. Also
-// exposes GeoLocate service (for the maps view) and Notify service (to trigger notification when user
-// clicks on list item to see profile)
+/**
+ * Exposes Meteor mongo 'connections' to DOM, filtered against current user as 'transmitter'
+ * Subscription to 'connections' is handled in the route resolve. Also
+ * exposes GeoLocate service (for the maps view) and Notify service (to trigger notification when user
+ * clicks on list item to see profile)
+ * @controller NearbyCtrl
+ * @route: /tab/nearby
+ */ 
 function NearbyCtrl ($scope, $reactive, Notify, GeoLocate ){
   $reactive(this).attach($scope);
   
