@@ -1,5 +1,3 @@
-var nc_debug;
-
 angular.module('gitphaser') 
   .controller('NearbyCtrl', NearbyCtrl);  
 
