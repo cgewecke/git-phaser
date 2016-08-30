@@ -8,6 +8,7 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 var karma = require('karma').server;
 var gulpDocs = require('gulp-ngdocs');
+var connect = require('gulp-connect');
 
 var paths = {
   sass: ['./scss/**/*.scss']
@@ -53,9 +54,39 @@ gulp.task('git-check', function(done) {
 });
 
 gulp.task('ngdocs', [], function () {
+
+  var options = {
+    scripts: [
+      "lib/ionic/js/ionic.bundle.js",
+      "lib/moment/moment.js",
+      "lib/meteor-client-side/meteor-runtime-config.js",
+      "lib/meteor-client-side/dist/meteor-client-side.bundle.js",
+      "lib/accounts-base-client-side/dist/accounts-base-client-side.bundle.js",
+      "lib/accounts-password-client-side/dist/accounts-password-client-side.bundle.min.js",
+      "lib/angular-meteor/dist/angular-meteor.bundle.js",
+      "lib/angular-meteor/dist/angular-meteor-auth.bundle.js",
+      "lib/github/github.js",
+      "lib/angular-github-adapter/angular-github-adapter.js",
+      "lib/ngCordova/dist/ng-cordova.js",
+      "lib/ng-cordova-oauth/dist/ng-cordova-oauth.js",
+      "lib/ionic-toast/dist/ionic-toast.bundle.min.js",
+      "lib/leaflet/leaflet.js",
+      "lib/leaflet-pulse-icon/src/L.Icon.Pulse.js"
+    ]
+  };
   return gulp.src('www/js/{,*/}*.js')
-    .pipe(gulpDocs.process())
+    .pipe(gulpDocs.process(options))
     .pipe(gulp.dest('./docs'));
+});
+
+gulp.task('connect_ngdocs', function() {
+var connect = require('gulp-connect');
+  connect.server({
+    root: 'docs',
+    livereload: false,
+    fallback: 'docs/index.html',
+    port: 8083
+  });
 });
 
 gulp.task('test', function(done) {

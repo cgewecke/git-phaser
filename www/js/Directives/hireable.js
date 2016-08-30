@@ -2,7 +2,7 @@ angular.module('gitphaser').directive("hireable", Hireable);
 
 /**
  * @ngdoc directive
- * @name  hireable
+ * @name  gitphaser.directive:hireable
  * @module  gitphaser
  *
  * @description 

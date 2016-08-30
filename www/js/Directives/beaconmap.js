@@ -2,7 +2,7 @@ angular.module('gitphaser').directive("beaconMap", BeaconMap);
 
 /**
  * @ngdoc directive
- * @name  beaconMap
+ * @name  gitphaser.directive:beaconMap
  * @module  gitphaser
  *
  * @description 

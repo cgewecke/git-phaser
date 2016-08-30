@@ -2,7 +2,7 @@ angular.module('gitphaser').directive("serverStatus", ServerStatus);
 
 /**
  * @ngdoc directive
- * @name  serverStatus
+ * @name  gitphaser.directive:serverStatus
  * @module  gitphaser
  *
  * @description 

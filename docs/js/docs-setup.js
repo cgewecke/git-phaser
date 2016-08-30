@@ -5,7 +5,7 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
-      "id": "beaconMap",
+      "id": "gitphaser.directive:beaconMap",
       "shortName": "beaconMap",
       "type": "directive",
       "moduleName": "gitphaser",
@@ -14,16 +14,7 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "Beacons",
-      "shortName": "Beacons",
-      "type": "service",
-      "moduleName": "Beacons",
-      "shortDescription": "Handlers for initializing, transmitting and receiving of beacon signals",
-      "keywords": "api beacon beacons handlers initializing receiving service signals transmitting"
-    },
-    {
-      "section": "api",
-      "id": "contact",
+      "id": "gitphaser.directive:contact",
       "shortName": "contact",
       "type": "directive",
       "moduleName": "gitphaser",
@@ -32,7 +23,7 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "contributions",
+      "id": "gitphaser.directive:contributions",
       "shortName": "contributions",
       "type": "directive",
       "moduleName": "gitphaser",
@@ -41,7 +32,7 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "hireable",
+      "id": "gitphaser.directive:hireable",
       "shortName": "hireable",
       "type": "directive",
       "moduleName": "gitphaser",
@@ -50,7 +41,7 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "nearbyUser",
+      "id": "gitphaser.directive:nearbyUser",
       "shortName": "nearbyUser",
       "type": "directive",
       "moduleName": "gitphaser",
@@ -59,7 +50,7 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "serverStatus",
+      "id": "gitphaser.directive:serverStatus",
       "shortName": "serverStatus",
       "type": "directive",
       "moduleName": "gitphaser",
@@ -68,12 +59,21 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "simuTab",
+      "id": "gitphaser.directive:simuTab",
       "shortName": "simuTab",
       "type": "directive",
       "moduleName": "gitphaser",
       "shortDescription": "&lt;simu-tab&gt; Nav bar that is decoupled from the main tab stack for &#39;others&#39; profiles,",
       "keywords": "api bar decoupled directive gitphaser main nav profiles simutab stack tab tabs"
+    },
+    {
+      "section": "api",
+      "id": "gitphaser.service:Beacons",
+      "shortName": "Beacons",
+      "type": "service",
+      "moduleName": "gitphaser",
+      "shortDescription": "Handlers for initializing, transmitting and receiving of beacon signals",
+      "keywords": "api beacon beacons gitphaser handlers initializing receiving service signals transmitting"
     }
   ],
   "apis": {
@@ -85,7 +85,22 @@ NG_DOCS={
     "scripts": [
       "js/angular.min.js",
       "js/angular-animate.min.js",
-      "js/marked.js"
+      "js/marked.js",
+      "js/lib/ionic/js/ionic.bundle.js",
+      "js/lib/moment/moment.js",
+      "js/lib/meteor-client-side/meteor-runtime-config.js",
+      "js/lib/meteor-client-side/dist/meteor-client-side.bundle.js",
+      "js/lib/accounts-base-client-side/dist/accounts-base-client-side.bundle.js",
+      "js/lib/accounts-password-client-side/dist/accounts-password-client-side.bundle.min.js",
+      "js/lib/angular-meteor/dist/angular-meteor.bundle.js",
+      "js/lib/angular-meteor/dist/angular-meteor-auth.bundle.js",
+      "js/lib/github/github.js",
+      "js/lib/angular-github-adapter/angular-github-adapter.js",
+      "js/lib/ngCordova/dist/ng-cordova.js",
+      "js/lib/ng-cordova-oauth/dist/ng-cordova-oauth.js",
+      "js/lib/ionic-toast/dist/ionic-toast.bundle.min.js",
+      "js/lib/leaflet/leaflet.js",
+      "js/lib/leaflet-pulse-icon/src/L.Icon.Pulse.js"
     ],
     "styles": [],
     "title": "API Documentation",
@@ -106,6 +121,21 @@ NG_DOCS={
   "scripts": [
     "js/angular.min.js",
     "js/angular-animate.min.js",
-    "js/marked.js"
+    "js/marked.js",
+    "js/lib/ionic/js/ionic.bundle.js",
+    "js/lib/moment/moment.js",
+    "js/lib/meteor-client-side/meteor-runtime-config.js",
+    "js/lib/meteor-client-side/dist/meteor-client-side.bundle.js",
+    "js/lib/accounts-base-client-side/dist/accounts-base-client-side.bundle.js",
+    "js/lib/accounts-password-client-side/dist/accounts-password-client-side.bundle.min.js",
+    "js/lib/angular-meteor/dist/angular-meteor.bundle.js",
+    "js/lib/angular-meteor/dist/angular-meteor-auth.bundle.js",
+    "js/lib/github/github.js",
+    "js/lib/angular-github-adapter/angular-github-adapter.js",
+    "js/lib/ngCordova/dist/ng-cordova.js",
+    "js/lib/ng-cordova-oauth/dist/ng-cordova-oauth.js",
+    "js/lib/ionic-toast/dist/ionic-toast.bundle.min.js",
+    "js/lib/leaflet/leaflet.js",
+    "js/lib/leaflet-pulse-icon/src/L.Icon.Pulse.js"
   ]
 };

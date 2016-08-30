@@ -2,7 +2,7 @@ angular.module('gitphaser').directive("contact", Contact);
 
 /**
  * @ngdoc directive
- * @name  contact
+ * @name  gitphaser.directive:contact
  * @module  gitphaser
  *
  * @description 

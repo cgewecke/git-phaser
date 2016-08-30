@@ -2,7 +2,7 @@ angular.module('gitphaser').directive("nearbyUser", nearbyUser);
 
 /**
  * @ngdoc directive
- * @name  nearbyUser
+ * @name  gitphaser.directive:nearbyUser
  * @module  gitphaser
  *
  * @description 

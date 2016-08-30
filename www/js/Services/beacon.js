@@ -2,7 +2,8 @@ angular.module('gitphaser').service("Beacons", Beacons);
 
 /**
  * @ngdoc service
- * @name  Beacons
+ * @module  gitphaser
+ * @name  gitphaser.service:Beacons
  * @description  Handlers for initializing, transmitting and receiving of beacon signals
  */
 function Beacons($rootScope, $q, $cordovaBeacon){
@@ -23,7 +24,6 @@ function Beacons($rootScope, $q, $cordovaBeacon){
         "05DEE885-E723-438F-B733-409E4DBFA694", //10
     ];
 
-
     self.regions = [];
     
     // ------------------------  Public ---------------------------------
@@ -31,7 +31,8 @@ function Beacons($rootScope, $q, $cordovaBeacon){
     self.initialized = false;
 
     /**
-     * @name  getUUID
+     * @methodOf Beacons
+     * @name  gitphaser.Beacons:getUUID
      * @description Exposes the uuid array. In LoginCtrl, the modulus of the Beacon minor and the 
      *              uuid array length is used to select a uuid. This allows them to be distributed evenly 
      *              across acounts and minimizes the likelyhood that a duplicate uuid will be present
@@ -43,7 +44,8 @@ function Beacons($rootScope, $q, $cordovaBeacon){
     };
 
     /**
-     * @name initialize
+     * @methodOf Beacons
+     * @name gitphaser.Beacons:initialize
      * @description Sets up beaconing in app. This method resolves on the Nearby tab, so it may
      *              have already run as user navigates around. Rejects if user does not authorize.
      * @returns {promise} Rejects if user does not authorize background beacon use

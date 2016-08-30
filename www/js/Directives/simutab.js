@@ -2,7 +2,7 @@ angular.module('gitphaser').directive("simuTab", simuTab);
 
 /**
  * @ngdoc directive
- * @name  simuTab
+ * @name  gitphaser.directive:simuTab
  * @module  gitphaser
  *
  * @description 
