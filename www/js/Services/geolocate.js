@@ -1,12 +1,11 @@
-var gl_debug;
+angular.module('gitphaser').service("GeoLocate", GeoLocate)
 
-angular.module('gitphaser')
-  .service("GeoLocate", GeoLocate)
- 
-// @service: GeoLocate:  - a service and directive 
-// for Geolocation, reverse geocoding, and map display
-// 
-// @params: $rootScope, $q, $cordovaGeolocation
+/**
+ * @ngdoc service
+ * @module  gitphaser
+ * @name  gitphaser.service:GeoLocate
+ * @description  Provides geolocation, reverse geocoding, and map display
+ */
 function GeoLocate($rootScope, $q, $cordovaGeolocation){
 
     var icon, map;
@@ -18,19 +17,59 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
     // Mapbox API
     var token = secure.mapbox.token;
     var id = secure.mapbox.id;
-    
-    // Public 
+
+    //----------------------------------------------- Properties -------------------------------------------
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GeoLocate
+     * @name  gitphaser.service:GeoLocate.lat
+     * @description User's current latitude (Float)
+     */
     self.lat = null;
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GeoLocate
+     * @name  gitphaser.service:GeoLocate.lng
+     * @description User's current longitude (Float)
+     */
     self.lng = null;
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GeoLocate
+     * @name  gitphaser.service:GeoLocate.address
+     * @description User's current location expressed as address (String)
+     */
     self.address = null;
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GeoLocate
+     * @name  gitphaser.service:GeoLocate.enabled
+     * @description Service state, determined by user authorizing geolocation on device (Boolean)
+     */
     self.enabled = false;
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GeoLocate
+     * @name  gitphaser.service:GeoLocate.map
+     * @description Leaflet map object
+     */
     self.map = null;
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GeoLocate
+     * @name  gitphaser.service:GeoLocate.map
+     * @description Leaflet marker object
+     */
     self.marker = null;
 
-    // @function: setup
-    //
-    // Runs in the nearby route resolve block to trigger permissions, detect whether
-    // geolocation is enabled.
+    //----------------------------------------------- Methods -------------------------------------------
+    /**
+     * @ngdoc service
+     * @methodOf gitphaser.service:GeoLocate
+     * @name  gitphaser.service:GeoLocate.isEnabled
+     * @description Runs in the `nearby` route resolve block to trigger permissions, detect whether
+     *              geolocation is enabled.
+     */
     self.isEnabled = function(){
         var where = 'GeoLocate:isEnabled'
         var deferred = $q.defer();
@@ -55,8 +94,12 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
         return deferred.promise;
     };
 
-    // @function: loadMap
-    // Loads a Leaflet map with MapBox titles using devices current coordinate
+    /**
+     * @ngdoc service
+     * @methodOf gitphaser.service:GeoLocate
+     * @name  gitphaser.service:GeoLocate.loadMap
+     * @description Loads a Leaflet map with MapBox titles using devices current coordinate
+     */
     self.loadMap = function(){
 
         self.getAddress().then(function(){
@@ -76,8 +119,12 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
       });
     };
 
-    // @function: updateMap
-    // Resets map view and marker to current device coordinates
+    /**
+     * @ngdoc service
+     * @methodOf gitphaser.service:GeoLocate
+     * @name  gitphaser.service:GeoLocate.updateMap
+     * @description Resets map view and marker to current device coordinates
+     */
     self.updateMap = function(){
 
         self.getAddress().then(function(){
@@ -86,12 +133,15 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
         });
     }
 
-    // @function: getAddress
-    // @return: promise which resolves either an address string or ''.
-    //
-    // Gets device coordinates and sets public vars 'lat', 'lng'.
-    // Reverse geocodes coordinates and sets public var 'address'.
-    // Error states set lat, long and address to 0,0,'' respectively.
+    /**
+     * @ngdoc service
+     * @methodOf gitphaser.service:GeoLocate
+     * @name  gitphaser.service:GeoLocate.getAddress
+     * @description Gets device coordinates and sets public vars 'lat', 'lng'.
+     *              Reverse geocodes coordinates and sets public var 'address'.
+     *              Error states set lat, long and address to 0,0,'' respectively.
+     * @return {promise} Resolves either an address string or ''.                     
+     */
     self.getAddress = function(){
 
         var where = "GeoLocate:getAddress";

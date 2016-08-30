@@ -32,7 +32,7 @@ function Beacons($rootScope, $q, $cordovaBeacon){
 
     /**
      * @methodOf Beacons
-     * @name  gitphaser.Beacons:getUUID
+     * @name  gitphaser.Beacons#getUUID
      * @description Exposes the uuid array. In LoginCtrl, the modulus of the Beacon minor and the 
      *              uuid array length is used to select a uuid. This allows them to be distributed evenly 
      *              across acounts and minimizes the likelyhood that a duplicate uuid will be present
@@ -45,7 +45,7 @@ function Beacons($rootScope, $q, $cordovaBeacon){
 
     /**
      * @methodOf Beacons
-     * @name gitphaser.Beacons:initialize
+     * @name gitphaser.Beacons#initialize
      * @description Sets up beaconing in app. This method resolves on the Nearby tab, so it may
      *              have already run as user navigates around. Rejects if user does not authorize.
      * @returns {promise} Rejects if user does not authorize background beacon use

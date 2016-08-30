@@ -1,0 +1,59 @@
+<h1><code ng:non-bindable="">GeoLocate</code>
+<div><span class="hint">service in module <code ng:non-bindable="">gitphaser</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="gitphaser-service-page gitphaser-service-geolocate-page"><p>Provides geolocation, reverse geocoding, and map display</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_getaddress">getAddress()</h3>
+<div class="getaddress"><div class="gitphaser-service-page gitphaser-service-geolocate-getaddress-page"><p>Gets device coordinates and sets public vars &#39;lat&#39;, &#39;lng&#39;.
+Reverse geocodes coordinates and sets public var &#39;address&#39;.
+Error states set lat, long and address to 0,0,&#39;&#39; respectively.</p>
+</div><h5 id="methods_getaddress_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="gitphaser-service-page gitphaser-service-geolocate-getaddress-page"><p>Resolves either an address string or &#39;&#39;.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_isenabled">isEnabled()</h3>
+<div class="isenabled"><div class="gitphaser-service-page gitphaser-service-geolocate-isenabled-page"><p>Runs in the <code>nearby</code> route resolve block to trigger permissions, detect whether
+geolocation is enabled.</p>
+</div></div>
+</li>
+<li><h3 id="methods_loadmap">loadMap()</h3>
+<div class="loadmap"><div class="gitphaser-service-page gitphaser-service-geolocate-loadmap-page"><p>Loads a Leaflet map with MapBox titles using devices current coordinate</p>
+</div></div>
+</li>
+<li><h3 id="methods_updatemap">updateMap()</h3>
+<div class="updatemap"><div class="gitphaser-service-page gitphaser-service-geolocate-updatemap-page"><p>Resets map view and marker to current device coordinates</p>
+</div></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_address">address</h3>
+<div class="address"><div class="gitphaser-service-page gitphaser-service-geolocate-address-page"><p>User&#39;s current location expressed as address (String)</p>
+</div></div>
+</li>
+<li><h3 id="properties_enabled">enabled</h3>
+<div class="enabled"><div class="gitphaser-service-page gitphaser-service-geolocate-enabled-page"><p>Service state, determined by user authorizing geolocation on device (Boolean)</p>
+</div></div>
+</li>
+<li><h3 id="properties_lat">lat</h3>
+<div class="lat"><div class="gitphaser-service-page gitphaser-service-geolocate-lat-page"><p>User&#39;s current latitude (Float)</p>
+</div></div>
+</li>
+<li><h3 id="properties_lng">lng</h3>
+<div class="lng"><div class="gitphaser-service-page gitphaser-service-geolocate-lng-page"><p>User&#39;s current longitude (Float)</p>
+</div></div>
+</li>
+<li><h3 id="properties_map">map</h3>
+<div class="map"><div class="gitphaser-service-page gitphaser-service-geolocate-map-page"><p>Leaflet map object</p>
+</div></div>
+</li>
+<li><h3 id="properties_map">map</h3>
+<div class="map"><div class="gitphaser-service-page gitphaser-service-geolocate-map-page"><p>Leaflet marker object</p>
+</div></div>
+</li>
+</ul>
+</div>
+</div>

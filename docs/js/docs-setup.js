@@ -74,6 +74,15 @@ NG_DOCS={
       "moduleName": "gitphaser",
       "shortDescription": "Handlers for initializing, transmitting and receiving of beacon signals",
       "keywords": "api beacon beacons gitphaser handlers initializing receiving service signals transmitting"
+    },
+    {
+      "section": "api",
+      "id": "gitphaser.service:GeoLocate",
+      "shortName": "GeoLocate",
+      "type": "service",
+      "moduleName": "gitphaser",
+      "shortDescription": "Provides geolocation, reverse geocoding, and map display",
+      "keywords": "address api authorizing block coordinate coordinates current detect determined device devices display enabled error expressed geocodes geocoding geolocate geolocation getaddress gitphaser isenabled lat latitude leaflet lng loadmap loads location long longitude map mapbox marker nearby object permissions public resets resolve resolves reverse route runs service set sets string titles trigger updatemap user var vars view"
     }
   ],
   "apis": {
