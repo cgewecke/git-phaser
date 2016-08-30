@@ -14,6 +14,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "Beacons",
+      "shortName": "Beacons",
+      "type": "service",
+      "moduleName": "Beacons",
+      "shortDescription": "Handlers for initializing, transmitting and receiving of beacon signals",
+      "keywords": "api beacon beacons handlers initializing receiving service signals transmitting"
+    },
+    {
+      "section": "api",
       "id": "contact",
       "shortName": "contact",
       "type": "directive",

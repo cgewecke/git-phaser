@@ -1,9 +1,10 @@
-// @service: Beacons
-// Handlers for initializing, transmitting and receiving of beacon signals
-angular.module('gitphaser')
-  .service("Beacons", Beacons);
+angular.module('gitphaser').service("Beacons", Beacons);
 
-
+/**
+ * @ngdoc service
+ * @name  Beacons
+ * @description  Handlers for initializing, transmitting and receiving of beacon signals
+ */
 function Beacons($rootScope, $q, $cordovaBeacon){
 
     var self = this;
@@ -28,19 +29,25 @@ function Beacons($rootScope, $q, $cordovaBeacon){
     // ------------------------  Public ---------------------------------
     self.quantity = uuids.length;
     self.initialized = false;
-    
-    // @function: getUUID 
-    // Exposes the uuid array. In LoginCtrl, the modulus of the Beacon minor and the 
-    // uuid array side is used to select a uuid. This allows them to be distributed evenly 
-    // across acounts and minimizes the likelyhood that a duplicate uuid will be present
-    // in any group of phones. See beacon-testing/issues/15 for details. 
+
+    /**
+     * @name  getUUID
+     * @description Exposes the uuid array. In LoginCtrl, the modulus of the Beacon minor and the 
+     *              uuid array length is used to select a uuid. This allows them to be distributed evenly 
+     *              across acounts and minimizes the likelyhood that a duplicate uuid will be present
+     *              in any group of phones. See beacon-testing/issues/15 for details. 
+     * @param {number} index
+     */
     self.getUUID = function(index){
         return uuids[index];
     };
 
-    // @function initialize() 
-    // Sets up beaconing in app. This method resolves on the Nearby tab, so it may
-    // have already run as user navigates around. Rejects if user does not authorize.
+    /**
+     * @name initialize
+     * @description Sets up beaconing in app. This method resolves on the Nearby tab, so it may
+     *              have already run as user navigates around. Rejects if user does not authorize.
+     * @returns {promise} Rejects if user does not authorize background beacon use
+     */
     self.initialize = function(){
 
         var where = "Beacons:initialize";
@@ -68,9 +75,6 @@ function Beacons($rootScope, $q, $cordovaBeacon){
         });
 
         // Register handlers
-        $rootScope.$on("$cordovaBeacon:didEnterRegion", function(event, result){
-            onEntry(result);
-        });
         $rootScope.$on("$cordovaBeacon:didExitRegion", function(event, result){
             onExit(result);
         });
@@ -107,24 +111,21 @@ function Beacons($rootScope, $q, $cordovaBeacon){
     };
 
     // ------------------------  Private ---------------------------------
-    // setUpRegions(): initialize an array beaconRegion obj of all our possible uuid vals
+    /**
+     * Initialize an array beaconRegion obj to all our possible uuid vals
+     */
     function setUpRegions(){
         for (var i = 0; i < uuids.length; i++){
             self.regions.push( $cordovaBeacon.createBeaconRegion('r_' + i, uuids[i], null, null, true));
         }
     };
     
-    // @function onEntry
-    // Stub. Called when monitoring enters a region. This is not run if waking up from the background, so
-    // basically useless.
-    function onEntry(result){
-    };
-
-    // @function: onExit
-    // @param: result (this only contains uuid, not major/minor)
-    // Called when monitoring exits a region. Pulls app identifier from local storage and
-    // attempts to remove any connections where this app is the receiver and the transmitter
-    // has the uuid specified by 'result'.   
+    /**
+     * Called when monitoring exits a region. Pulls app identifier from local storage and
+     * attempts to remove any connections where this app is the receiver and the transmitter
+     * has the uuid specified by 'result'. 
+     * @param  {Object} result Beacon object (this only contains uuid, not major/minor)
+     */
     function onExit(result){
 
         var transmitter, pkg, beacon;
@@ -142,12 +143,12 @@ function Beacons($rootScope, $q, $cordovaBeacon){
         } else {
             logger(where, 'error: receiver or beacon null');
         }        
-    };
-
-    // @function: onCapture
-    // @param: result (result.beacons is an array)
-    // Called when ranging detects a beacon. Pulls app identifier from local storage and
-    // attempts to create a connection record in the meteor DB.  
+    }; 
+    /**
+     * Called when ranging detects a beacon. Pulls app identifier from local storage and
+     * attempts to create a connection record in the meteor DB. 
+     * @param  {Object} result Ranged beacons object (result.beacons is an array)
+     */
     function onCapture(result){
 
         var beacons = result.beacons
