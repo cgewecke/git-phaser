@@ -1,9 +1,15 @@
-var ss_debug, ss_debugII;
+angular.module('gitphaser').directive("serverStatus", ServerStatus);
 
-angular.module('gitphaser')
-  .directive("serverStatus", ServerStatus);
-
-
+/**
+ * @ngdoc directive
+ * @name  serverStatus
+ * @module  gitphaser
+ *
+ * @description 
+ * `<server-status>` Cloud icon in the upper nav bar whose color (red or green) indicates whether the
+ *     device is connected to the Meteor server. Tapping the icon briefly displays a toast that describes
+ *     connection status.
+ */
 function ServerStatus($reactive, ionicToast){
     return {
         restrict: 'E',   
@@ -16,7 +22,7 @@ function ServerStatus($reactive, ionicToast){
                 '</button>' +
             '</ion-nav-buttons>',
 
-         link: function(scope, elem, attrs){
+        link: function(scope, elem, attrs){
    
             scope.status = false;
             scope.self = this; // Unit testing

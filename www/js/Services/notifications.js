@@ -72,7 +72,6 @@ function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPushV5){
                     timestamp: new Date()
                 }   
             };
-
             Meteor.call('notify', info);
         });     
     };

@@ -1,18 +1,9 @@
 <!--
-  tab.nearby:
-  @controller: NearbyCtrl as vm
-  @state: 'tab.nearby'
-
-  Slidebox where slide '0' is a list view of all connections to this phone, and 
+  tab.nearby:Slidebox where slide '0' is a list view of all connections to this phone, and 
   slide '1' is a map view of users current location, address. There is a footer 
   button bar to toggle between these. Shows scanning cover if there are no connections.
-
-  Unit Testing:
-  #nearby-list-slide
-  #nearby-map-slide
-  #nearby-scanning-cover
-  #nearby-list-button
-  #nearby-map-button
+  @controller: NearbyCtrl as vm
+  @state: 'tab.nearby'
 -->
 <ion-view view-title="Nearby">
   <server-status></server-status> 

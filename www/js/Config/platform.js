@@ -19,7 +19,7 @@ function run ($ionicPlatform, $rootScope, $auth, $state, Beacons ) {
          StatusBar.styleDefault();
       }
 
-      $rootScope.DEV = false;
-      $rootScope.beaconsOFF = false;
+      $rootScope.DEV = true;
+      $rootScope.beaconsOFF = true;
    });
 }

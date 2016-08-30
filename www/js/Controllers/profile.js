@@ -24,7 +24,7 @@ function ProfileCtrl ($scope, $stateParams, $state, GitHub, account){
       self.nav = true;
       self.canFollow = GitHub.canFollow(account.info.login);
 
-  // The user's own profile
+   // The user's own profile
    } else {
 
       self.user = GitHub.me;

@@ -1,14 +1,17 @@
-var cb_debug;
-
-angular.module('gitphaser')
-  .directive("contributions", Contributions);
-
-// @directive: <contributions name='account.info.login'></contributions>
-// @params: name (the value of the login key in an arbitrary github account.info object). 
-//
-// The github contributions graph scraped from the svg resource. This has to be obtained
-// by server proxy. The directive shows a spinner until the svg is received. SVG is embedded
-// in a lateral scroll container that gets moved right-wards the maximum amount on load. 
+angular.module('gitphaser').directive("contributions", Contributions);
+ 
+/**
+ * @ngdoc directive
+ * @name  contributions
+ * @module  gitphaser
+ *
+ * @description 
+ * `<contributions>` A Github contributions graph scraped from an svg resource. This has to be obtained
+ *     by server proxy. The directive shows a spinner until the svg is received. SVG is embedded
+ *     in a lateral scroll container that gets moved right-wards the maximum amount on load. 
+ *      
+ * @param {String=} name The `login` key of an github account.info object
+ */
 function Contributions($http, $window, $ionicScrollDelegate, GitHub){
     return {
         restrict: 'E',   

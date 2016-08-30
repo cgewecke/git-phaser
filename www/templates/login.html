@@ -1,9 +1,8 @@
 <!-- 
-  Login: 
+  Title page with login button that opens a GitHub authentication window in inAppBrowser window,
+  then redirects to 'tab/nearby'. Shows authentication loading cover while the redirect resolves
   @controller: LoginCtrl  
   @state: 'login'
-  Title page with login button that open a LinkedIn authentication window in inAppBrowser window,
-  then redirects to 'tab/nearby'. Shows authentication loading cover while the redirect resolves
 -->
 <ion-view hide-nav-bar="true" hide-back-button="true" can-swipe-back="false"> 
   
@@ -21,10 +20,8 @@
             the repos around you. 
         </p>
     </div> 
-    
 
     <!-- Phaser Image -->
-  
     <div class = "col spacer button-row text-center phaser-col">
       <div class="phaser-wrapper">
         <svg height="256" width="256">
@@ -34,13 +31,8 @@
       </div> 
     </div>
     
-
-    <!-- Spacer -->
-    <!-- <div class="col spacer"></div>  -->
     
-    <!-- Login Button -->    
-    <!-- DEVELOPMENT -->
-    
+    <!-- Login Button: Development (we can't login via inappbrowser in development) -->    
     <div class = "col spacer text-center" ng-show="DEV">
         <button ng-click="devLogin()" 
                 class="button button-large button-outline button-light icon-right ion-social-github login">
@@ -48,15 +40,13 @@
         </button>
     </div>  
     
-    <!-- PRODUCTION -->  
-    
+    <!-- Login Button: Production -->     
     <div class = "col spacer text-center" ng-show="!DEV">
         <button ng-click="login()" 
                 class="button button-large button-outline button-light icon-right ion-social-github login">
           Sign in with GitHub &nbsp
         </button>
-    </div>
-    
+    </div>  
   </section>
 
   <!-- Authenticating cover -->

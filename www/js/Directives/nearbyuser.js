@@ -1,12 +1,14 @@
-var nu_debug;
+angular.module('gitphaser').directive("nearbyUser", nearbyUser);
 
-angular.module('gitphaser')
-  .directive("nearbyUser", nearbyUser);
-
-// @directive: <nearby-user model='connection'></nearby-user>
-// @params: model (the meteor connection object). 
-//
-// Obtains account from GitHub service (it may be cached) to populate template
+/**
+ * @ngdoc directive
+ * @name  nearbyUser
+ * @module  gitphaser
+ *
+ * @description 
+ * `<nearby-user>` Template to represent a proximity detected github user in a list view on
+ *     the nearbyUser route. Obtains account from GitHub service (it may be cached).
+ */
 function nearbyUser(GitHub){
     return {
         restrict: 'E',   
@@ -33,9 +35,7 @@ function nearbyUser(GitHub){
             if (scope.model && scope.model.receiver_name ){
 
                 scope.proximity = scope.model.proximity;
-                
                 GitHub.getAccount(scope.model.receiver_name).then( 
-                    
                     function(account){ scope.user = account },
                     function(error){ logger(where, error) }
                 );
@@ -47,9 +47,7 @@ function nearbyUser(GitHub){
             scope.$watch('model.proximity', function(newVal, oldVal){
                 if (newVal)
                     scope.proximity = newVal;
-            });
-            
+            });     
         }
-            
     }
 }

@@ -6,13 +6,11 @@ var gh_debug, gh_debugII, gh_debugIII;
 angular.module('gitphaser')
   .service("GitHub", GitHub);
 
-
 function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $github){
 
     var self = this;
-
-    // ------------------------------   PRIVATE  ------------------------------------
     
+    // ------------------------------   PRIVATE  ------------------------------------
     // Keys
     var id = secure.github.id;
     var secret = secure.github.secret;
