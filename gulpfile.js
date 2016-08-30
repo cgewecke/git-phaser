@@ -7,6 +7,7 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var karma = require('karma').server;
+var gulpDocs = require('gulp-ngdocs');
 
 var paths = {
   sass: ['./scss/**/*.scss']
@@ -49,6 +50,12 @@ gulp.task('git-check', function(done) {
     process.exit(1);
   }
   done();
+});
+
+gulp.task('ngdocs', [], function () {
+  return gulp.src('www/js/{,*/}*.js')
+    .pipe(gulpDocs.process())
+    .pipe(gulp.dest('./docs'));
 });
 
 gulp.task('test', function(done) {
