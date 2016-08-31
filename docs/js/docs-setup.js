@@ -1,6 +1,6 @@
 NG_DOCS={
   "sections": {
-    "api": "GitPhaser Documentation"
+    "api": "GitPhaser Docs"
   },
   "pages": [
     {
@@ -162,21 +162,21 @@ NG_DOCS={
   },
   "__file": "_FAKE_DEST_/js/docs-setup.js",
   "__options": {
-    "startPage": "/api",
+    "startPage": "/api/gitphaser.service:Beacons",
     "scripts": [
       "js/angular.min.js",
       "js/angular-animate.min.js",
       "js/marked.js"
     ],
     "styles": [],
-    "title": "GitPhaser Documentation",
+    "title": "GitPhaser Docs",
     "html5Mode": true,
     "editExample": true,
     "navTemplate": false,
     "navContent": "",
     "navTemplateData": {},
     "image": "img/phaser.png",
-    "imageLink": "http://my-domain.com",
+    "imageLink": "https://github.com/git-phaser/git-phaser",
     "titleLink": "/api",
     "loadDefaults": {
       "angular": true,
@@ -186,7 +186,7 @@ NG_DOCS={
   },
   "html5Mode": true,
   "editExample": true,
-  "startPage": "/api",
+  "startPage": "/api/gitphaser.service:Beacons",
   "scripts": [
     "js/angular.min.js",
     "js/angular-animate.min.js",
