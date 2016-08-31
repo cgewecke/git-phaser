@@ -323,11 +323,10 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                     self.followers = account.followers;
                     d.resolve(true);
             
-            })})})
-            .catch(function(e){
-                logger(where, e);
-                d.reject(e);
-            });
+            })
+            .catch(function(e){logger(where, e); d.reject(e) }) })
+            .catch(function(e){logger(where, e); d.reject(e) }) })
+            .catch(function(e){logger(where, e); d.reject(e) })
 
         return d.promise
     };
