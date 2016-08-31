@@ -4,6 +4,7 @@ angular.module('gitphaser').directive("beaconMap", BeaconMap);
  * @ngdoc directive
  * @name  gitphaser.directive:beaconMap
  * @module  gitphaser
+ * @restrict E
  *
  * @description 
  * `<beacon-map>` wraps a MapBox map that shows the user's current

@@ -1,18 +1,23 @@
-// @service: Notify
-// Handles push notification registry and does internal notifications management
-angular.module('gitphaser')
-  .service("Notify", Notify);
-
+angular.module('gitphaser').service("Notify", Notify);
+/**
+ * @ngdoc service
+ * @module  gitphaser
+ * @name  gitphaser.service:Notify
+ * @description  Handles push notification registry and does internal notifications management
+ */
 function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPushV5){
     
     var self = this;
     var error;
 
-    // @function: initialize
-    // @return: promise - (failures resolve, print to console)
-    // Registers for push notifications when user is new or there has been a new app install.
-    // It seems like the tokens are somehow linked to that - possibly through the device settings or 
-    // something. Resolves in the nearby route.
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:Notify
+     * @name  gitphaser.service:Notify.initialize
+     * @description Registers for push notifications when user is new or there has been a new app install.
+     *              Resolves in the nearby route.  
+     * @returns {Promise} Success AND Failures resolve. Push notifications are not required.
+     */
     self.initialize = function(){
 
         var where = 'Notify:initialize';
@@ -50,10 +55,13 @@ function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPushV5){
         return deferred.promise;
 
     };
-
-    // @function: sawProfile
-    // @param: userId (a meteor userId)
-    // Geolocates, generates a notification. 
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:Notify
+     * @name  gitphaser.service:Notify.sawProfile
+     * @param {string} userId A meteor userId
+     * @description Geolocates user and generates a notification. 
+     */
     self.sawProfile = function(userId){
         
         if (!GitHub.me) return;
@@ -75,11 +83,14 @@ function Notify($q, $rootScope, GitHub, GeoLocate, $cordovaPushV5){
             Meteor.call('notify', info);
         });     
     };
-
-    // @function: checkedNotifications
-    // Toggles flag server side to disable badge in notifications tab 
+    
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:Notify
+     * @name  gitphaser.service:Notify.checkedNotifications
+     * @description Toggles flag server side to disable badge in notifications tab 
+     */
     self.checkedNotifications = function(){
-
         Meteor.call('resetNotifyCounter', null);
         return true;
     };

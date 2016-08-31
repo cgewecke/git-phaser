@@ -4,7 +4,8 @@ angular.module('gitphaser').directive("contributions", Contributions);
  * @ngdoc directive
  * @name  gitphaser.directive:contributions
  * @module  gitphaser
- *
+ * @restrict E
+ * 
  * @description 
  * `<contributions>` A Github contributions graph scraped from an svg resource. This has to be obtained
  *     by server proxy. The directive shows a spinner until the svg is received. SVG is embedded

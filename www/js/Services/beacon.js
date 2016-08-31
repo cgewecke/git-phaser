@@ -4,7 +4,7 @@ angular.module('gitphaser').service("Beacons", Beacons);
  * @ngdoc service
  * @module  gitphaser
  * @name  gitphaser.service:Beacons
- * @description  Handlers for initializing, transmitting and receiving of beacon signals
+ * @description  Service that transmits and receives iBeacon signal. 
  */
 function Beacons($rootScope, $q, $cordovaBeacon){
 
@@ -24,30 +24,52 @@ function Beacons($rootScope, $q, $cordovaBeacon){
         "05DEE885-E723-438F-B733-409E4DBFA694", //10
     ];
 
+    // ------------------------------------  Public ---------------------------------
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:Beacons
+     * @name  gitphaser.service:Beacons.regions
+     * @description `Array` of beacon region objects the service monitors for.
+     */
     self.regions = [];
     
-    // ------------------------  Public ---------------------------------
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:Beacons
+     * @name  gitphaser.service:Beacons.quantity
+     * @description `Number` of available beacon uuids to select a broadcast user id from
+     */
     self.quantity = uuids.length;
+
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:Beacons
+     * @name  gitphaser.service:Beacons.initialized
+     * @type { boolean }
+     * @description `Boolean` state: true when user has authorized background beacon use, false otherwise.
+     */
     self.initialized = false;
 
     /**
-     * @methodOf Beacons
-     * @name  gitphaser.Beacons#getUUID
-     * @description Exposes the uuid array. In LoginCtrl, the modulus of the Beacon minor and the 
-     *              uuid array length is used to select a uuid. This allows them to be distributed evenly 
-     *              across acounts and minimizes the likelyhood that a duplicate uuid will be present
-     *              in any group of phones. See beacon-testing/issues/15 for details. 
-     * @param {number} index
+     * @ngdoc method
+     * @methodOf gitphaser.service:Beacons
+     * @name  gitphaser.service:Beacons.getUUID
+     * @param {number} index The index of the uuid array to select
+     * @description Exposes the uuid array. When the user is creating an account by logging in for the first
+     *              time the modulus of the server-generated Beacon minor and the uuid array length is used to select a uuid. 
+     *              This allows them to be distributed evenly across acounts and minimizes the likelyhood that a duplicate 
+     *              uuid will be present in any group of phones.  
      */
     self.getUUID = function(index){
         return uuids[index];
     };
 
     /**
-     * @methodOf Beacons
-     * @name gitphaser.Beacons#initialize
+     * @ngdoc method
+     * @methodOf gitphaser.service:Beacons
+     * @name  gitphaser.service:Beacons.initialize
      * @description Sets up beaconing in app. This method resolves on the Nearby tab, so it may
-     *              have already run as user navigates around. Rejects if user does not authorize.
+     *              have already run as user navigates around. 
      * @returns {promise} Rejects if user does not authorize background beacon use
      */
     self.initialize = function(){

@@ -4,7 +4,8 @@ angular.module('gitphaser').directive("nearbyUser", nearbyUser);
  * @ngdoc directive
  * @name  gitphaser.directive:nearbyUser
  * @module  gitphaser
- *
+ * @restrict E
+ * 
  * @description 
  * `<nearby-user>` Template to represent a proximity detected github user in a list view on
  *     the nearbyUser route. Obtains account from GitHub service (it may be cached).

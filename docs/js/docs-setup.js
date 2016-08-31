@@ -1,6 +1,6 @@
 NG_DOCS={
   "sections": {
-    "api": "API Documentation"
+    "api": "GitPhaser Documentation"
   },
   "pages": [
     {
@@ -68,12 +68,66 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "gitphaser.object:LoadingCtrl",
+      "shortName": "LoadingCtrl",
+      "type": "object",
+      "moduleName": "gitphaser",
+      "shortDescription": "Controller for the default/otherwise route. Waits for platform ready,",
+      "keywords": "5s api attempts connection controller default gitphaser hang kick loadingctrl login meteor navigate nearby object platform problem ready redirect resolves route server tab timeout toast waits warning"
+    },
+    {
+      "section": "api",
+      "id": "gitphaser.object:LoginCtrl",
+      "shortName": "LoginCtrl",
+      "type": "object",
+      "moduleName": "gitphaser",
+      "shortDescription": "Controller for the login route. Functions/Methods for a two-step login process",
+      "keywords": "api authenticates authentication browser bypasses call controller cordova details device devlogin failure functions github gitphaser handlers inappbrowser loads login loginctrl meteor method object passes process profile route signs toast two-step user"
+    },
+    {
+      "section": "api",
+      "id": "gitphaser.object:NearbyCtrl",
+      "shortName": "NearbyCtrl",
+      "type": "object",
+      "moduleName": "gitphaser",
+      "shortDescription": "Controller for the nearby route. Exposes Meteor mongo &#39;connections&#39; to DOM,",
+      "keywords": "api clicks connections constant controller current dom exposes filtered geolocate gitphaser handled item list listslide map maps mapslide meteor mongo nearby nearbyctrl notification notify number object profile resolve route service set slide subscription transmitter trigger user variable view"
+    },
+    {
+      "section": "api",
+      "id": "gitphaser.object:NotificationsCtrl",
+      "shortName": "NotificationsCtrl",
+      "type": "object",
+      "moduleName": "gitphaser",
+      "shortDescription": "Controller for tab-notifications route. Exposes array of notifications in",
+      "keywords": "api array controller dom exposes gitphaser notifications notificationsctrl object profile route tab-notifications user"
+    },
+    {
+      "section": "api",
+      "id": "gitphaser.object:NotificationsProfileCtrl",
+      "shortName": "NotificationsProfileCtrl",
+      "type": "object",
+      "moduleName": "gitphaser",
+      "shortDescription": "Governs child view of notifications route and shows github profile of target",
+      "keywords": "$stateparams api array cached child correct current default github gitphaser governs iterates locate meteor notification notifications notificationsprofilectrl object populates profile route selected sender target template unique user userid view"
+    },
+    {
+      "section": "api",
+      "id": "gitphaser.object:ProfileCtrl",
+      "shortName": "ProfileCtrl",
+      "type": "object",
+      "moduleName": "gitphaser",
+      "shortDescription": "Exposes GitHub.me profile object or account object to the profile template.",
+      "keywords": "account api appearance arrow boolean button changes clicked contact directive exposes follow github gitphaser governs hides method modal modalopen nav navigates nearby object opens profile profilectrl route routes tab template triggers username visible wraps"
+    },
+    {
+      "section": "api",
       "id": "gitphaser.service:Beacons",
       "shortName": "Beacons",
       "type": "service",
       "moduleName": "gitphaser",
-      "shortDescription": "Handlers for initializing, transmitting and receiving of beacon signals",
-      "keywords": "api beacon beacons gitphaser handlers initializing receiving service signals transmitting"
+      "shortDescription": "Service that transmits and receives iBeacon signal.",
+      "keywords": "account acounts allows api app array authorize authorized background beacon beaconing beacons boolean broadcast creating distributed duplicate evenly exposes false getuuid gitphaser group ibeacon initialize initialized length likelyhood logging method minimizes minor modulus monitors navigates nearby number objects phones quantity receives region regions rejects resolves select server-generated service sets signal tab time transmits true user uuid uuids"
     },
     {
       "section": "api",
@@ -83,6 +137,24 @@ NG_DOCS={
       "moduleName": "gitphaser",
       "shortDescription": "Provides geolocation, reverse geocoding, and map display",
       "keywords": "address api authorizing block coordinate coordinates current detect determined device devices display enabled error expressed geocodes geocoding geolocate geolocation getaddress gitphaser isenabled lat latitude leaflet lng loadmap loads location long longitude map mapbox marker nearby object permissions public resets resolve resolves reverse route runs service set sets string titles trigger updatemap user var vars view"
+    },
+    {
+      "section": "api",
+      "id": "gitphaser.service:GitHub",
+      "shortName": "GitHub",
+      "type": "service",
+      "moduleName": "gitphaser",
+      "shortDescription": "Provides access to the GitHub API",
+      "keywords": "$cordovaoauth access account acquired adds api app arbitrary array attempts auth_api auth_required authenticate authenticated authtoken autologs cache cache_time cached canfollow collects contrib contributions convenience credentials current doesn duration error events exist fails false fetch fetched follow follower followers fresh getaccount getauthtoken getcontribgraph getme github gitphaser graph graphs hour inappbroswer increments info initialize initialized initializes invoked js list login logs meteor method metrics minute mock oauth object options param person previous profile public rejects remote repos representing resolve resolves responds retrieves returns routing saved searches second server service set setauthtoken sets string success svg tab target token true user username users week"
+    },
+    {
+      "section": "api",
+      "id": "gitphaser.service:Notify",
+      "shortName": "Notify",
+      "type": "service",
+      "moduleName": "gitphaser",
+      "shortDescription": "Handles push notification registry and does internal notifications management",
+      "keywords": "api app badge checkednotifications disable failures flag generates geolocates gitphaser handles initialize install internal management meteor method nearby notification notifications notify push registers registry required resolve resolves route sawprofile server service side success tab toggles user userid"
     }
   ],
   "apis": {
@@ -94,30 +166,18 @@ NG_DOCS={
     "scripts": [
       "js/angular.min.js",
       "js/angular-animate.min.js",
-      "js/marked.js",
-      "js/lib/ionic/js/ionic.bundle.js",
-      "js/lib/moment/moment.js",
-      "js/lib/meteor-client-side/meteor-runtime-config.js",
-      "js/lib/meteor-client-side/dist/meteor-client-side.bundle.js",
-      "js/lib/accounts-base-client-side/dist/accounts-base-client-side.bundle.js",
-      "js/lib/accounts-password-client-side/dist/accounts-password-client-side.bundle.min.js",
-      "js/lib/angular-meteor/dist/angular-meteor.bundle.js",
-      "js/lib/angular-meteor/dist/angular-meteor-auth.bundle.js",
-      "js/lib/github/github.js",
-      "js/lib/angular-github-adapter/angular-github-adapter.js",
-      "js/lib/ngCordova/dist/ng-cordova.js",
-      "js/lib/ng-cordova-oauth/dist/ng-cordova-oauth.js",
-      "js/lib/ionic-toast/dist/ionic-toast.bundle.min.js",
-      "js/lib/leaflet/leaflet.js",
-      "js/lib/leaflet-pulse-icon/src/L.Icon.Pulse.js"
+      "js/marked.js"
     ],
     "styles": [],
-    "title": "API Documentation",
+    "title": "GitPhaser Documentation",
     "html5Mode": true,
     "editExample": true,
     "navTemplate": false,
     "navContent": "",
     "navTemplateData": {},
+    "image": "img/phaser.png",
+    "imageLink": "http://my-domain.com",
+    "titleLink": "/api",
     "loadDefaults": {
       "angular": true,
       "angularAnimate": true,
@@ -130,21 +190,6 @@ NG_DOCS={
   "scripts": [
     "js/angular.min.js",
     "js/angular-animate.min.js",
-    "js/marked.js",
-    "js/lib/ionic/js/ionic.bundle.js",
-    "js/lib/moment/moment.js",
-    "js/lib/meteor-client-side/meteor-runtime-config.js",
-    "js/lib/meteor-client-side/dist/meteor-client-side.bundle.js",
-    "js/lib/accounts-base-client-side/dist/accounts-base-client-side.bundle.js",
-    "js/lib/accounts-password-client-side/dist/accounts-password-client-side.bundle.min.js",
-    "js/lib/angular-meteor/dist/angular-meteor.bundle.js",
-    "js/lib/angular-meteor/dist/angular-meteor-auth.bundle.js",
-    "js/lib/github/github.js",
-    "js/lib/angular-github-adapter/angular-github-adapter.js",
-    "js/lib/ngCordova/dist/ng-cordova.js",
-    "js/lib/ng-cordova-oauth/dist/ng-cordova-oauth.js",
-    "js/lib/ionic-toast/dist/ionic-toast.bundle.min.js",
-    "js/lib/leaflet/leaflet.js",
-    "js/lib/leaflet-pulse-icon/src/L.Icon.Pulse.js"
+    "js/marked.js"
   ]
 };

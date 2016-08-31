@@ -4,7 +4,8 @@ angular.module('gitphaser').directive("hireable", Hireable);
  * @ngdoc directive
  * @name  gitphaser.directive:hireable
  * @module  gitphaser
- *
+ * @restrict E
+ * 
  * @description 
  * `<hireable>` Cash icon visible if attr 'available' is true. Tapping icon shows a brief toast
  *     with message: `{{name}}` is available for hire

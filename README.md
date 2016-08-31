@@ -3,10 +3,22 @@
 
 [![Build Status](https://travis-ci.org/cgewecke/git-phaser.svg?branch=master)](https://travis-ci.org/cgewecke/git-phaser)
 
-A Github-based proximity app for iOS that lets you browse the profiles and repos of people near you. Written in Ionic with a Meteor back end, using iBeacons for proximity detection.
+A Github-based proximity app for iOS that lets you browse the profiles and repos of people near you. Written in Ionic with a Meteor back end, using iBeacons for proximity detection. 
+
+## Documentation
+Docs for services, controllers and directives can be found [here](https://git-phaser.github.io/git-phaser)
+
+To build docs
+```
+$ gulp ngdocs
+```
+
+To view docs locally
+```
+$ gulp connect_ngdocs
+```
 
 ## Tests: 
-----------
 Individual tests are located in spec folders near their related js file e.g:
 
 ```
@@ -23,11 +35,9 @@ To run all:
 $ gulp test
 ```
 
-WARNING: Tests will fail if the $rootscope.DEV is set in config/platform.js
+**WARNING** Tests will fail if the $rootscope.DEV is set in config/platform.js
 
 ## Launch Meteor
-----------------
-
 Make sure devices are connected to dev computer's wifi. In the server directory:
 
 ```
@@ -35,15 +45,12 @@ $ meteor run  --mobile-server 10.0.0.8:3000
 ```
 
 ## Build:
-----------
 
 ```
 $ ionic build ios
 ```
 
-## Deploy server to Heroku 
---------------------------
-
+## Deploy server 
 1. In beacon-production/server: % mv .git ..
 2. Trash server
 3. Copy new server to beacon-production/ from beacon-testing/linkedin/server
@@ -56,8 +63,6 @@ $ ionic build ios
 ```
 
 ## Deploy to TestFlight
------------------------
-
 1. Make sure www/lib/meteor-client-side/meteor-runtime-config.js is set to Production address
 2. Make sure flags in config.platform are set to production values
 3. Build project in ionic

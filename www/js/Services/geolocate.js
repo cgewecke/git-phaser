@@ -107,10 +107,10 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
             self.map = L.map('map');
             self.map.setView([self.lat, self.lng], 16);
             L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-              attribution: '',
-              zoomControl: false,
-              id: id,
-              accessToken: token 
+                attribution: '',
+                zoomControl: false,
+                id: id,
+                accessToken: token 
             }).addTo(self.map);
 
             icon = L.icon.pulse({iconSize:[17,17], color:'#387EF5'});

@@ -4,7 +4,8 @@ angular.module('gitphaser').directive("serverStatus", ServerStatus);
  * @ngdoc directive
  * @name  gitphaser.directive:serverStatus
  * @module  gitphaser
- *
+ * @restrict E
+ * 
  * @description 
  * `<server-status>` Cloud icon in the upper nav bar whose color (red or green) indicates whether the
  *     device is connected to the Meteor server. Tapping the icon briefly displays a toast that describes

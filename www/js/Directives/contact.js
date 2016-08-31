@@ -4,7 +4,8 @@ angular.module('gitphaser').directive("contact", Contact);
  * @ngdoc directive
  * @name  gitphaser.directive:contact
  * @module  gitphaser
- *
+ * @restrict E
+ * 
  * @description 
  * `<contact>` Displays the user's email address and provides a way to add user to the device contacts
  *      Opens modal on tap if the user is addable (i.e. does not exist in the Meteor DB list of 

@@ -1,34 +1,33 @@
-//
-// @service: GitHub
-// A service for interacting w/ the github.js api
+var gh_debug;
+angular.module('gitphaser').service("GitHub", GitHub);
 
-var gh_debug, gh_debugII, gh_debugIII;
-angular.module('gitphaser')
-  .service("GitHub", GitHub);
-
+/**
+ * @ngdoc service
+ * @module  gitphaser
+ * @name  gitphaser.service:GitHub
+ * @description  Provides access to the GitHub API
+ */
 function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $github){
 
     var self = this;
     
-    // ------------------------------   PRIVATE  ------------------------------------
+    // ------------------------------   Utilities  ------------------------------------
+    
     // Keys
-    var id = secure.github.id;
-    var secret = secure.github.secret;
-    var state = "u79z234c06nq";
-    var perm = [];
+    var id = secure.github.id;          // oAuth Github id
+    var secret = secure.github.secret;  // oAuth Github secret
+    var perm = [];                      // oAuth Github requested permissions 
    
+    // oAuth Token
+    var authToken = null;                                   // PRODUCTION 
+    authToken = '4b6e119a5365ffdbe93f523a6a98bc8c2adf278f'; // DEVELOPMENT
 
-    // PRODUCTION 
-    var authToken = null;
-    // DEVELOPMENT
-    authToken = '4b6e119a5365ffdbe93f523a6a98bc8c2adf278f';
-
-    // @function: accountCached
-    // @param: String (github login value)
-    // @return: account object || null if not found
-    //
-    // Checks cache to see if we have recently loaded this profile
-    // Clears cache every 'cache_time'
+    /**
+     * Checks cache to see if we have recently loaded this profile. Clears cache every 
+     * 'cache_time'
+     * @param  {String} username GitHub.login 
+     * @return {Object} account OR null if not found
+     */
     function accountCached(username){
 
         var account;
@@ -48,16 +47,14 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                 }
             }
         };
-      
-        // Not Found
         return null;
     }
-
-    // @function: graphCached
-    // @param: String (github login value)
-    // @return: String (svg) || null if not found
-    //
-    // Attempts to retrieve graph from account cache 
+    /**
+     * Attempts to retrieve contributions graph from account cache 
+     * @param  {String} username  GitHub login value
+     * @return {String} svg       An svg string representing the contributions graph OR 
+     *                            null if not found
+     */
     function graphCached(username){
 
         for(var i = 0; i < self.cache.length; i++){
@@ -65,16 +62,15 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
             if (self.cache[i].info.login === username && self.cache[i].graph ){
                 return self.cache[i].graph;
             }
-        };  
-        // Not Found
+        }; 
         return null;
     }
-
-    // @function: graphCached
-    // @param: String (github.info.login), String (svg html string)
-    // @return: true on success, false on failure
-    //
-    // Attempts to retrieve graph from account cache 
+    /**
+     * Caches contributions graph 
+     * @param  {String} username Github login value
+     * @param  {String} svg      An svg string representing the contributions graph 
+     * @return {boolean}         Returns true if the graph was cached, null if user wasn't found.
+     */
     function cacheGraph(username, svg){
 
         for(var i = 0; i < self.cache.length; i++){
@@ -84,16 +80,14 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                return true;
             }
         };  
-        // Not Found
         return null;
     }
-
-    // @function: parseEvents
-    // @param: JSON array of GitHub events
-    // @return: {commits: {}, issues: []}
-    //
-    // Compiles commit metrics and generates list of issues open/closed from
-    // events object returned by GitHub
+    /**
+     * Compiles commit metrics and generates list of issues open/closed from
+     * events object returned by GitHub
+     * @param  {Array} events Array of Github event objects
+     * @return {Object} parsed Object containing user's commits and issues 
+     */
     function parseEvents(events){
       
         var duplicate = false;
@@ -174,36 +168,81 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
         return parsed;
     };
 
-    // ------------------------------   PUBLIC ------------------------------------
+    // ------------------------------  Public API ------------------------------------
     
-    // Init
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.me
+     * @description `Object`: The user's profile
+     */
     self.me = null; // The user profile;
-    self.repos = null; // The user's public repos;
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.repos
+     * @description `Array`: The users public repos
+     */
+    self.repos = null; 
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.api
+     * @description `Object`: GitHub.js api
+     */
     self.api = null; // GitHub.js api 
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.cache
+     * @description `Array`: Cached account object and contrib graphs fetched from Github
+     */
     self.cache = [];
-    self.cache_time = "hour" // Options are: second, minute, hour, week
+
+    /**
+     * @ngdoc service
+     * @propertyOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.cache_time
+     * @description `String`: Duration to cache for. Options are: second, minute, hour, week
+     */
+    self.cache_time = "hour";
     
-    // @function: setAuthToken: 
-    // @param: token
-    // Convenience method to set authToken when app is already authenticated from previous use.
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.setAuthToken
+     * @param {String} Github token acquired by user during oAuth login
+     * @description Convenience method to set authToken when app is already authenticated 
+     *              from previous use. 
+     */
     self.setAuthToken = function(token){
         authToken = token;
         $github.setOauthCreds(token);
     }
 
-    // @function: getAuthToken: 
-    // Convenience method to get authToken when it needs to be saved in user account, etc
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.getAuthToken
+     * @description Convenience method to get authToken when it needs to be saved in user account. 
+     * @returns { String } authToken Github token acquired by user during oAuth login
+     */
     self.getAuthToken = function(){
-        if (authToken) 
-            return authToken;
-    
-        return null;
+        
+        return (authToken) 
+            ? authToken
+            : null;
     }
 
-    // @function: initialize
-    // Invoked in the routing resolve at tab/nearby - if user autologs into Meteor,
-    // we still need to fetch a fresh GitHub profile for them. Only initializes
-    // if self.me doesn't exist yet.
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.initialize
+     * @description Invoked in the routing resolve at tab/nearby - if user autologs into Meteor,
+     *              we still need to fetch a fresh GitHub profile for them. Only initializes
+     *              if self.me doesn't exist yet.
+     * @returns {Promise} Resolves when github responds with profile, rejects with 'AUTH_REQUIRED'
+     */
     self.initialize = function(){
 
         var where = 'GitHub:initialize';
@@ -214,14 +253,9 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
 
                 self.setAuthToken(Meteor.user().profile.authToken);          
                 self.getMe().then( 
-
-                    function(success){
-                        d.resolve(true);
-                    }, 
-                    function(error){
-                        logger(where, error);
-                        d.reject('AUTH_REQUIRED');
-                    });
+                    function(success){ d.resolve(true) }, 
+                    function(error){ d.reject('AUTH_REQUIRED') 
+                });
             }, 
             function(userLoggedOut){
                 logger(where, userLoggedOut);
@@ -231,50 +265,56 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
         } else {
             d.resolve(true);
         }
-
         return d.promise;
     }
 
-    // @function: authenticate: 
-    // @return: promise (rejects if $cordovaOauth fails)
-    // Logs user into GitHub via inAppBroswer. sets authToken
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.authenticate
+     * @description Logs user into GitHub via inAppBroswer. Sets authToken
+     * @returns {Promise} Resolves on success, rejects if $cordovaOauth fails.
+     */
     self.authenticate = function(){
         var token, d, uri;
         var where = 'GitHub:authenticate';
 
         d = $q.defer();
         uri = { redirect_uri: 'http://cyclop.se/help'};
-        
-        gh_debug = $cordovaOauth;
-
+    
         $ionicPlatform.ready( function() {
             $cordovaOauth.github(id, secret, perm, uri).then( function(result) {
 
                 token = result.split('&')[0].split('=')[1];
                 self.setAuthToken(token);
-
                 logger(where, authToken);
                 d.resolve();
             }, 
-            function(e) { logger(where, e); d.reject(e)});
+            function(e) { 
+                logger(where, e); 
+                d.reject(e)
+            });
         });
 
         return d.promise;   
     };
 
-    // @function: getMe
-    // @return: promise 
-    //
-    // Configures user with Github.js API and
-    // collects profile info
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.getMe
+     * @description Collects user's profile info, repos, events and followers from Github.
+     * @returns {Promise} Resolves on success.
+     */
     self.getMe = function(){
         var where = "GitHub:getMe";
         var d = $q.defer();
 
         // Get API, then current user profile, then full account info.
-        $github.getUser().then( function(user){
-            user.show(null).then( function(info){   
-                self.getAccount(info.login, user).then(function(account){
+        $github.getUser()
+            .then( function(user){ user.show(null)
+            .then( function(info){ self.getAccount(info.login, user)
+            .then( function(account){
                
                     self.api = user;
                     self.me = account.info;
@@ -282,21 +322,26 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                     self.events = account.events;
                     self.followers = account.followers;
                     d.resolve(true);
-
-                }, function(e){ logger(where, e); d.reject(e)});
-            }, function(e){ logger(where,e); d.reject(e)});
-        }, function(e){ logger(where, e); d.reject(e)});
+            
+            })})})
+            .catch(function(e){
+                logger(where, e);
+                d.reject(e);
+            });
 
         return d.promise
     };
 
-    // @function: getAccount
-    // @param: username - a users github username, 
-    //         auth_api - the initialized github.js api 
-    // @return: promise
-    // 
-    // Gets GitHub profile, public repos and public events for
-    // an arbitrary user
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.getAccount
+     * @param { string } username User's github login name
+     * @param { object}  auth_api GitHub.js api initialized with users oAuth credentials
+     * @description Gets GitHub profile, public repos and public events from GitHub
+     *              for an arbitrary user
+     * @returns {Promise} Resolves account object on success.
+     */
     self.getAccount = function(username, auth_api ){
 
         var cached, api;
@@ -313,39 +358,45 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
         } else {     
 
             // Service either initialized or initializing with auth_api param
-            (auth_api === undefined) ? api = self.api : api = auth_api;
+            (auth_api === undefined) 
+                ? api = self.api 
+                : api = auth_api;
 
             // Get profile, then repos, then events, then followers
-            api.show(username).then( function(info){
-                api.userRepos(username).then( function(repos){
-                    api.userEvents(username).then(function(events){
-                        api.userFollowers(username).then(function(followers){
-                           
-                            account.info = info;
-                            account.repos = repos;
-                            account.followers = followers;
-                            account.events = parseEvents(events);
-                            account.cached_at = new Date();
-                            self.cache.push(account);
-                            d.resolve(account);
+            $q.all([
+                api.show(username),
+                api.userRepos(username),
+                api.userEvents(username),
+                api.userFollowers(username)
+            ])
+            .then(function(results){
+                account.info = results[0];
+                account.repos = results[1];
+                account.events = parseEvents(results[2]);
+                account.followers = results[3];
+                account.cached_at = new Date();
+                self.cache.push(account);
+                d.resolve(account);
 
-                            gh_debug = account;
-
-                        },function(e){ logger(where, e); d.reject(e) });
-                    }, function(e){ logger(where, e); d.reject(e) });
-                }, function(e){ logger(where, e); d.reject(e) });
-            }, function(e){ logger(where, e); d.reject(e) });  
+                gh_debug = account;
+            })
+            .catch(function(e){
+                logger(where, e); 
+                d.reject(e);
+            })
         }
-
         return d.promise;     
     };
 
-    // @function: getContribGraph
-    // @param: username - a users github username, 
-    //         auth_api - the initialized github.js api 
-    // @return: promise resolving string
-    // 
-    // Retrieves svg string from cache or meteor call 
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.getContribGraph
+     * @param { string } username Any github login name
+     * @description Retrieves svg string representing a contributions graph from cache
+     *              or by having the Meteor server fetch it.
+     * @returns {Promise} Resolves svg string.
+     */
     self.getContribGraph = function(username){
 
         var d = $q.defer();
@@ -371,14 +422,16 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
         }
         return d.promise;
     };
-
-    // @function: canFollow()
-    // @param: String - the target's github login name, 
-    //         
-    // @return: true || false
-    // 
-    // Searches the users following list to see if target is 
-    // already followed.  
+ 
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.canFollow
+     * @param { string } username GitHub login name of the target to follow.
+     * @description  Searches the users following list to see if target is 
+     *               already followed.  
+     * @returns {boolean} Returns true if user can follow person, false otherwise.
+     */
     self.canFollow = function(username){
 
         var can = true;
@@ -389,15 +442,17 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
         })
         return can;
     };
-
-    // @function: follow
-    // @param: user - the account's info object, 
-    //         
-    // @return: promise 
-    // 
-    // Attempts to follow the user specified by param username. 
-    // Increments follower/following metrics and adds a mock follower
-    // to the followers array to keep cache current w/ GitHub remote.  
+    
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.service:GitHub
+     * @name  gitphaser.service:GitHub.follow
+     * @param { string } username GitHub login name of the target to follow.
+     * @description  Attempts to follow the user specified by param username. 
+     *               Increments follower/following metrics and adds a mock follower
+     *               to the followers array to keep cache current w/ GitHub remote.
+     * @returns {promise} Resolves on success, rejects on error
+     */  
     self.follow = function(user){
 
         var d = $q.defer();

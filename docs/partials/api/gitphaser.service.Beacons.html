@@ -4,6 +4,38 @@
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
-<div class="description"><div class="gitphaser-service-page gitphaser-service-beacons-page"><p>Handlers for initializing, transmitting and receiving of beacon signals</p>
+<div class="description"><div class="gitphaser-service-page gitphaser-service-beacons-page"><p>Service that transmits and receives iBeacon signal.</p>
 </div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_getuuid">getUUID(index)</h3>
+<div class="getuuid"><div class="gitphaser-service-page gitphaser-service-beacons-getuuid-page"><p>Exposes the uuid array. When the user is creating an account by logging in for the first
+time the modulus of the server-generated Beacon minor and the uuid array length is used to select a uuid. 
+This allows them to be distributed evenly across acounts and minimizes the likelyhood that a duplicate 
+uuid will be present in any group of phones.  </p>
+</div><h5 id="methods_getuuid_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>index</td><td><a href="" class="label type-hint type-hint-number">number</a></td><td><div class="gitphaser-service-page gitphaser-service-beacons-getuuid-page"><p>The index of the uuid array to select</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_initialize">initialize()</h3>
+<div class="initialize"><div class="gitphaser-service-page gitphaser-service-beacons-initialize-page"><p>Sets up beaconing in app. This method resolves on the Nearby tab, so it may
+have already run as user navigates around. </p>
+</div><h5 id="methods_initialize_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="gitphaser-service-page gitphaser-service-beacons-initialize-page"><p>Rejects if user does not authorize background beacon use</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_initialized">initialized</h3>
+<div class="initialized"><div class="gitphaser-service-page gitphaser-service-beacons-initialized-page"><p><code>Boolean</code> state: true when user has authorized background beacon use, false otherwise.</p>
+</div></div>
+</li>
+<li><h3 id="properties_quantity">quantity</h3>
+<div class="quantity"><div class="gitphaser-service-page gitphaser-service-beacons-quantity-page"><p><code>Number</code> of available beacon uuids to select a broadcast user id from</p>
+</div></div>
+</li>
+<li><h3 id="properties_regions">regions</h3>
+<div class="regions"><div class="gitphaser-service-page gitphaser-service-beacons-regions-page"><p><code>Array</code> of beacon region objects the service monitors for.</p>
+</div></div>
+</li>
+</ul>
+</div>
 </div>

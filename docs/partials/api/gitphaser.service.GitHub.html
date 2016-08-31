@@ -1,0 +1,93 @@
+<h1><code ng:non-bindable="">GitHub</code>
+<div><span class="hint">service in module <code ng:non-bindable="">gitphaser</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="gitphaser-service-page gitphaser-service-github-page"><p>Provides access to the GitHub API</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_authenticate">authenticate()</h3>
+<div class="authenticate"><div class="gitphaser-service-page gitphaser-service-github-authenticate-page"><p>Logs user into GitHub via inAppBroswer. Sets authToken</p>
+</div><h5 id="methods_authenticate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">Promise</a></td><td><div class="gitphaser-service-page gitphaser-service-github-authenticate-page"><p>Resolves on success, rejects if $cordovaOauth fails.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_canfollow">canFollow(username)</h3>
+<div class="canfollow"><div class="gitphaser-service-page gitphaser-service-github-canfollow-page"><p>Searches the users following list to see if target is
+already followed.  </p>
+</div><h5 id="methods_canfollow_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>username</td><td><a href="" class="label type-hint type-hint-object"> string </a></td><td><div class="gitphaser-service-page gitphaser-service-github-canfollow-page"><p>GitHub login name of the target to follow.</p>
+</div></td></tr></tbody></table><h5 id="methods_canfollow_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="gitphaser-service-page gitphaser-service-github-canfollow-page"><p>Returns true if user can follow person, false otherwise.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_follow">follow(username)</h3>
+<div class="follow"><div class="gitphaser-service-page gitphaser-service-github-follow-page"><p>Attempts to follow the user specified by param username.
+Increments follower/following metrics and adds a mock follower
+to the followers array to keep cache current w/ GitHub remote.</p>
+</div><h5 id="methods_follow_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>username</td><td><a href="" class="label type-hint type-hint-object"> string </a></td><td><div class="gitphaser-service-page gitphaser-service-github-follow-page"><p>GitHub login name of the target to follow.</p>
+</div></td></tr></tbody></table><h5 id="methods_follow_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="gitphaser-service-page gitphaser-service-github-follow-page"><p>Resolves on success, rejects on error</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getaccount">getAccount(username, auth_api)</h3>
+<div class="getaccount"><div class="gitphaser-service-page gitphaser-service-github-getaccount-page"><p>Gets GitHub profile, public repos and public events from GitHub
+for an arbitrary user</p>
+</div><h5 id="methods_getaccount_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>username</td><td><a href="" class="label type-hint type-hint-object"> string </a></td><td><div class="gitphaser-service-page gitphaser-service-github-getaccount-page"><p>User&#39;s github login name</p>
+</div></td></tr><tr><td>auth_api</td><td><a href="" class="label type-hint type-hint-object"> object</a></td><td><div class="gitphaser-service-page gitphaser-service-github-getaccount-page"><p>GitHub.js api initialized with users oAuth credentials</p>
+</div></td></tr></tbody></table><h5 id="methods_getaccount_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">Promise</a></td><td><div class="gitphaser-service-page gitphaser-service-github-getaccount-page"><p>Resolves account object on success.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getauthtoken">getAuthToken()</h3>
+<div class="getauthtoken"><div class="gitphaser-service-page gitphaser-service-github-getauthtoken-page"><p>Convenience method to get authToken when it needs to be saved in user account.</p>
+</div><h5 id="methods_getauthtoken_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object"> String </a></td><td><div class="gitphaser-service-page gitphaser-service-github-getauthtoken-page"><p>authToken Github token acquired by user during oAuth login</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getcontribgraph">getContribGraph(username)</h3>
+<div class="getcontribgraph"><div class="gitphaser-service-page gitphaser-service-github-getcontribgraph-page"><p>Retrieves svg string representing a contributions graph from cache
+or by having the Meteor server fetch it.</p>
+</div><h5 id="methods_getcontribgraph_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>username</td><td><a href="" class="label type-hint type-hint-object"> string </a></td><td><div class="gitphaser-service-page gitphaser-service-github-getcontribgraph-page"><p>Any github login name</p>
+</div></td></tr></tbody></table><h5 id="methods_getcontribgraph_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">Promise</a></td><td><div class="gitphaser-service-page gitphaser-service-github-getcontribgraph-page"><p>Resolves svg string.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getme">getMe()</h3>
+<div class="getme"><div class="gitphaser-service-page gitphaser-service-github-getme-page"><p>Collects user&#39;s profile info, repos, events and followers from Github.</p>
+</div><h5 id="methods_getme_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">Promise</a></td><td><div class="gitphaser-service-page gitphaser-service-github-getme-page"><p>Resolves on success.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_initialize">initialize()</h3>
+<div class="initialize"><div class="gitphaser-service-page gitphaser-service-github-initialize-page"><p>Invoked in the routing resolve at tab/nearby - if user autologs into Meteor,
+we still need to fetch a fresh GitHub profile for them. Only initializes
+if self.me doesn&#39;t exist yet.</p>
+</div><h5 id="methods_initialize_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">Promise</a></td><td><div class="gitphaser-service-page gitphaser-service-github-initialize-page"><p>Resolves when github responds with profile, rejects with &#39;AUTH_REQUIRED&#39;</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setauthtoken">setAuthToken(Github)</h3>
+<div class="setauthtoken"><div class="gitphaser-service-page gitphaser-service-github-setauthtoken-page"><p>Convenience method to set authToken when app is already authenticated
+from previous use. </p>
+</div><h5 id="methods_setauthtoken_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>Github</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="gitphaser-service-page gitphaser-service-github-setauthtoken-page"><p>token acquired by user during oAuth login</p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_api">api</h3>
+<div class="api"><div class="gitphaser-service-page gitphaser-service-github-api-page"><p><code>Object</code>: GitHub.js api</p>
+</div></div>
+</li>
+<li><h3 id="properties_cache">cache</h3>
+<div class="cache"><div class="gitphaser-service-page gitphaser-service-github-cache-page"><p><code>Array</code>: Cached account object and contrib graphs fetched from Github</p>
+</div></div>
+</li>
+<li><h3 id="properties_cache_time">cache_time</h3>
+<div class="cache_time"><div class="gitphaser-service-page gitphaser-service-github-cache-time-page"><p><code>String</code>: Duration to cache for. Options are: second, minute, hour, week</p>
+</div></div>
+</li>
+<li><h3 id="properties_me">me</h3>
+<div class="me"><div class="gitphaser-service-page gitphaser-service-github-me-page"><p><code>Object</code>: The user&#39;s profile</p>
+</div></div>
+</li>
+<li><h3 id="properties_repos">repos</h3>
+<div class="repos"><div class="gitphaser-service-page gitphaser-service-github-repos-page"><p><code>Array</code>: The users public repos</p>
+</div></div>
+</li>
+</ul>
+</div>
+</div>
