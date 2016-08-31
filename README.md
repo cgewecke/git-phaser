@@ -1,12 +1,11 @@
 # git-phaser
--------------
 
-[![Build Status](https://travis-ci.org/cgewecke/git-phaser.svg?branch=master)](https://travis-ci.org/cgewecke/git-phaser)
+[![Build Status](https://travis-ci.org/git-phaser/git-phaser.svg?branch=master)](https://travis-ci.org/git-phaser/git-phaser)
 
-A Github-based proximity app for iOS that lets you browse the profiles and repos of people near you. Written in Ionic with a Meteor back end, using iBeacons for proximity detection. 
+Gitphaser is an experiment in using phone-based beacons to create social networking tools based on physical proximity. It exploits iOS's ability transmit and receive BLE beacon signal to make the GitHub profiles of nearby Gitphaser users visible and create a record of who the app user has been near. Backend services like the association of unique beacon uuid signals with user accounts are provided by a cloud based Meteor server. Users only have to open the app and login once to be detectable. iOS allows apps to register to listen continuously for specific beacon signals and be woken up in the background when they're encountered. This means users can kill Gitphaser and still be visible to users who are actively using the app. Use cases for GitPhaser are social/professional gatherings MeetUps and conferences. This app is in pre-alpha user testing and some features like the ability to send other users a chat message are in active development.  
 
 ## Documentation
-Docs for services, controllers and directives can be found [here](https://git-phaser.github.io/git-phaser)
+[Docs for services, controllers and directives](https://git-phaser.github.io/git-phaser)
 
 To build docs
 ```

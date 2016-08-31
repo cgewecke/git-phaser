@@ -56,10 +56,10 @@ gulp.task('git-check', function(done) {
 gulp.task('ngdocs', [], function () {
 
   var options = {
-    startPage: '/api',
-    title: "GitPhaser Documentation",
+    startPage: '/api/gitphaser.service:Beacons',
+    title: "GitPhaser Docs",
     image: "www/img/phaser.png",
-    imageLink: "http://my-domain.com",
+    imageLink: "https://github.com/git-phaser/git-phaser",
     titleLink: "/api"
   };
   return gulp.src('www/js/{,*/}*.js')
