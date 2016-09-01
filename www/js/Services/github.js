@@ -321,6 +321,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                     self.repos = account.repos;
                     self.events = account.events;
                     self.followers = account.followers;
+                    gh_debug = account;
                     d.resolve(true);
             
             })
@@ -380,7 +381,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                 gh_debug = account;
             })
             .catch(function(e){
-                logger(where, e); 
+                logger(where, JSON.stringify(e)); 
                 d.reject(e);
             })
         }
