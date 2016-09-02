@@ -2,9 +2,11 @@
 
 [![Build Status](https://travis-ci.org/git-phaser/git-phaser.svg?branch=master)](https://travis-ci.org/git-phaser/git-phaser)
 
-Gitphaser is an experiment in using phone-based beacons to create social networking tools based on physical proximity. It leverages iOS's ability to transmit and receiver BLE beacon signal to make the GitHub profiles of nearby users visible. Use cases for an app like this are social events like Meetups and conferences. 
+Gitphaser is an experiment in using phone-based beacons to create social networking tools based on physical proximity. It leverages iOS's ability to transmit and receive BLE beacon signal to make the public GitHub profiles of nearby users visible. Use cases for an app like this are social events like Meetups and conferences. 
 
-Users only have to login once to be detectable. From then on the app will (briefly) wake up in the background whenever its host device encounters git-phaser signal and contact a cloud based Meteor server to notify relevant subscribing clients of a proximity contact. On iOS this behavior occurs even if the user has killed the app. 
+Users only have to login once to be detectable. From then on the app will (briefly) wake up in the background whenever its host device encounters git-phaser signal in its environment. This gives it enough time to contact a cloud based Meteor server to notify actively transmitting clients that they triggered a proximity contact. On iOS this behavior occurs even if the user has killed the app. 
+
+**Git-phaser does not track by location, store location data about its clients or keep records about who has been near who.** Detection of proximate users is achieved by providing each app instance with a unique beacon signature linked to a public Github profile on account creation. If users are near each other, they can see each other. Users must also be visible in order to see. Revoking beacon permissions in device settings disables the app. 
 
 ## Documentation
 [Docs for services, controllers and directives](https://git-phaser.github.io/git-phaser)
