@@ -180,13 +180,13 @@ describe('Service: Beacons', function () {
             var expected_pkg = {
                 transmitter: "1000_1001_AAAAAAA",
                 receiver: 'ZZZZZZZZ',
-                proximity: 'proximityNear'
+                proximity: 'proximityNear',
             };
 
             spyOn(Meteor, 'call');
             $scope.$broadcast('$cordovaBeacon:didRangeBeaconsInRegion', mock_beacons);
             $scope.$digest();
-            expect(Meteor.call).toHaveBeenCalledWith('newConnection', expected_pkg)
+            expect(Meteor.call).toHaveBeenCalled();
 
         })
 

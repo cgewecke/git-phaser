@@ -74,11 +74,11 @@ describe('Service: GitHub', function () {
 
     describe('initialize()', function(){
         
-        it('should resolve true immediately if service has already initialized', function(){
+        it('should resolve immediately if service has already initialized', function(){
             var promise;
             GitHub.me = {something: 'already happened'};
             promise = GitHub.initialize();
-            expect(promise.$$state.value).toEqual(true);
+            expect(promise.$$state.status).toEqual(1);
         });
 
         it('should wait for Meteor user to be available before initializing', function(){
@@ -117,7 +117,7 @@ describe('Service: GitHub', function () {
 
         });
 
-        it('should fetch the current users account and resolve true', function(){
+        it('should fetch the current users account and resolve', function(){
 
             var promise;
 
@@ -132,7 +132,7 @@ describe('Service: GitHub', function () {
             promise = GitHub.initialize();
             $scope.$digest();
             expect(GitHub.getMe).toHaveBeenCalled();
-            expect(promise.$$state.value).toBe(true);
+            expect(promise.$$state.status).toEqual(1);
 
         });
 
@@ -269,7 +269,7 @@ describe('Service: GitHub', function () {
             expect(promise.$$state.status).toEqual(2);
         });
 
-        it('should get the rest of the users account data and resolve true', function(){
+        it('should get the rest of the users account data and resolve', function(){
 
             var info = {login: 'somename'};
             var account = {info: 'a', repos: 'b', events: 'c', followers: 'd'};
@@ -294,7 +294,7 @@ describe('Service: GitHub', function () {
             expect(GitHub.repos).toEqual(account.repos);
             expect(GitHub.events).toEqual(account.events);
             expect(GitHub.followers).toEqual(account.followers);
-            expect(promise.$$state.value).toBe(true);
+            expect(promise.$$state.status).toEqual(1);
 
         });
 

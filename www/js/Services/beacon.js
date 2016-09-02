@@ -6,7 +6,7 @@ angular.module('gitphaser').service("Beacons", Beacons);
  * @name  gitphaser.service:Beacons
  * @description  Service that transmits and receives iBeacon signal. 
  */
-function Beacons($rootScope, $q, $cordovaBeacon){
+function Beacons($rootScope, $q, $cordovaBeacon, GitHub){
 
     var self = this;
 
@@ -160,10 +160,8 @@ function Beacons($rootScope, $q, $cordovaBeacon){
         beacon = result.region;
         
         if (receiver && beacon){
-
             pkg = { transmitter: beacon.uuid, receiver: receiver }; 
             Meteor.call('disconnect', pkg);
-
         } else {
             logger(where, 'error: receiver or beacon null');
         }        
@@ -175,24 +173,65 @@ function Beacons($rootScope, $q, $cordovaBeacon){
      */
     function onCapture(result){
 
-        var beacons = result.beacons
+        var receiver, proximity, pkg, localId, notification, beacons = result.beacons
 
         if (beacons.length){
     
-            var localId = window.localStorage['pl_id'];
-            var receiver = (localId != undefined) ? localId : Meteor.user().emails[0].address;           
-            var transmitter, pkg;
-
+            localId = window.localStorage['pl_id'];
+            receiver = (localId != undefined) ? localId : Meteor.user().emails[0].address;           
+    
             angular.forEach(beacons, function(beacon){
 
-                pkg = {
-                   transmitter: beacon.major + '_' + beacon.minor + '_' + beacon.uuid,
-                   receiver: receiver,
-                   proximity: beacon.proximity 
-                };
-                
-                Meteor.call('newConnection', pkg);                
-            })
+                pkg = {};
+                pkg.transmitter = beacon.major + '_' + beacon.minor + '_' + beacon.uuid;
+                pkg.receiver = receiver;
+                pkg.proximity = beacon.proximity;
+
+                // Check to see if we already have this in Connections. Add if possible.
+                if (!hasConnection(pkg.transmitter)){
+                    
+                    Meteor.call('newConnection', pkg, function(err, val){
+                        
+                        if (err || !val ) return;
+
+                        // Acquire profile of transmitter and notify receiver they were transmitted to.
+                        GitHub.initialize()
+                            .then(function(){ GitHub.getAccount(val)
+                            .then(function(account){
+                                pkg = {};
+                                pkg.target = Meteor.userId();
+                                pkg.notification = {
+                                    id: transmitter,
+                                    type: 'detection',
+                                    pictureUrl: account.info.pictureUrl,
+                                    name: account.info.firstName + ' ' + account.info.lastName,
+                                    profile: account.info,
+                                    timestamp: new Date()
+                                };
+                                Meteor.call('notify', pkg);
+                            }); 
+                        });
+                    });
+                };                
+            });
+        }
+    };
+
+    /**
+     * Checks local Connections to see if this proximity contact already exists 
+     * This prevents hammering the server as the beacon signal gets picked up. 
+     * When contact is first made, hasConnection will produce a few false negatives 
+     * because of latency. 
+     * @param  {String}  transmitter Unique transmitter uuid
+     * @return {Boolean} `True` if connection already exists, `false` otherwise.
+     */
+    function hasConnection(transmitter){
+        var connections;
+        if (Meteor.userId()){
+            connections = Connections.find( {transUUID: transmitter } )
+            return (connections.length)
+                ? true
+                : false; 
         }
     };
 

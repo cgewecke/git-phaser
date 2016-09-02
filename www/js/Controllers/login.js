@@ -25,7 +25,17 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
         var where = 'LoginCtrl:login';
         
         $scope.loggingIn = true;
-        GitHub.authenticate().then(function(){
+
+        GitHub.authenticate()
+            .then(GitHub.getMe)
+            .then(meteorLogin)
+            .catch(function(error){
+                $scope.loggingIn = false;
+                ionicToast.show(toastMessage, 'top', true, 2500);
+                logger(where, error);
+            });
+
+        /*GitHub.authenticate().then(function(){
 
             GitHub.getMe().then(function(){
                 meteorLogin();
@@ -41,7 +51,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
             ionicToast.show(toastMessage, 'top', true, 2500);
             logger(where, error);
 
-        });
+        });*/
     };
 
     /**
@@ -54,9 +64,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
     $scope.devLogin = function(){
         logger('LoginCtrl:devLogin', '');
         
-        GitHub.getMe().then(function(){
-            meteorLogin();
-        });
+        GitHub.getMe().then(meteorLogin);
     };
 
     // ------------------------------------ Utilities -------------------------------------------
@@ -65,7 +73,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
      * Logs in w/password or creates based on result
      */
     function meteorLogin(){
-     logger('LoginCtrl:meteorLogin', '');
+        logger('LoginCtrl:meteorLogin', '');
         
         // User object
         var user = {
@@ -97,8 +105,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
                 $scope.loggingIn = false;
                 logger(where, err);
             }
-        })            
-        
+        })               
     }
     /**
      * Update our user w/current GitHub profile. Set pl_id in local storage to user email. 

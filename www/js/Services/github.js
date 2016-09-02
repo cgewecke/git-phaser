@@ -19,8 +19,9 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
     var perm = [];                      // oAuth Github requested permissions 
    
     // oAuth Token
-    var authToken = null;                                   // PRODUCTION 
-    authToken = '4b6e119a5365ffdbe93f523a6a98bc8c2adf278f'; // DEVELOPMENT
+    var authToken = null;                                   // Production 
+    authToken = '02ea6edd85a7178d53cf66082f514a1aa176d47c'; // Development
+    //authToken = '4b6e119a5365ffdbe93f523a6a98bc8c2adf278f'; // Heroku server
 
     /**
      * Checks cache to see if we have recently loaded this profile. Clears cache every 
@@ -152,9 +153,8 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                     // Github lists in 'most recent' order.
                     duplicate = false;
                     angular.forEach(parsed.issues, function(item){
-                        if(item.number === issue.number){
-                            duplicate = true;
-                        }                  
+                        if(item.number === issue.number)
+                            duplicate = true;                  
                     }); 
 
                     if (!duplicate)
@@ -253,7 +253,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
 
                 self.setAuthToken(Meteor.user().profile.authToken);          
                 self.getMe().then( 
-                    function(success){ d.resolve(true) }, 
+                    function(success){ d.resolve() }, 
                     function(error){ d.reject('AUTH_REQUIRED') 
                 });
             }, 
@@ -263,7 +263,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
             });
 
         } else {
-            d.resolve(true);
+            d.resolve();
         }
         return d.promise;
     }
@@ -322,12 +322,12 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                     self.events = account.events;
                     self.followers = account.followers;
                     gh_debug = account;
-                    d.resolve(true);
+                    d.resolve();
             
             })
-            .catch(function(e){logger(where, e); d.reject(e) }) })
-            .catch(function(e){logger(where, e); d.reject(e) }) })
-            .catch(function(e){logger(where, e); d.reject(e) })
+            .catch(function(e){logger(where, JSON.stringify(e)); d.reject(e) }) })
+            .catch(function(e){logger(where, JSON.stringify(e)); d.reject(e) }) })
+            .catch(function(e){logger(where, JSON.stringify(e)); d.reject(e) })
 
         return d.promise
     };
@@ -413,7 +413,6 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
                 if (err){
                     logger(where, err);
                     d.reject(err);
-            
                 } else {
                     cacheGraph(username, response);
                     d.resolve(response);

@@ -18,38 +18,53 @@ Meteor.methods({
     },
     //----------------------------------- Notifications ---------------------------------------
     /**
-     * Adds a notification to the receiver's notifications array, increments their notify count
-     * @param  {Object} info `{taget: _id, notification: {}}
+     * Adds a notification to the receiver's notifications array, increments their notify count.
+     * Push notifications are sent to the device if the transmitter is newly listed in the
+     * notifications array. Otherwise the proximity contact is silently added. 
+     * @param  {Object} info `{target: _id, notification: {}}
      */
     notify(info){
-        console.log('in notify');
+        var target, note, noteList, sendPush = true;
 
-        var target, note;
-
-        // Device Notify
-        Meteor.users.update({_id: info.target},{
-            $inc: {'profile.notifyCount': 1 },
-            $push: {'profile.notifications': info.notification} 
-        });
-
-        // Push Notify  
         target = Meteor.users.findOne({_id: info.target});
         
-        if (target && target.profile.pushToken){
-            console.log("Token:" + target.profile.pushToken);
+        if (target){
+            noteList = target.profile.notifications;
             
-            note = { 
-                from: 'push', 
-                text: info.notification.name + ' checked your profile.', 
-                sound: 'ping.aiff'
-            };
-            
-            Push.sendAPN(target.profile.pushToken, note);
+            // Remove duplicate notifications and don't ping user.
+            for (var i = 0; i < noteList.length; i++){
+                if (info.notification.transmitter === noteList[i].id){
+                    noteList = noteList.splice(i, 1);
+                    sendPush = false;
+                }
+            }
+
+            // Update collection/client with new notification. At a minimum
+            // the date will be newer and result in higher sort order filtering
+            // on the client
+            noteList.push(info.notification);
+            Meteor.users.update({_id: info.target},{
+                $set: {'profile.notifications': noteList} 
+            });
+
+            // Send push notification, update client badges.
+            if(target.profile.pushToken && sendPush){
+                Meteor.users.update({_id: info.target},{
+                    $inc: {'profile.notifyCount': 1 }
+                });
+                note = { 
+                    from: 'push', 
+                    text: info.notification.name + 'is nearby.', 
+                    sound: 'ping.aiff'
+                };
+                Push.sendAPN(target.profile.pushToken, note);
+            }
         }
     },
 
     /**
      * Resets clients notifyCount to zero (for updating client side badges etc. . .)
+     * notifyCount is the number of unchecked notifications.
      * @method  resetNotifyCounter
      */
     resetNotifyCounter(){
@@ -69,24 +84,23 @@ Meteor.methods({
 
     //----------------------------------- Connections ------------------------------------    
     /**
-     * Upserts a transmitter/receiver record into Connections. Clients subscribe to the subset of
-     * records in which they are the transmitter and someone else received the signal. That list
-     * of receivers is reflected in the 'Nearby' view of the app. Receivers get a notification
-     * that they have been transmitted to. If the transmitter already exists in their notification
-     * history, the old record is deleted an placed at the front of the notification list with 
-     * fresh date data.
-     * @param  {Object} beaconIds {transmitter: email, receiver: email}
+     * Upserts a proximity connection. Clients subscribe to the subset of
+     * records where they are the transmitter and someone else received the signal. 
+     * Receivers get a notification that they have been transmitted to. If the transmitter 
+     * already exists in their notification history, the old record is deleted and the new
+     * contact pushed onto the notification stack with fresh date data.
+     * @param  {Object} msg {transmitter: uuid, receiver: uuid, proximity: string, notification: {object}}
      */
-    newConnection(beaconIds){
+    newConnection(msg){
         
-        check(beaconIds, {
+        check(msg, {
             transmitter: String,
             receiver: String,
             proximity: String
         })
 
-        var receiver = Accounts.findUserByEmail(beaconIds.receiver);
-        var transmitter = Accounts.findUserByEmail(beaconIds.transmitter);
+        var receiver = Accounts.findUserByEmail(msg.receiver),
+            transmitter = Accounts.findUserByEmail(msg.transmitter);
 
         if (transmitter && receiver){
 
@@ -96,15 +110,16 @@ Meteor.methods({
                     transmitter: transmitter._id, 
                     receiver: receiver._id,
                     transUUID: transmitter.profile.appId,
-                    proximity: beaconIds.proximity,
+                    proximity: msg.proximity,
                     receiver_name: receiver.username,
                     created_at: new Date() }
                 }
             );
+            return transmitter.username;
     
         } else {
-            console.log("Beacons ids are bad: " + JSON.stringify(beaconIds));
-            return;
+            console.log("Beacons ids are bad: " + JSON.stringify(msg));
+            return null;
         }
     },
     
@@ -115,7 +130,8 @@ Meteor.methods({
      */
     disconnect(beaconIds){
 
-        var receiver, transmitter;
+        var receiver, 
+            transmitter;
 
         check( beaconIds, {
             transmitter: String,
@@ -180,10 +196,7 @@ Meteor.methods({
             AppInstance.update(instance._id, {major: major, minor: minor}); 
             return {major: major, minor: minor};
         
-        } else {
-            return undefined;
-        }
-        
+        } else return undefined;
     },
 
     //---------------- Logging/Debugging -------------------------
