@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/git-phaser/git-phaser.svg?branch=master)](https://travis-ci.org/git-phaser/git-phaser)
 
-Gitphaser is an experiment in using phone-based beacons to create social networking tools based on physical proximity. By transmitting and receiving BLE beacon signal it makes the GitHub profiles of nearby git-phaser users visible and provides some basic services like encounter history. 
+Gitphaser is an experiment in using phone-based beacons to create social networking tools based on physical proximity. It leverages iOS's ability to transmit and receiver BLE beacon signal to make the GitHub profiles of nearby users visible. Use cases for an app like this are social events like Meetups and conferences. 
 
-Users only have to open login to the app once to be detectable. The app registers with its host device to listen continuously for specific beacons and gets woken up to run (briefly) in the background when they're encountered. This gives it time to contact a cloud based Meteor server and notify the network of a proximity contact. Git-phaser can be backgrounded or killed and still respond to signals sent by an active user.
+Users only have to login once to be detectable. From then on the app will (briefly) wake up in the background whenever its host device encounters git-phaser signal and contact a cloud based Meteor server to notify relevant subscribing clients of a proximity contact. On iOS this behavior occurs even if the user has killed the app. 
 
 ## Documentation
 [Docs for services, controllers and directives](https://git-phaser.github.io/git-phaser)
