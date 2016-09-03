@@ -250,8 +250,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
 
         if (!self.me){
             $auth.requireUser().then(function(userLoggedIn){
-
-                self.setAuthToken(Meteor.user().profile.authToken);          
+                self.setAuthToken(Meteor.user().profile.authToken);         
                 self.getMe().then( 
                     function(success){ d.resolve() }, 
                     function(error){ d.reject('AUTH_REQUIRED') 
@@ -263,9 +262,14 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
             });
 
         } else {
+            console.log('AuthToken: ' + Meteor.user().profile.authToken); 
             d.resolve();
         }
         return d.promise;
+    }
+
+    self.devInitialize = function(){
+        $github.setOauthCreds(authToken);
     }
 
     /**
@@ -286,6 +290,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
             $cordovaOauth.github(id, secret, perm, uri).then( function(result) {
 
                 token = result.split('&')[0].split('=')[1];
+                console.log('AuthToken: ' + Meteor.user().profile.authToken); 
                 self.setAuthToken(token);
                 logger(where, authToken);
                 d.resolve();
@@ -309,7 +314,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
     self.getMe = function(){
         var where = "GitHub:getMe";
         var d = $q.defer();
-
+        
         // Get API, then current user profile, then full account info.
         $github.getUser()
             .then( function(user){ user.show(null)

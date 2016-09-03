@@ -186,7 +186,8 @@ describe('Service: Beacons', function () {
             spyOn(Meteor, 'call');
             $scope.$broadcast('$cordovaBeacon:didRangeBeaconsInRegion', mock_beacons);
             $scope.$digest();
-            expect(Meteor.call).toHaveBeenCalled();
+            // This is bullshit. Changed because I can't figure out how to test w/return function
+            expect(Meteor.call).toHaveBeenCalledWith('newConnection', expected_pkg, jasmine.any(Function));
 
         })
 

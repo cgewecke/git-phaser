@@ -40,8 +40,6 @@ describe('Service: GitHub', function () {
         $auth.requireUser = function(){ return d1.promise };
         $cordovaOauth.github = function(){ return d1.promise };
         $ionicPlatform.ready = function(fn){ (fn)() };
-        
-
     }));
 
     it('should initialize correctly', function(){

@@ -217,7 +217,7 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
                self.lng = 0;
                self.enabled = false;
                deferred.resolve('');
-               logger(where, err);
+               logger(where, JSON.stringify(err));
             }
         );
 

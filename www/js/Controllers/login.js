@@ -34,24 +34,6 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
                 ionicToast.show(toastMessage, 'top', true, 2500);
                 logger(where, error);
             });
-
-        /*GitHub.authenticate().then(function(){
-
-            GitHub.getMe().then(function(){
-                meteorLogin();
-            },
-            function(error){
-                $scope.loggingIn = false;
-                ionicToast.show(toastMessage, 'top', true, 2500);
-                logger( where, error);
-            });
-
-        }, function(error){
-            $scope.loggingIn = false;
-            ionicToast.show(toastMessage, 'top', true, 2500);
-            logger(where, error);
-
-        });*/
     };
 
     /**
@@ -63,7 +45,10 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
      */
     $scope.devLogin = function(){
         logger('LoginCtrl:devLogin', '');
-        
+        /*GitHub.initialize()
+            .then(GitHub.getMe)
+            .then(meteorLogin)*/
+        GitHub.devInitialize();
         GitHub.getMe().then(meteorLogin);
     };
 
@@ -97,14 +82,15 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
         Meteor.call('hasRegistered', user.username, function(err, registered ){
             var where = 'LoginCtrl:hasRegistered';
             
-            if (!err){
+            if (err){
+                $scope.loggingIn = false;
+                logger(where, err);
+
+            } else {
                 (registered)  
                     ? loginWithAccount(user)  
                     : createAccount(user); 
-            } else {
-                $scope.loggingIn = false;
-                logger(where, err);
-            }
+            } 
         })               
     }
     /**
@@ -144,11 +130,11 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
         });
     };
     /**
-     * Get next beacon major/minor for this app instance, create user and save
-     * email string composed of uuid, beacon major and minor there and in local storage.  
+     * Gets next beacon major/minor for this app instance, creates user and saves
+     * email string composed of uuid, beacon major and minor on server and in local storage.  
      * Redirect to setup or kick back to login if there is an error. This could happen
-     * if for some reason two apps simultaneously create accounts and generate the same email
-     * address. Email is guaranteed to be unique.
+     * if two apps simultaneously create accounts and generate the same email
+     * address. Email field is being used because its guaranteed to be unique.
      * @param  {object} user Account object
      */
     function createAccount(user){
