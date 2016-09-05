@@ -31,13 +31,13 @@ function Notify($q, $rootScope, $ionicPlatform, GitHub, GeoLocate, $cordovaPushV
 
         $ionicPlatform.ready(function(){
             if (!Meteor.user().profile.pushToken || window.localStorage['pl_newInstall'] === 'true') {
-        
-                /*var config = {
+                
+                var config = {
                     android: {},
                     ios:{"sound": true, "alert": true},
                     windows: {}   
                 };
-                
+        
                 $cordovaPushV5.initialize(config).then(function(){
 
                     $rootScope.$on('$cordovaPushV5:errorOccurred', function(event, error){
@@ -46,29 +46,19 @@ function Notify($q, $rootScope, $ionicPlatform, GitHub, GeoLocate, $cordovaPushV
                     });
 
                     $cordovaPushV5.register().then(function(deviceToken){
+                        console.log('v5 post-registration');
                         Meteor.users.update({ _id: Meteor.userId() }, {$set: {'profile.pushToken' : deviceToken}});
                         window.localStorage['pl_newInstall'] = 'false';
                         deferred.resolve();
                     }).catch(function(err){ logger(where, JSON.stringify(err)); deferred.resolve()}) 
                 })
                 .catch(function(err){ logger(where, JSON.stringify(err)); deferred.resolve()})
-
-                /*$cordovaPushV5.register(iosConfig).then(function(deviceToken) {
-             
-                    Meteor.users.update({ _id: Meteor.userId() }, {$set: {'profile.pushToken' : deviceToken}});
-                    window.localStorage['pl_newInstall'] = 'false';
-                    deferred.resolve();
-
-                }, function(err) {
-                    logger(where, err);
-                    deferred.resolve();
-                });*/
-                deferred.resolve();
                 
             } else {
                 logger(where, 'already registered for APNS');
                 deferred.resolve();
             }
+            //deferred.resolve();
         });
 
         return deferred.promise;

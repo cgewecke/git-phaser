@@ -1,3 +1,4 @@
+var n_debug;
 angular.module('gitphaser').controller('NotificationsCtrl', NotificationsCtrl);
 /**
  * @ngdoc object
@@ -8,7 +9,8 @@ angular.module('gitphaser').controller('NotificationsCtrl', NotificationsCtrl);
  */
 function NotificationsCtrl ($scope, $reactive){
   	$reactive(this).attach($scope);
-  
+    
+    n_debug = $scope;
   	this.helpers({
 	  	notifications: function () {
 			if(Meteor.user()) 

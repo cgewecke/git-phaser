@@ -33,7 +33,7 @@ Meteor.methods({
             
             // Remove duplicate notifications and don't ping user.
             for (var i = 0; i < noteList.length; i++){
-                if (info.notification.transmitter === noteList[i].id){
+                if (info.notification.sender === noteList[i].sender){
                     noteList = noteList.splice(i, 1);
                     sendPush = false;
                 }

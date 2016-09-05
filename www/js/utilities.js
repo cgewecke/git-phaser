@@ -8,13 +8,10 @@ var GLOBAL_TESTING = false;
 
 function logger(where, message){
 	
-	if (GLOBAL_TESTING) return;
-
-	if (Meteor){
-		Meteor.call('ping', 'client: ' + where + ' ' + message);
-	};
-
-	console.log(where + ': ' + message);
+	if (Meteor) 		 Meteor.call('ping', 'client: ' + where + ' ' + message)
+	if (!GLOBAL_TESTING) console.log(where + ': ' + message);
+	
+	return null;
 };
 
 var secure = {

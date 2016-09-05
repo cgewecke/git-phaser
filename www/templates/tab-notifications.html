@@ -10,7 +10,7 @@
       <ion-item ng-repeat="note in vm.notifications | orderBy:'-timestamp'"
                 class="item-chat item-avatar item-icon-right"
                 type="item-text-wrap"
-                href="#/tab/notifications/{{note.sender}}"> 
+                href="#/others/notifications/{{note.sender}}"> 
         <img ng-src="{{note.pictureUrl}}">
         <h2>{{note.name}}</h2>
         <p> <span> Checked your profile </span> 

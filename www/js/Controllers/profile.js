@@ -66,10 +66,13 @@ function ProfileCtrl ($scope, $stateParams, $state, GitHub, account){
      * @ngdoc method
      * @methodOf gitphaser.object:ProfileCtrl
      * @name  gitphaser.object:ProfileCtrl.back
-     * @description Navigates to `tab.nearby`. For nav back arrow visible in the `others`
+     * @description Navigates back to `$stateParams.origin`. For nav back arrow visible in the `others`
      *              route.
      */
-	self.back = function(){  $state.go('tab.nearby') };
+	self.back = function(){  
+        if ($stateParams.origin === 'nearby')        $state.go('tab.nearby');
+        if ($stateParams.origin === 'notifications') $state.go('tab.notifications') 
+    };
 
 	/**
      * @ngdoc method

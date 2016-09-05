@@ -45,9 +45,6 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, GitHub, Beacon
      */
     $scope.devLogin = function(){
         logger('LoginCtrl:devLogin', '');
-        /*GitHub.initialize()
-            .then(GitHub.getMe)
-            .then(meteorLogin)*/
         GitHub.devInitialize();
         GitHub.getMe().then(meteorLogin);
     };

@@ -72,26 +72,26 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
      */
     self.isEnabled = function(){
         var where = 'GeoLocate:isEnabled'
-        var deferred = $q.defer();
+        var d = $q.defer();
 
         if ($rootScope.DEV){
-            deferred.resolve(true); 
-            return deferred.promise; 
+            d.resolve(true); 
+            return d.promise; 
         }
         
         $cordovaGeolocation.getCurrentPosition(posOptions).then(
 
             function (success){
                 self.enabled = true;
-                logger(where, 'enabled')
-                deferred.resolve(true);
+                logger(where, 'enabled');
+                d.resolve(true);
             }, function (error){
                 self.enabled = false;
                 logger(where, 'disabled');
-                deferred.resolve(false);
+                d.resolve(false);
             }
         );
-        return deferred.promise;
+        return d.promise;
     };
 
     /**
@@ -145,20 +145,21 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
     self.getAddress = function(){
 
         var where = "GeoLocate:getAddress";
-        var deferred = $q.defer();
+        var geocoder, latlng, d = $q.defer();
 
         if ($rootScope.DEV){
             self.address = '777 Debugger Ave, New York City';
             self.lat = 51.505;
             self.lng = -0.09;
-            deferred.resolve(self.address); 
-            return deferred.promise; 
+            d.resolve(self.address); 
+            return d.promise; 
         }
 
         // Get current pos
         $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
                 
             self.enabled = true;
+            self.address = '';
 
             // Check coords exist
             if (position.coords){
@@ -169,8 +170,8 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
                 if (self.lng && self.lat && google.maps ){
                     
                     // Initialize maps
-                    var geocoder = new google.maps.Geocoder();
-                    var latlng = new google.maps.LatLng(self.lat, self.lng );
+                    geocoder = new google.maps.Geocoder();
+                    latlng = new google.maps.LatLng(self.lat, self.lng );
 
                     // Reverse Geocode
                     geocoder.geocode({ 'latLng': latlng }, function (results, status) {
@@ -181,34 +182,19 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
                             if (results[1]) {
                                 logger(where, JSON.stringify(results[1].formatted_address));
                                 self.address = results[1].formatted_address.split(',').slice(0, -2).join(', '),
-                                deferred.resolve(self.address);
+                                d.resolve(self.address);
 
                             // No address
-                            } else {
-                                self.address = '';
-                                deferred.resolve('');
-                                logger(where, 'no maps results for position');
-                            }
-
+                            } else d.resolve(logger(where, 'no maps results for position'));
+    
                        // Geocoder call fail
-                       } else {
-                            self.address = '';
-                            deferred.resolve('');
-                            logger(where, 'google.maps.geocode error');
-                       }
+                       } else d.resolve(logger(where, 'google.maps.geocode error'));
                     });
                 // Maps or vals bad    
-                } else {
-                    self.address = '';
-                    deferred.resolve('');
-                    logger(where, 'no position vals or no google.maps');
-                }     
+                } else d.resolve(logger(where, 'no position vals or no google.maps'));
+
             // No coordinates in position
-            } else {
-                self.address = '';
-                deferred.resolve('');
-                logger(where, 'no $cordova.geolocation position object');
-            }       
+            } else d.resolve(logger(where, 'no $cordova.geolocation position object'));
 
             // $cordova layer failure   
             }, function(err) {
@@ -216,12 +202,11 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
                self.lat = 0;
                self.lng = 0;
                self.enabled = false;
-               deferred.resolve('');
-               logger(where, JSON.stringify(err));
+               d.resolve(logger(where, JSON.stringify(err)));
             }
         );
 
-        return deferred.promise;
+        return d.promise;
     };
 
 };
