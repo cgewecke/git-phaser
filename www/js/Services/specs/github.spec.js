@@ -2,8 +2,9 @@ var g_debug;
 
 describe('Service: GitHub', function () {
     
-    beforeEach(module('gitphaser'));    // Application
-    beforeEach(module('mocks'));  // Mocked Meteor services, collections
+    beforeEach(module('gitphaser'));        // Application
+    beforeEach(module('mocks'));            // Mocked Meteor services, collections
+    beforeEach(module('ngCordovaMocks'))    // NgCordova mocks (keychain)
 
     // Disable Ionic templating
     beforeEach(module(function($provide, $urlRouterProvider) {  
@@ -11,11 +12,11 @@ describe('Service: GitHub', function () {
         $urlRouterProvider.deferIntercept();
     }));
 
-    var $scope, $q, $cordovaBeacon, $window, $auth, $cordovaOauth, $ionicPlatform,
+    var $scope, $q, $cordovaBeacon, $window, $auth, $cordovaOauth, $cordovaKeychain, $ionicPlatform,
         GitHub, Mock, user, d1, d2, d3, d4;
 
     beforeEach(inject(function(_$rootScope_, _$q_, _$window_, _Mock_, _GitHub_, _$github_,
-                               _$auth_, _$cordovaOauth_, _$ionicPlatform_ ){
+                               _$auth_, _$cordovaOauth_, _$cordovaKeychain_, _$ionicPlatform_ ){
         
         $scope = _$rootScope_;
         $q = _$q_;
@@ -25,6 +26,7 @@ describe('Service: GitHub', function () {
         $github = _$github_;
         $auth = _$auth_;
         $cordovaOauth = _$cordovaOauth_;
+        $cordovaKeychain = _$cordovaKeychain_;
         $ionicPlatform = _$ionicPlatform_;
 
         Mock = _Mock_;
@@ -57,8 +59,11 @@ describe('Service: GitHub', function () {
             var value;
 
             GitHub.setAuthToken('hello');
+            $scope.$digest();
             value = GitHub.getAuthToken();
-            expect(value).toEqual('hello');
+            $scope.$digest();
+            expect(value.$$state.status).toEqual(1);
+            expect(value.$$state.value).toEqual('hello');
 
         });
 
@@ -66,6 +71,7 @@ describe('Service: GitHub', function () {
 
             spyOn($github, 'setOauthCreds');
             GitHub.setAuthToken('hello');
+            $scope.$digest();
             expect($github.setOauthCreds).toHaveBeenCalledWith('hello');
         });
     });
@@ -101,17 +107,19 @@ describe('Service: GitHub', function () {
 
         });
 
-        it('should obtain token from Meteor user and set credentials during initialization', function(){
+        it('should obtain token from keychain and set credentials during initialization', function(){
 
-            Mock.user.profile.authToken = "testToken";
+            // Set Token
+            GitHub.setAuthToken('hello');
+            $scope.$digest();
 
             spyOn($auth, 'requireUser').and.callThrough();
-            spyOn(GitHub, 'setAuthToken');
+            spyOn($github, 'setOauthCreds');
 
             d1.resolve();
             GitHub.initialize();
             $scope.$digest();
-            expect(GitHub.setAuthToken).toHaveBeenCalledWith("testToken");
+            expect($github.setOauthCreds).toHaveBeenCalledWith('hello');
 
         });
 
@@ -183,7 +191,7 @@ describe('Service: GitHub', function () {
             
             spyOn($ionicPlatform, 'ready').and.callThrough();
             spyOn($cordovaOauth, 'github').and.callThrough();
-            spyOn(GitHub, 'setAuthToken');
+            spyOn(GitHub, 'setAuthToken').and.callThrough();
 
             d1.resolve('access_token=ABCD&other_stuff=898989');
 
@@ -578,7 +586,6 @@ describe('Service: GitHub', function () {
             $scope.$digest();
 
             expect(GitHub.api.follow).toHaveBeenCalledWith(user.login);
-
         });
 
         it('should update local following/followers data', function(){

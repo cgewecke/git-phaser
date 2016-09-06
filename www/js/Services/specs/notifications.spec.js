@@ -5,6 +5,7 @@ describe('Service: Notify', function () {
     
     beforeEach(module('gitphaser'));    // Application
     beforeEach(module('mocks'));  // Mocked Meteor services, collections
+    beforeEach(module('ngCordovaMocks'))
 
     // Disable Ionic templating
     beforeEach(module(function($provide, $urlRouterProvider) {  
@@ -34,6 +35,7 @@ describe('Service: Notify', function () {
 
         //$cordovaPush mocks
         $cordovaPushV5.register = function(config){return defer.promise };
+        $cordovaPushV5.initialize = function(config){ return $q.when()};
         
         // GitHub mocks
         GitHub.me = {
@@ -81,6 +83,7 @@ describe('Service: Notify', function () {
         	
         	// Setup
         	user.profile.pushToken = null;
+            spyOn($cordovaPushV5, 'initialize').and.callThrough();
         	spyOn($cordovaPushV5, 'register').and.callThrough();
 
         	// Test
@@ -94,6 +97,7 @@ describe('Service: Notify', function () {
         	// Setup
         	user.profile.pushToken = '12345';
         	$window.localStorage['pl_newInstall'] = 'true';
+            spyOn($cordovaPushV5, 'initialize').and.callThrough();
         	spyOn($cordovaPushV5, 'register').and.callThrough();
 
         	// Test
@@ -121,6 +125,7 @@ describe('Service: Notify', function () {
         	user.profile.pushToken = null;
         	Meteor.users = { update: function(){}};
         	
+            spyOn($cordovaPushV5, 'initialize').and.callThrough();
         	spyOn($cordovaPushV5, 'register').and.callThrough();
         	spyOn(Meteor.users, 'update');
 
@@ -138,6 +143,8 @@ describe('Service: Notify', function () {
         	// Successful register
         	defer.resolve('xyz');
         	user.profile.pushToken = null;
+
+            spyOn($cordovaPushV5, 'initialize').and.callThrough();
         	spyOn($cordovaPushV5, 'register').and.callThrough();
 
         	result = Notify.initialize();

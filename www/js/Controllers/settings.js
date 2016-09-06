@@ -75,7 +75,7 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
         GitHub.initialize()
             .then(function(){ GitHub.getAccount(GitHub.me.login)
             .then(function(account){
-                console.log(JSON.stringify(account))
+                console.log('@testNotify: ' + JSON.stringify(account.info))
                 pkg = {};
                 pkg.target = Meteor.userId();
                 pkg.notification = {

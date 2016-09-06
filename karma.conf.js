@@ -29,6 +29,8 @@ module.exports = function(config) {
         'www/lib/angular-meteor/dist/angular-meteor.bundle.js',
         'www/lib/angular-meteor/dist/angular-meteor-auth.bundle.js',
         'www/lib/ngCordova/dist/ng-cordova.js',
+        'www/lib/ngCordova/dist/ng-cordova-mocks.js',
+
         'www/lib/ng-cordova-oauth/dist/ng-cordova-oauth.min.js',
         'www/lib/ionic-toast/dist/ionic-toast.bundle.min.js',
         'www/lib/leaflet/leaflet.js',
@@ -54,6 +56,7 @@ module.exports = function(config) {
         'tests/mocks/*.js',
         'tests/util/*.js',
 
+        //'www/js/Services/specs/notifications.spec.js',
         'www/js/Services/specs/*.js',
         'www/js/Controllers/specs/*.js',
         'www/js/Directives/specs/*.js'

@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/git-phaser/git-phaser.svg?branch=master)](https://travis-ci.org/git-phaser/git-phaser)
 
-Gitphaser is an experiment in using phone-based beacons to create social networking tools based on physical proximity. It leverages iOS's ability to transmit and receive BLE beacon signal to make the public GitHub profiles of nearby users visible. Use cases for an app like this are social events like Meetups and conferences. 
+Gitphaser is an experiment in using phone-based beacons to create social networking tools based on physical proximity. It leverages iOS's ability to transmit and receive BLE beacon signal to make the public GitHub profiles of nearby users visible. Use cases for this kind of app are social events like Meetups and conferences. 
 
-Users only have to login once to be detectable. From then on the app will (briefly) wake up in the background whenever its host device encounters git-phaser beacon signals. This gives it enough time to contact a cloud based Meteor server to notify actively transmitting clients that they triggered a proximity contact. On iOS this occurs even if the user has killed the app. 
+Users only have to login once to be detectable. From then on the app will (briefly) wake up in the background whenever its host device encounters BLE signal emitted by active git-phaser users (i.e. users who have foregrounded git-phaser and are looking for other people). This gives it enough time to contact a Meteor server and notify clients that a proximity contact was triggered. On iOS this 'wake-up' occurs even if the user has killed the app. 
 
-**Git-phaser does not track by location or store location data about its clients** Detection of proximate users is acccomplished by providing each app instance with a unique beacon signature linked to a public Github profile on account creation. If users are near each other, they can see each other. Users must be visible in order to see. Revoking beacon permissions in the device settings disables the app. 
+**Git-phaser does not track by location or store location data about its clients** Detection of proximate users is acccomplished by providing each app instance with a unique beacon signature linked to a public Github profile. If users are near each other, they can see each other. Revoking beacon permissions in the device settings disables the app. 
 
 **Git-phaser does not store any GitHub data on its servers apart from usernames.** Passwordless access to git-phaser is accomplished by generating a client side key when an account is created and storing it in the device keychain. Deleting this key will disable the app. All profile data is retrieved by the mobile client from Github itself on a session by session basis.    
 

@@ -130,21 +130,6 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
         }],
       }
   })
-  .state('tab.notifications-profile', {
-    url: '/notifications/:sender',
-    views: {
-      'tab-notifications': {
-        templateUrl: 'templates/tab-profile.html',
-        controller: 'NotificationsProfileCtrl',
-        controllerAs: 'vm'
-      }
-    },
-    resolve: {
-      user: ['$auth', function($auth){
-          return $auth.requireUser();
-      }]
-    }
-  })
   .state('tab.settings', {
     url: '/settings',
     views: {

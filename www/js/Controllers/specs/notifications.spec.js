@@ -90,7 +90,7 @@ describe('NotificationsCtrl', function(){
         html = template.find('ion-item')[0];
         item = angular.element(html);
 
-        expect(item.attr('href')).toEqual('#/tab/notifications/nicole');
+        expect(item.attr('href')).toEqual('#/others/notifications/nicole');
 
     })
 

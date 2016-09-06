@@ -29,38 +29,33 @@ function Notify($q, $rootScope, $ionicPlatform, GitHub, GeoLocate, $cordovaPushV
             return deferred.promise 
         };
 
-        $ionicPlatform.ready(function(){
-            if (!Meteor.user().profile.pushToken || window.localStorage['pl_newInstall'] === 'true') {
-                
-                var config = {
-                    android: {},
-                    ios:{"sound": true, "alert": true},
-                    windows: {}   
-                };
-        
-                $cordovaPushV5.initialize(config).then(function(){
+        if (!Meteor.user().profile.pushToken || window.localStorage['pl_newInstall'] === 'true') {
+            
+            var config = {
+                android: {},
+                ios:{"sound": true, "alert": true},
+                windows: {}   
+            };
+    
+            $cordovaPushV5.initialize(config).then(function(){
 
-                    $rootScope.$on('$cordovaPushV5:errorOccurred', function(event, error){
-                        logger(where, JSON.stringify(err)); 
-                        deferred.resolve();
-                    });
+                $rootScope.$on('$cordovaPushV5:errorOccurred', function(event, error){
+                    logger(where, JSON.stringify(err)); 
+                    deferred.resolve();
+                });
 
-                    $cordovaPushV5.register().then(function(deviceToken){
-                        console.log('v5 post-registration');
-                        Meteor.users.update({ _id: Meteor.userId() }, {$set: {'profile.pushToken' : deviceToken}});
-                        window.localStorage['pl_newInstall'] = 'false';
-                        deferred.resolve();
-                    }).catch(function(err){ logger(where, JSON.stringify(err)); deferred.resolve()}) 
-                })
-                .catch(function(err){ logger(where, JSON.stringify(err)); deferred.resolve()})
-                
-            } else {
-                logger(where, 'already registered for APNS');
-                deferred.resolve();
-            }
-            //deferred.resolve();
-        });
-
+                $cordovaPushV5.register().then(function(deviceToken){
+                    Meteor.users.update({ _id: Meteor.userId() }, {$set: {'profile.pushToken' : deviceToken}});
+                    window.localStorage['pl_newInstall'] = 'false';
+                    deferred.resolve();
+                }).catch(function(err){ logger(where, JSON.stringify(err)); deferred.resolve()}) 
+            })
+            .catch(function(err){ logger(where, JSON.stringify(err)); deferred.resolve()})
+            
+        } else {
+            logger(where, 'already registered for APNS');
+            deferred.resolve();
+        }
         return deferred.promise;
 
     };

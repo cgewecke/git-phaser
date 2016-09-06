@@ -22,6 +22,6 @@ var secure = {
 	github: {
 		id: 'cc2cd9f335b94412c764',
 		secret: '1f4838b6f17c07b6d91761930a2f484adc25762f',
-		auth: '4b6e119a5365ffdbe93f523a6a98bc8c2adf278f'
+		auth: '02ea6edd85a7178d53cf66082f514a1aa176d47c'
 	}
 }

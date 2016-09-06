@@ -7,7 +7,7 @@ angular.module('gitphaser').service("GitHub", GitHub);
  * @name  gitphaser.service:GitHub
  * @description  Provides access to the GitHub API
  */
-function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $github){
+function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $ionicPlatform, $github){
 
     var self = this;
     
@@ -17,12 +17,8 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
     var id = secure.github.id;          // oAuth Github id
     var secret = secure.github.secret;  // oAuth Github secret
     var perm = [];                      // oAuth Github requested permissions 
-   
-    // oAuth Token
-    var authToken = null;                                   // Production 
-    authToken = '02ea6edd85a7178d53cf66082f514a1aa176d47c'; // Development
-    //authToken = '4b6e119a5365ffdbe93f523a6a98bc8c2adf278f'; // Heroku server
-
+    var keychain = $cordovaKeychain     // Keychain service
+      
     /**
      * Checks cache to see if we have recently loaded this profile. Clears cache every 
      * 'cache_time'
@@ -35,9 +31,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
         var now = new Date();
 
         for(var i = 0; i < self.cache.length; i++){
-
             account = self.cache[i];
-
             if (account.info.login === username){
 
                 if(moment(account.cached_at).isSame(now, self.cache_time )){
@@ -212,12 +206,17 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
      * @methodOf gitphaser.service:GitHub
      * @name  gitphaser.service:GitHub.setAuthToken
      * @param {String} Github token acquired by user during oAuth login
-     * @description Convenience method to set authToken when app is already authenticated 
+     * @description Sets authToken when app is already authenticated 
      *              from previous use. 
      */
     self.setAuthToken = function(token){
-        authToken = token;
-        $github.setOauthCreds(token);
+        var key = 'gpat_' + Meteor.user().username;
+
+        if ($rootScope.DEV) return $q.when($github.setOauthCreds(secure.github.auth));
+        
+        return keychain.setForKey('gitphaser', key, token)
+            .then(function(){ return $q.when($github.setOauthCreds(token)) }) 
+    
     }
 
     /**
@@ -228,10 +227,13 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
      * @returns { String } authToken Github token acquired by user during oAuth login
      */
     self.getAuthToken = function(){
+        var key = 'gpat_' + Meteor.user().username;
+
+        if ($rootScope.DEV) return $q.when(secure.github.auth);
         
-        return (authToken) 
-            ? authToken
-            : null;
+        return keychain.getForKey('gitphaser', key)
+            .then(function(val){ return val })
+            .catch(function(err){ return err});   
     }
 
     /**
@@ -249,27 +251,24 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
         var d = $q.defer();
 
         if (!self.me){
-            $auth.requireUser().then(function(userLoggedIn){
-                self.setAuthToken(Meteor.user().profile.authToken);         
-                self.getMe().then( 
-                    function(success){ d.resolve() }, 
-                    function(error){ d.reject('AUTH_REQUIRED') 
-                });
-            }, 
-            function(userLoggedOut){
-                logger(where, userLoggedOut);
-                d.reject('AUTH_REQUIRED');
-            });
+            $auth.requireUser()
+                .then(function(){ self.getAuthToken(Meteor.user().username)
+                .then(function(token){ 
+                    $github.setOauthCreds(token);         
+                    self.getMe()
+                        .then( function(){ d.resolve() }) 
+                        .catch( function(){ d.reject('AUTH_REQUIRED') })
+                })
+                .catch(function(){ d.reject('AUTH_REQUIRED') }) })
+                .catch(function(){ d.reject('AUTH_REQUIRED') })
 
-        } else {
-            console.log('AuthToken: ' + Meteor.user().profile.authToken); 
-            d.resolve();
-        }
+        } else d.resolve();
+
         return d.promise;
     }
 
     self.devInitialize = function(){
-        $github.setOauthCreds(authToken);
+        $github.setOauthCreds(secure.github.auth);
     }
 
     /**
@@ -290,10 +289,10 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $ionicPlatform, $gi
             $cordovaOauth.github(id, secret, perm, uri).then( function(result) {
 
                 token = result.split('&')[0].split('=')[1];
-                console.log('AuthToken: ' + Meteor.user().profile.authToken); 
-                self.setAuthToken(token);
-                logger(where, authToken);
-                d.resolve();
+                self.setAuthToken(token).then( function(){
+                    logger(where, token);
+                    d.resolve();
+                });
             }, 
             function(e) { 
                 logger(where, e); 

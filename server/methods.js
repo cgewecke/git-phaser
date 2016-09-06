@@ -30,15 +30,15 @@ Meteor.methods({
         
         if (target){
             noteList = target.profile.notifications;
-            
+        
             // Remove duplicate notifications and don't ping user.
             for (var i = 0; i < noteList.length; i++){
                 if (info.notification.sender === noteList[i].sender){
-                    noteList = noteList.splice(i, 1);
+                    noteList.splice(i, 1);
                     sendPush = false;
                 }
             }
-
+    
             // Update collection/client with new notification. At a minimum
             // the date will be newer and result in higher sort order filtering
             // on the client
@@ -46,7 +46,7 @@ Meteor.methods({
             Meteor.users.update({_id: info.target},{
                 $set: {'profile.notifications': noteList} 
             });
-
+    
             // Send push notification, update client badges.
             if(target.profile.pushToken && sendPush){
                 Meteor.users.update({_id: info.target},{

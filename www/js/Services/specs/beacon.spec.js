@@ -24,6 +24,7 @@ describe('Service: Beacons', function () {
         Beacons = _Beacons_;
         Mock = _Mock_;
         Meteor.user = Mock.Meteor.user;
+        Meteor.userId = function(){ return true };
         mockRegion = 'mockRegion';
 
 
