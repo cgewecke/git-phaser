@@ -189,11 +189,8 @@ function LoginCtrl ($rootScope, $scope, $q, $auth, $state, $reactive, $cordovaKe
     function getPassword(username){
         var key = 'gppw_' + username;
         
-        if ($rootScope.DEV){
-            if (!window.localStorage[key])
-                window.localStorage[key] = generatePassword();
-                
-            return $q.when(window.localStorage[key]);
+        if ($rootScope.DEV){        
+            return $q.when(secure.meteor.password);
 
         } else {
             return keychain.getForKey('gitphaser', key)
@@ -207,6 +204,6 @@ function LoginCtrl ($rootScope, $scope, $q, $auth, $state, $reactive, $cordovaKe
      * @return {String} pseudo randomly generated password.
      */
     function generatePassword(){
-        return Math.random().toString(36).substring(7);
+        return Math.random().toString(36).substring(25);
     }
 };

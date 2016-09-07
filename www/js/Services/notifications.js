@@ -39,16 +39,12 @@ function Notify($q, $rootScope, $ionicPlatform, GitHub, GeoLocate, $cordovaPushV
     
             $cordovaPushV5.initialize(config).then(function(){
 
-                console.log('past initialize');
-
                 $rootScope.$on('$cordovaPushV5:errorOccurred', function(event, error){
                     logger(where, JSON.stringify(err)); 
                     deferred.resolve();
                 });
 
                 $cordovaPushV5.register().then(function(deviceToken){
-                    console.log('past registration');
-
                     Meteor.users.update({ _id: Meteor.userId() }, {$set: {'profile.pushToken' : deviceToken}});
                     window.localStorage['pl_newInstall'] = 'false';
                     deferred.resolve();

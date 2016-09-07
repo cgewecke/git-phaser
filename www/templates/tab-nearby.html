@@ -16,6 +16,9 @@
         <ion-list>
             <nearby-user ng-repeat="item in vm.connections" model="item"> </nearby-user> 
         </ion-list>
+        <ion-item id="nearby-none" type="item-text-wrap" ng-show="!vm.connections.length"> 
+          No one is nearby. 
+      </ion-item>
       </ion-slide>
       
       <!-- Map Slide -->

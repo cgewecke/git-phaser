@@ -19,7 +19,7 @@ function run ($ionicPlatform, $rootScope, $auth, $state, Beacons ) {
 		}
 
 		$rootScope.DEV = false;
-		$rootScope.beaconsOFF = true;
-		$rootScope.notificationsOff = true;
+		$rootScope.beaconsOFF = false;
+		$rootScope.notificationsOff = false;
 	});
 }

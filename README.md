@@ -40,8 +40,6 @@ To run all:
 $ gulp test
 ```
 
-**WARNING** Tests will fail if the $rootscope.DEV is set in config/platform.js
-
 ## Ionic Server
 ```
 $ ionic serve

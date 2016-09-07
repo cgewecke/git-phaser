@@ -1,8 +1,8 @@
 {
   "apn": {
-    "passphrase": "1234",
+    "passphrase": "5810",
     "key": "key.pem",
-    "cert": "aps.pem"
+    "cert": "cert.pem"
   },
   "production":true,
   "badge": true,

@@ -22,6 +22,9 @@ var secure = {
 	github: {
 		id: 'cc2cd9f335b94412c764',
 		secret: '1f4838b6f17c07b6d91761930a2f484adc25762f',
-		auth: '02ea6edd85a7178d53cf66082f514a1aa176d47c'
+		auth: '181808b1f804ec436d888430f95535ff7d59bad1'
+	},
+	meteor: {
+		password: "aibfeb"
 	}
 }
