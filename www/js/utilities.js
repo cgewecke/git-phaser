@@ -14,6 +14,8 @@ function logger(where, message){
 	return null;
 };
 
+var disp = JSON.stringify;
+
 var secure = {
 	mapbox: {
 		token: 'pk.eyJ1IjoiZXBpbGVwb25lIiwiYSI6ImNpanRyY3IwMjA2cmp0YWtzdnFoenhkbjkifQ._Sg2cIhMaGfU6gpKMmrGBA',

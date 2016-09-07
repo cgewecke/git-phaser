@@ -6,9 +6,10 @@ angular.module('gitphaser').controller('ProfileCtrl', ProfileCtrl)
  * @description  Exposes GitHub.me profile object or account object to the profile template.
  *               Governs the `/tab/profile` and `others/:username` routes. 
  */
-function ProfileCtrl ($scope, $stateParams, $state, GitHub, account){
+function ProfileCtrl ($scope, $stateParams, $state, $cordovaInAppBrowser, GitHub, account){
   
 	var self = this;
+    self.browser = $cordovaInAppBrowser;
 
 	/**
      * @ngdoc object
@@ -61,7 +62,7 @@ function ProfileCtrl ($scope, $stateParams, $state, GitHub, account){
 		(self.blog) ? self.location = false : true;
 
 	} 
-
+    
 	/**
      * @ngdoc method
      * @methodOf gitphaser.object:ProfileCtrl

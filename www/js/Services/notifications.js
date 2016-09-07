@@ -23,11 +23,7 @@ function Notify($q, $rootScope, $ionicPlatform, GitHub, GeoLocate, $cordovaPushV
         var where = 'Notify:initialize';
         var deferred = $q.defer();
 
-        // THIS WHOLE THING IS DISABLED PENDING FIX IN ISSUE #31 (cf. 'true')
-        if($rootScope.DEV || !Meteor.user() || $rootScope.notificationsOff ){ 
-            deferred.resolve(); 
-            return deferred.promise 
-        };
+        if($rootScope.DEV) return $q.when(); 
 
         if (!Meteor.user().profile.pushToken || window.localStorage['pl_newInstall'] === 'true') {
             
@@ -40,7 +36,7 @@ function Notify($q, $rootScope, $ionicPlatform, GitHub, GeoLocate, $cordovaPushV
             $cordovaPushV5.initialize(config).then(function(){
 
                 $rootScope.$on('$cordovaPushV5:errorOccurred', function(event, error){
-                    logger(where, JSON.stringify(err)); 
+                    logger(where, disp(err)); 
                     deferred.resolve();
                 });
 
@@ -48,9 +44,9 @@ function Notify($q, $rootScope, $ionicPlatform, GitHub, GeoLocate, $cordovaPushV
                     Meteor.users.update({ _id: Meteor.userId() }, {$set: {'profile.pushToken' : deviceToken}});
                     window.localStorage['pl_newInstall'] = 'false';
                     deferred.resolve();
-                }).catch(function(err){ logger(where, JSON.stringify(err)); deferred.resolve()}) 
+                }).catch(function(err){ logger(where, disp(err)); deferred.resolve()}) 
             })
-            .catch(function(err){ logger(where, JSON.stringify(err)); deferred.resolve()})
+            .catch(function(err){ logger(where, disp(err)); deferred.resolve()})
             
         } else {
             logger(where, 'already registered for APNS');

@@ -38,6 +38,8 @@
 .no-wrap{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .wrap{ word-wrap: break-word; white-space: normal}
 
+/* Ionic Overides */
+/*.has-header { top: 42px; }*/
 /*-------------------*/
 /* SIMU TABS         */
 /*-------------------*/
@@ -243,6 +245,11 @@ h1.login{
 i.icon.setup{
     font-size: 49px;
 }
+
+/*----------------*/
+/*    NEARBY      */
+/*----------------*/
+ion-content.nearby{  top: 42px; }
 
 /*----------------*/
 /*      MAP       */

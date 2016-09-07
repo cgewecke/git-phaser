@@ -105,7 +105,8 @@
                  ng-repeat="commit in vm.events.commits"
                  ng-class="{'no-top': $first, 'no-bottom': $last }">
               <div class="row">
-                <div class="col bold link">
+                <div class="col bold link" 
+                     ng-click="vm.browser.open(commit.url, '_blank')">
                   <span> {{commit.name}} </span>
                 </div>
               </div>
@@ -155,7 +156,10 @@
                 <div class="col col-75 grey smaller">
                   <div class="no-wrap"> 
                     <span class="bold"> #{{issue.number}} </span> 
-                    <span class="bold link"> {{issue.title}} </span>
+                    <span class="bold link" 
+                          ng-click="vm.browser.open(issue.url, '_blank')"> 
+                            {{issue.title}} 
+                    </span>
                   </div>
                   <div> {{issue.repo}} </div>      
                 </div>
@@ -193,8 +197,9 @@
                        <i ng-show="!repo.fork" class="ion-ios-bookmarks-outline"></i>
                         <i ng-show="repo.fork" class="ion-network"></i>
                     </div>
-                    <div class="col col-70 bold link no-wrap"> 
-                       {{repo.name}} 
+                    <div class="col col-70 bold link no-wrap" 
+                         ng-click="vm.browser.open(repo.html_url, '_blank')"> 
+                         {{repo.name}} 
                     </div>
                     <div class="col col-20 grey right">
                        <span class="smaller"> 

@@ -1,4 +1,4 @@
-var gh_debug;
+var gh_debug, gh_debugII, gh_debugIII;
 angular.module('gitphaser').service("GitHub", GitHub);
 
 /**
@@ -101,12 +101,14 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
 
                 var name = event.repo.name;
                 var date = event.created_at;
+                
+                gh_debugII = event;
 
                 if (!parsed.commits[name]){
 
                    parsed.commits[name] = {};
                    parsed.commits[name].name = name;
-                   parsed.commits[name].url = event.repo.url;
+                   parsed.commits[name].url = 'https://github.com/' + event.repo.name,
                    parsed.commits[name].size = event.payload.distinct_size;
                    parsed.commits[name].first = date;
                    parsed.commits[name].last = date;
@@ -132,9 +134,11 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
 
                 if (event.payload.action === 'opened' || event.payload.action == 'closed'){
 
+                    gh_debugIII = event;
+
                     var issue = {
                         repo: event.repo.name,
-                        repo_url: event.repo.url,
+                        url: 'https://github.com/' + event.repo.name,
                         action: event.payload.action,
                         title: event.payload.issue.title,
                         state: event.payload.issue.state,
