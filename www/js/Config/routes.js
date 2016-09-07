@@ -75,15 +75,19 @@ function config ($stateProvider, $urlRouterProvider, $angularMeteorSettings ) {
           return $auth.requireUser();
         }],
         linkInit: ['GitHub', 'user',function(GitHub, user){
+            console.log('gh initialized');
             return GitHub.initialize();
         }],
         pushInit: ['Notify', 'linkInit', function(Notify, linkInit){
+            console.log('notifcations initialized');
             return Notify.initialize();
         }],
         beaconInit: ['Beacons', 'pushInit', function(Beacons, pushInit){
+            console.log('beacons initialized');
             return Beacons.initialize();
         }],
         subscription: ['$q', 'beaconInit', function($q, beaconInit) {
+            console.log('connections initialized');
             var deferred = $q.defer();
      
             var sub = Meteor.subscribe('connections', {

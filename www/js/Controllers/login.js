@@ -6,7 +6,7 @@ angular.module('gitphaser').controller("LoginCtrl", LoginCtrl);
  * @description  Controller for the `login` route. Functions/Methods for a two-step login process 
  *               which signs user into GitHub and then Meteor using details from a GitHub profile
  */
-function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, $cordovaKeychain, GitHub, Beacons, ionicToast, $timeout ){
+function LoginCtrl ($rootScope, $scope, $q, $auth, $state, $reactive, $cordovaKeychain, GitHub, Beacons, ionicToast, $timeout ){
         
     $scope.DEV = $rootScope.DEV;
     $scope.loggingIn = false; // Dom flag for spinner that appears when returning from inAppBrowser login
@@ -75,13 +75,8 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, $cordovaKeycha
         };
 
         // Get password and authToken from keychain
-        $q.all([ 
-            getPassword(GitHub.me.login),
-            GitHub.getAuthToken(GitHub.me.login)
-        ]).then(function(vals){
-            user.password = vals[0];
-            user.profile.authToken = vals[1];
-
+        getPassword(GitHub.me.login).then(function(password){
+            user.password = password;
             // Check registration
             Meteor.call('hasRegistered', user.username, function(err, registered ){
                 var where = 'LoginCtrl:hasRegistered';
@@ -108,7 +103,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, $cordovaKeycha
      * @param  {Object} user Account object
      */
     function loginWithAccount(user){
-        logger('LoginCtrl:loginWithAccount', '');
+        logger('LoginCtrl:loginWithAccount', JSON.stringify(user));
 
         Meteor.loginWithPassword(user.username, user.password, function(err){
             if (!err){
@@ -131,7 +126,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, $cordovaKeycha
             
             } else {
                 $scope.loggingIn = false;
-                ionicToast.show("Couldn't login to git-phaser. (Password) Try again.", 'top', true, 2500);
+                ionicToast.show("Couldn't login because of a bad password. Ask for help at gitphaser.com", 'top', true, 2500);
             }
         });
     };
@@ -147,6 +142,8 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, $cordovaKeycha
 
         var where = 'LoginCtrl:createAccount';
         var toastMessage = "There was a problem creating an account. Try Again";
+
+        logger(where, user);
         
         Meteor.call( 'getUniqueAppId', function(err, val){ 
             if (!err && val ){
@@ -192,7 +189,7 @@ function LoginCtrl ($rootScope, $scope, $auth, $state, $reactive, $cordovaKeycha
     function getPassword(username){
         var key = 'gppw_' + username;
         
-        if ($rootscope.DEV){
+        if ($rootScope.DEV){
             if (!window.localStorage[key])
                 window.localStorage[key] = generatePassword();
                 

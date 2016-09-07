@@ -76,7 +76,8 @@ function Beacons($rootScope, $q, $cordovaBeacon, GitHub){
 
         var where = "Beacons:initialize";
         var deferred = $q.defer();
-
+        logger(where, '');
+        
         // Return if initialized. Also beacons cannot run in browser + output is annoying in XCode.
         if ($rootScope.DEV || $rootScope.beaconsOFF || self.initialized  ) { deferred.resolve(); return deferred; }
            

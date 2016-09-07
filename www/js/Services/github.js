@@ -210,12 +210,14 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
      *              from previous use. 
      */
     self.setAuthToken = function(token){
-        var key = 'gpat_' + Meteor.user().username;
+        var where = 'GitHub:setAuthToken';
+        var key = 'gh_token';
 
         if ($rootScope.DEV) return $q.when($github.setOauthCreds(secure.github.auth));
         
         return keychain.setForKey('gitphaser', key, token)
             .then(function(){ return $q.when($github.setOauthCreds(token)) }) 
+            .catch(function(error){ logger(where, error)})
     
     }
 
@@ -227,7 +229,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
      * @returns { String } authToken Github token acquired by user during oAuth login
      */
     self.getAuthToken = function(){
-        var key = 'gpat_' + Meteor.user().username;
+        var key = 'gh_token';
 
         if ($rootScope.DEV) return $q.when(secure.github.auth);
         
@@ -292,7 +294,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
                 self.setAuthToken(token).then( function(){
                     logger(where, token);
                     d.resolve();
-                });
+                }).catch(function(error){ logger(where, error); d.reject(error)})
             }, 
             function(e) { 
                 logger(where, e); 
