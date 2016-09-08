@@ -59,11 +59,8 @@ describe('Service: GitHub', function () {
             var value;
 
             GitHub.setAuthToken('hello');
-            $scope.$digest();
             value = GitHub.getAuthToken();
-            $scope.$digest();
-            expect(value.$$state.status).toEqual(1);
-            expect(value.$$state.value).toEqual('hello');
+            expect(value).toEqual('hello');
 
         });
 
@@ -71,7 +68,6 @@ describe('Service: GitHub', function () {
 
             spyOn($github, 'setOauthCreds');
             GitHub.setAuthToken('hello');
-            $scope.$digest();
             expect($github.setOauthCreds).toHaveBeenCalledWith('hello');
         });
     });

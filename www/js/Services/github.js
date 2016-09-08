@@ -102,8 +102,6 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
                 var name = event.repo.name;
                 var date = event.created_at;
                 
-                gh_debugII = event;
-
                 if (!parsed.commits[name]){
 
                    parsed.commits[name] = {};
@@ -133,8 +131,6 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
             } else if (event.type === 'IssuesEvent'){
 
                 if (event.payload.action === 'opened' || event.payload.action == 'closed'){
-
-                    gh_debugIII = event;
 
                     var issue = {
                         repo: event.repo.name,
@@ -217,12 +213,11 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
         var where = 'GitHub:setAuthToken';
         var key = 'gh_token';
 
-        if ($rootScope.DEV) return $q.when($github.setOauthCreds(secure.github.auth));
+        if ($rootScope.DEV) $github.setOauthCreds(secure.github.auth);
         
-        return keychain.setForKey('gitphaser', key, token)
-            .then(function(){ return $q.when($github.setOauthCreds(token)) }) 
-            .catch(function(error){ logger(where, error)})
-    
+        window.localStorage[key] = token;
+        $github.setOauthCreds(token);
+
     }
 
     /**
@@ -235,11 +230,9 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
     self.getAuthToken = function(){
         var key = 'gh_token';
 
-        if ($rootScope.DEV) return $q.when(secure.github.auth);
-        
-        return keychain.getForKey('gitphaser', key)
-            .then(function(val){ return val })
-            .catch(function(err){ return err});   
+        return ($rootScope.DEV) 
+            ? secure.github.auth
+            : window.localStorage[key]; 
     }
 
     /**
@@ -253,19 +246,19 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
      */
     self.initialize = function(){
 
+        var token;
         var where = 'GitHub:initialize';
         var d = $q.defer();
 
         if (!self.me){
             $auth.requireUser()
-                .then(function(){ self.getAuthToken(Meteor.user().username)
-                .then(function(token){ 
+                .then(function(){ 
+                    token = self.getAuthToken();
                     $github.setOauthCreds(token);         
                     self.getMe()
                         .then( function(){ d.resolve() }) 
                         .catch( function(){ d.reject('AUTH_REQUIRED') })
                 })
-                .catch(function(){ d.reject('AUTH_REQUIRED') }) })
                 .catch(function(){ d.reject('AUTH_REQUIRED') })
 
         } else d.resolve();
@@ -295,10 +288,9 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
             $cordovaOauth.github(id, secret, perm, uri).then( function(result) {
 
                 token = result.split('&')[0].split('=')[1];
-                self.setAuthToken(token).then( function(){
-                    logger(where, token);
-                    d.resolve();
-                }).catch(function(error){ logger(where, error); d.reject(error)})
+                self.setAuthToken(token);
+                logger(where, token);
+                d.resolve();
             }, 
             function(e) { 
                 logger(where, e); 
@@ -325,7 +317,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
             .then( function(user){ user.show(null)
             .then( function(info){ self.getAccount(info.login, user)
             .then( function(account){
-               
+                    
                     self.api = user;
                     self.me = account.info;
                     self.repos = account.repos;
@@ -335,9 +327,9 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
                     d.resolve();
             
             })
-            .catch(function(e){logger(where, JSON.stringify(e)); d.reject(e) }) })
-            .catch(function(e){logger(where, JSON.stringify(e)); d.reject(e) }) })
-            .catch(function(e){logger(where, JSON.stringify(e)); d.reject(e) })
+            .catch(function(e){logger(where + 'last ', JSON.stringify(e)); d.reject(e) }) })
+            .catch(function(e){logger(where + 'account ', JSON.stringify(e)); d.reject(e) }) })
+            .catch(function(e){logger(where + 'show ', JSON.stringify(e)); d.reject(e) })
 
         return d.promise
     };
@@ -380,12 +372,14 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
                 api.userFollowers(username)
             ])
             .then(function(results){
+
                 account.info = results[0];
                 account.repos = results[1];
                 account.events = parseEvents(results[2]);
                 account.followers = results[3];
                 account.cached_at = new Date();
                 self.cache.push(account);
+
                 d.resolve(account);
 
                 gh_debug = account;

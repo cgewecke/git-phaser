@@ -261,7 +261,7 @@ i.icon.setup{
 /*----------------*/
 /*    NEARBY      */
 /*----------------*/
-ion-content.nearby{  top: 42px; }
+ion-content.nearby{  top: 62px !important; }
 
 /*----------------*/
 /*      MAP       */
