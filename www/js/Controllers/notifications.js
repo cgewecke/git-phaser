@@ -10,11 +10,31 @@ angular.module('gitphaser').controller('NotificationsCtrl', NotificationsCtrl);
 function NotificationsCtrl ($scope, $reactive){
   	$reactive(this).attach($scope);
     
-    n_debug = $scope;
+    var self = this;
   	this.helpers({
 	  	notifications: function () {
 			if(Meteor.user()) 
 		  		return Meteor.user().profile.notifications;
 	  	}
   	});
+
+    /**
+     * @ngdoc method
+     * @methodOf gitphaser.object:NotificationsCtrl
+     * @name  gitphaser.object:NotificationsCtrl.remove
+     * @description Deletes a notification on client and server. 
+     */
+    this.remove = function(note){
+        
+        for (var i = 0; i < self.notifications.length; i++){
+            if (note.sender === self.notifications.sender){
+                self.notifications.splice(i, 1);
+                break;
+            }
+        }
+
+        Meteor.users.update({_id: Meteor.userId()}, 
+            {$set: {'profile.notifications' : self.notifications } }
+        );
+    }
 };

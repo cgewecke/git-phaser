@@ -22,10 +22,11 @@ function Notify($q, $rootScope, $ionicPlatform, GitHub, GeoLocate, $cordovaPushV
 
         var where = 'Notify:initialize';
         var deferred = $q.defer();
+        var user = Meteor.user();
 
-        if($rootScope.DEV) return $q.when(); 
+        if($rootScope.DEV || $rootScope.notificationsOff) return $q.when(); 
 
-        if (!Meteor.user().profile.pushToken || window.localStorage['pl_newInstall'] === 'true') {
+        if ((user && !user.profile.pushToken) || window.localStorage['pl_newInstall'] === 'true') {
             
             var config = {
                 android: {},

@@ -143,7 +143,7 @@ function LoginCtrl ($rootScope, $scope, $q, $auth, $state, $reactive, $cordovaKe
         var where = 'LoginCtrl:createAccount';
         var toastMessage = "There was a problem creating an account. Try Again";
 
-        logger(where, user);
+        logger(where, disp(user));
         
         Meteor.call( 'getUniqueAppId', function(err, val){ 
             if (!err && val ){
@@ -187,15 +187,25 @@ function LoginCtrl ($rootScope, $scope, $q, $auth, $state, $reactive, $cordovaKe
      * @return {String}          A pseudo-randomly generated string
      */
     function getPassword(username){
-        var key = 'gppw_' + username;
-        
+        var pw, key = 'gppw_' + username;
+    
         if ($rootScope.DEV){        
             return $q.when(secure.meteor.password);
 
         } else {
             return keychain.getForKey('gitphaser', key)
-                .catch( function(){ keychain.setForKey('gitphaser', key, generatePassword())})
-                .finally(function(){ return keychain.getForKey('gitphaser', key)})
+                .then(function(val){
+                    if (!val.length){
+                        val = generatePassword();
+                        keychain.setForKey('gitphaser', key, val);
+                    }
+                    return val;
+                })
+                .catch(function(){  
+                    pw = generatePassword();
+                    keychain.setForKey('gitphaser', key, pw);
+                    return pw;
+                })
         }
     };
 
@@ -204,6 +214,6 @@ function LoginCtrl ($rootScope, $scope, $q, $auth, $state, $reactive, $cordovaKe
      * @return {String} pseudo randomly generated password.
      */
     function generatePassword(){
-        return Math.random().toString(36).substring(25);
+        return Math.random().toString(36).substring(7);
     }
 };

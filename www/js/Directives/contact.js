@@ -55,7 +55,6 @@ function Contact($cordovaContacts, $ionicModal, ionicToast, GitHub){
             // Modal event: hide - turn background opacity off on modal hide
             scope.$on('modal.hidden', function() { ngModel.$setViewValue(false); });
 
-
              // --------------------------------- PRIVATE ------------------------------------
             /**
              * Determines if currentUser has already added this profile.

@@ -11,6 +11,8 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
     $reactive(this).attach($scope);
 
     var message = "Go to Settings > Git-Phaser in your device's settings menu to change this."
+    var penelope = "1_24_458735FA-E270-4746-B73E-E0C88EA6BEE0";
+
     this.geolocate = {enabled: true};
     this.notify = {enabled: true};
 
@@ -28,7 +30,7 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
         
         var pkg = {
             transmitter: Meteor.user().profile.appId,
-            receiver: Meteor.user().emails[0].address,
+            receiver: penelope
         }
         Meteor.call('disconnect', pkg, function(err, result){
             (err) ? console.log(JSON.stringify(err)) : console.log(JSON.stringify(result)); 
@@ -51,7 +53,7 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
 
         var pkg = {
             transmitter: Meteor.user().emails[0].address,
-            receiver: Meteor.user().emails[0].address,
+            receiver: penelope,
             proximity: Math.random().toString()
         }
         Meteor.call('newConnection', pkg, function(err, connections){})

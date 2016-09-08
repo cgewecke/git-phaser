@@ -57,6 +57,7 @@ Meteor.methods({
                     text: info.notification.name + 'is nearby.', 
                     sound: 'ping.aiff'
                 };
+                console.log('Sending push notification: ' + JSON.stringify(target));
                 Push.sendAPN(target.profile.pushToken, note);
             }
         }

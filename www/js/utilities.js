@@ -27,6 +27,7 @@ var secure = {
 		auth: '181808b1f804ec436d888430f95535ff7d59bad1'
 	},
 	meteor: {
-		password: "aibfeb"
+		password: "aibfeb",
+		penelope: "6bja7"
 	}
 }
