@@ -35,7 +35,7 @@ Meteor.methods({
             for (var i = 0; i < noteList.length; i++){
                 if (info.notification.sender === noteList[i].sender){
                     noteList.splice(i, 1);
-                    sendPush = false;
+                    //sendPush = false;
                 }
             }
     

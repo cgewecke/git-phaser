@@ -85,7 +85,6 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
                     type: 'detection',
                     pictureUrl: account.info.avatar_url,
                     name: account.info.name,
-                    profile: account.info,
                     timestamp: new Date()
                 };
                 Meteor.call('notify', pkg);

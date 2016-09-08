@@ -16,7 +16,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
     // Keys
     var id = secure.github.id;          // oAuth Github id
     var secret = secure.github.secret;  // oAuth Github secret
-    var perm = [];                      // oAuth Github requested permissions 
+    var perm = ['user:follow'];         // oAuth Github requested permissions 
     var keychain = $cordovaKeychain     // Keychain service
       
     /**

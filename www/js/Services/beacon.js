@@ -202,11 +202,10 @@ function Beacons($rootScope, $q, $cordovaBeacon, GitHub){
                                 pkg = {};
                                 pkg.target = Meteor.userId();
                                 pkg.notification = {
-                                    sender: account.login,
+                                    sender: account.info.login,
                                     type: 'detection',
                                     pictureUrl: account.info.avatar_url,
                                     name: account.info.name,
-                                    profile: account.info,
                                     timestamp: new Date()
                                 };
                                 Meteor.call('notify', pkg);
