@@ -1,10 +1,10 @@
 {
   "apn": {
     "passphrase": "5810",
-    "key": "key.pem",
-    "cert": "cert.pem"
+    "key": "devkey.pem",
+    "cert": "devcert.pem"
   },
-  "production":true,
+  "production":false,
   "badge": true,
   "sound": true,
   "alert": true,

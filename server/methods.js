@@ -35,7 +35,7 @@ Meteor.methods({
             for (var i = 0; i < noteList.length; i++){
                 if (info.notification.sender === noteList[i].sender){
                     noteList.splice(i, 1);
-                    //sendPush = false;
+                    sendPush = false;
                 }
             }
     
@@ -54,7 +54,7 @@ Meteor.methods({
                 });
                 note = { 
                     from: 'push', 
-                    text: info.notification.name + 'is nearby.', 
+                    text: info.notification.name + ' is nearby.', 
                     sound: 'ping.aiff'
                 };
                 console.log('Sending push notification: ' + JSON.stringify(target));

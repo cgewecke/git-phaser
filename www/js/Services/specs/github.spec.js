@@ -178,7 +178,7 @@ describe('Service: GitHub', function () {
 
                 secure.github.id,
                 secure.github.secret,
-                [],
+                [ 'user:follow' ],
                 { redirect_uri: 'http://cyclop.se/help'}
             );
         });
