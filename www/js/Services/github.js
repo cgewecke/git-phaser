@@ -323,6 +323,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
                     self.repos = account.repos;
                     self.events = account.events;
                     self.followers = account.followers;
+                    self.following = account.following;
                     gh_debug = account;
                     d.resolve();
             
@@ -369,7 +370,8 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
                 api.show(username),
                 api.userRepos(username),
                 api.userEvents(username),
-                api.userFollowers(username)
+                api.userFollowers(username),
+                api.userFollowing(username)
             ])
             .then(function(results){
 
@@ -377,6 +379,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
                 account.repos = results[1];
                 account.events = parseEvents(results[2]);
                 account.followers = results[3];
+                account.following = results[4];
                 account.cached_at = new Date();
                 self.cache.push(account);
 
@@ -438,8 +441,8 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
     self.canFollow = function(username){
 
         var can = true;
-        angular.forEach(self.followers, function(follower){
-            if (follower.login === username){
+        angular.forEach(self.following, function(following){
+            if (following.login === username){
                 can = false;
             }
         })

@@ -180,6 +180,16 @@
         });
       };
 
+      // List user following
+      // -----      
+      this.userFollowing = function(username, cb) {
+        var command = "/users/"+ username + "/following";
+
+        _request("GET", command, null, function(err, res) {
+          cb(err, res);
+        });
+      };
+
       // List a user's gists
       // -------
 

@@ -57,12 +57,15 @@ $ meteor mongo                                      // Launch
 $ db.users.find()                                   // List users
 $ db.users.remove({"_id":"7YYNWfkX9tWjuw8k6"});     // Remove user
 ```
-
 ## Build:
 
 ```
 $ ionic build ios
 ```
+
+## XCode Development Settings
+```Product > Scheme > Edit``` should be debug
+```Build Setting > Code Signing > Provisioning Profile```: should be IOS Team Provisioning Profile: com.ionicframework.git-phaser800962
 
 ## Deploy server 
 1. In beacon-production/server: % mv .git ..
@@ -77,10 +80,10 @@ $ ionic build ios
 ```
 
 ## Deploy to TestFlight
-1. Make sure www/lib/meteor-client-side/meteor-runtime-config.js is set to Production address
-2. Make sure flags in config.platform are set to production values
+1. Make sure www/lib/meteor-client-side/meteor-runtime-config.js is set to Production address.
+2. Make sure flags in config.platform AND server/config.push.json are set to production values.
 3. Build project in ionic
 4. In Xcode: General > Identity: Increment build or version number
-5. In Xcode: Product > Archive etc . . . see Issue #36 for detailed discussion of how this was set up. 
-6. To use the release build in development - go to Product > Scheme > Edit Scheme and change the run settings. (This is necessary to get push notifictions to work).
+5. In Xcode: Build Setting > Code Signing > Provisioning Profile: GitphaserProduction (All the other stuff should be 'distribution')
+6. In Xcode: Product > Archive. Validate, then upload. [This issue has more.](https://github.com/cgewecke/beacon-testing/issues/36)
 7. In iTunesConnect > Apps > TestFlight, select the new version to test. (These process for a while before they are available). 

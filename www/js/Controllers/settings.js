@@ -11,7 +11,8 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
     $reactive(this).attach($scope);
 
     var message = "Go to Settings > Git-Phaser in your device's settings menu to change this."
-    var penelope = "1_24_458735FA-E270-4746-B73E-E0C88EA6BEE0";
+    var penelope = "1_29_05DEE885-E723-438F-B733-409E4DBFA694";
+    var user1, user2, user3; // Fake users.
 
     this.geolocate = {enabled: true};
     this.notify = {enabled: true};
@@ -25,6 +26,58 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
     }
 
     // ------------------ -----  TESTING ----------------------------------
+    
+    user1 = {
+        username: 'alexanderGugel',
+        email: "0_0_4F7C5946-87BB-4C50-8051-D503CEBA2F19",
+        password: 'hello',
+        profile: {
+            beaconName: 'r_0',
+            notifications: [],
+            contacts: [],
+            notifyCount: 0,
+            pushToken: null,
+            major: 0,
+            minor: 0,
+            appId: "4F7C5946-87BB-4C50-8051-D503CEBA2F19",
+            session: null
+        }
+    };
+
+    user2 = {
+        username: 'michael',
+        email: "0_0_D4FB5D93-B1EF-42CE-8C08-CF11685714EB",
+        password: 'hello',
+        profile: {
+            beaconName: 'r_1',
+            notifications: [],
+            contacts: [],
+            notifyCount: 0,
+            pushToken: null,
+            major: 0,
+            minor: 0,
+            appId: "D4FB5D93-B1EF-42CE-8C08-CF11685714EB",
+            session: null
+        }
+    };
+
+    user3 = {
+        username: 'rainorshine',
+        email: "0_0_98983597-F322-4DC3-A36C-72052BF6D612",
+        password: 'hello',
+        profile: {
+            beaconName: 'r_2',
+            notifications: [],
+            contacts: [],
+            notifyCount: 0,
+            pushToken: null,
+            major: 0,
+            minor: 0,
+            appId: "98983597-F322-4DC3-A36C-72052BF6D612",
+            session: null
+        }
+    };
+
     // Test meteor method: disconnect by disconnecting any self-connections
     this.clearPub = function(){
         
@@ -47,6 +100,58 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
             }
         );
     };
+
+    this.addUsers = function(){
+        Accounts.createUser(user1);
+        Accounts.createUser(user2);
+        Accounts.createUser(user3);
+    }
+
+    this.pubUsers = function(){
+
+        var pkg1 = {
+            transmitter: Meteor.user().emails[0].address,
+            receiver: user1.email,
+            proximity: 'ProximityNear'
+        };
+
+        var pkg2 = {
+            transmitter: Meteor.user().emails[0].address,
+            receiver: user2.email,
+            proximity: 'ProximityFar'
+        };
+
+        var pkg3 = {
+            transmitter: Meteor.user().emails[0].address,
+            receiver: user3.email,
+            proximity: 'ProximityImmediate'
+        };
+
+        Meteor.call('newConnection', pkg1, function(err, connections){});
+        Meteor.call('newConnection', pkg2, function(err, connections){});
+        Meteor.call('newConnection', pkg3, function(err, connections){});
+    };
+
+    this.clearUsers = function(){
+        var pkg1 = {
+            transmitter: Meteor.user().profile.appId,
+            receiver: user1.email
+        };
+
+        var pkg2 = {
+            transmitter: Meteor.user().profile.appId,
+            receiver: user2.email
+        };
+
+        var pkg3 = {
+            transmitter: Meteor.user().profile.appId,
+            receiver: user3.email
+        };
+
+        Meteor.call('disconnect', pkg1);
+        Meteor.call('disconnect', pkg2);
+        Meteor.call('disconnect', pkg3);
+    }
 
     // Test meteor method: newConnection() by adding self to connections
     this.testPub = function(){
