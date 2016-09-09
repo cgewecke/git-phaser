@@ -332,7 +332,8 @@ describe('Service: GitHub', function () {
                 show: function(){ return d1.promise },
                 userRepos: function(){ return d2.promise},
                 userEvents: function(){ return d3.promise},
-                userFollowers: function(){ return d4.promise} 
+                userFollowers: function(){ return d4.promise},
+                userFollowing: function(){ return $q.when()} 
             };
             
         });
@@ -556,12 +557,12 @@ describe('Service: GitHub', function () {
 
         it('should return false if the user is already followed', function(){
 
-            GitHub.followers = [{login: 'penelope'}];
+            GitHub.following = [{login: 'penelope'}];
             expect(GitHub.canFollow('penelope')).toBe(false);
         });
 
         it('should return true if the user is NOT already followed', function(){
-            GitHub.followers = [{login: 'antonio'}];
+            GitHub.following = [{login: 'antonio'}];
             expect(GitHub.canFollow('penelope')).toBe(true);
         });
 

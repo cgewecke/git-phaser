@@ -314,7 +314,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
         
         // Get API, then current user profile, then full account info.
         $github.getUser()
-            .then( function(user){ user.show(null)
+            .then( function(user){ gh_debug = user; user.show(null)
             .then( function(info){ self.getAccount(info.login, user)
             .then( function(account){
                     
@@ -365,6 +365,7 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
                 ? api = self.api 
                 : api = auth_api;
 
+
             // Get profile, then repos, then events, then followers
             $q.all([
                 api.show(username),
@@ -384,8 +385,6 @@ function GitHub($rootScope, $http, $q, $auth, $cordovaOauth, $cordovaKeychain, $
                 self.cache.push(account);
 
                 d.resolve(account);
-
-                gh_debug = account;
             })
             .catch(function(e){
                 logger(where, JSON.stringify(e)); 

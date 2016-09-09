@@ -198,9 +198,9 @@ function GeoLocate($rootScope, $q, $cordovaGeolocation){
 
             // $cordova layer failure   
             }, function(err) {
-               self.address = '';
-               self.lat = 0;
-               self.lng = 0;
+               self.address = '794 Broadway, #2, Brooklyn NY';
+               self.lat = 40.699927; 
+               self.lng = -73.940581;
                self.enabled = false;
                d.resolve(logger(where, JSON.stringify(err)));
             }

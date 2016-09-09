@@ -101,8 +101,8 @@ describe('Service: GeoLocate', function () {
             $scope.$digest();
 
             //Test
-            expect(GeoLocate.map.setView).toHaveBeenCalledWith([0,0],16);
-            expect(GeoLocate.marker.setLatLng).toHaveBeenCalledWith([0,0]);
+            expect(GeoLocate.map.setView).toHaveBeenCalledWith([40.699927, -73.940581],16);
+            expect(GeoLocate.marker.setLatLng).toHaveBeenCalledWith([40.699927, -73.940581]);
 
             //Cleanup
             GeoLocate.map.remove();

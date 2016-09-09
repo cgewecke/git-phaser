@@ -62,43 +62,20 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
     };
 
     user3 = {
-        username: 'rainorshine',
-        email: "0_0_98983597-F322-4DC3-A36C-72052BF6D612",
+        username: 'raineorshine',
+        email: "0_0_458735FA-E270-4746-B73E-E0C88EA6BEE0",
         password: 'hello',
         profile: {
-            beaconName: 'r_2',
+            beaconName: 'r_4',
             notifications: [],
             contacts: [],
             notifyCount: 0,
             pushToken: null,
             major: 0,
             minor: 0,
-            appId: "98983597-F322-4DC3-A36C-72052BF6D612",
+            appId: "458735FA-E270-4746-B73E-E0C88EA6BEE0",
             session: null
         }
-    };
-
-    // Test meteor method: disconnect by disconnecting any self-connections
-    this.clearPub = function(){
-        
-        var pkg = {
-            transmitter: Meteor.user().profile.appId,
-            receiver: penelope
-        }
-        Meteor.call('disconnect', pkg, function(err, result){
-            (err) ? console.log(JSON.stringify(err)) : console.log(JSON.stringify(result)); 
-        })
-    }
-
-    // Clears all notifications from current user
-    this.clearNotes = function(){
-        Meteor.users.update({_id: Meteor.userId()}, 
-            {$set: 
-                {'profile.notifications' : [],
-                 'profile.notifyCount' : 0
-                }
-            }
-        );
     };
 
     this.addUsers = function(){
@@ -153,7 +130,7 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
         Meteor.call('disconnect', pkg3);
     }
 
-    // Test meteor method: newConnection() by adding self to connections
+    // Add penelope
     this.testPub = function(){
 
         var pkg = {
@@ -162,6 +139,29 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
             proximity: Math.random().toString()
         }
         Meteor.call('newConnection', pkg, function(err, connections){})
+    };
+
+    // Remove Penelope
+    this.clearPub = function(){
+        
+        var pkg = {
+            transmitter: Meteor.user().profile.appId,
+            receiver: penelope
+        }
+        Meteor.call('disconnect', pkg, function(err, result){
+            (err) ? console.log(JSON.stringify(err)) : console.log(JSON.stringify(result)); 
+        })
+    }
+
+    // Clears all notifications from current user
+    this.clearNotes = function(){
+        Meteor.users.update({_id: Meteor.userId()}, 
+            {$set: 
+                {'profile.notifications' : [],
+                 'profile.notifyCount' : 0
+                }
+            }
+        );
     };
 
     this.testChangeProximity = function(){
