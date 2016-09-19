@@ -10,7 +10,8 @@
   <section class="authenticate-container" ng-show="!loggingIn">
     
     <!-- Title -->
-    <div class="col spacer text-center">
+    <div class="row row-center third text-center">
+      <div class="col spacer text-center">
         <h1 class="login"> 
             git-phaser 
         </h1>
@@ -19,33 +20,35 @@
             This phaser materializes <br>  
             the repos around you. 
         </p>
+      </div>
     </div> 
 
     <!-- Phaser Image -->
-    <div class = "col spacer button-row text-center phaser-col">
-      <div class="phaser-wrapper">
-        <svg height="256" width="256">
-          <circle cx="128" cy="128" r="100" stroke="white" stroke-width="1" fill="white" />
-        </svg>
-        <img class="phaser" src="./img/phaser256.png" />
+    <div class = "row row-center button-row text-center">
+      <div class="col phaser-wrapper spacer text-center">
+        <img class="phaser vcenter" src="./img/phaser2.png" />
       </div> 
     </div>
     
     
     <!-- Login Button: Development (we can't login via inappbrowser in development) -->    
-    <div class = "col spacer text-center" ng-show="DEV">
+    <div class="row row-center" ng-show="DEV">
+      <div class="col text-center spacer">
         <button ng-click="devLogin()" 
                 class="button button-large button-outline button-light icon-right ion-social-github login">
           Sign in with GitHub &nbsp
         </button>
+      </div>
     </div>  
-    
-    <!-- Login Button: Production -->     
-    <div class = "col spacer text-center" ng-show="!DEV">
+
+    <!-- Login Button: Production --> 
+    <div class="row row-center" ng-show="!DEV">
+      <div class="col text-center spacer">
         <button ng-click="login()" 
                 class="button button-large button-outline button-light icon-right ion-social-github login">
           Sign in with GitHub &nbsp
         </button>
+      </div>
     </div>  
   </section>
 

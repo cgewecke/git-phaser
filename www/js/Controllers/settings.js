@@ -62,8 +62,8 @@ function SettingsCtrl($scope, $state, $reactive, GeoLocate, Notify, GitHub, ioni
     };
 
     user3 = {
-        username: 'raineorshine',
-        email: "0_0_458735FA-E270-4746-B73E-E0C88EA6BEE0",
+        username: 'lyzadanger',
+        email: "0_1_458735FA-E270-4746-B73E-E0C88EA6BEE0",
         password: 'hello',
         profile: {
             beaconName: 'r_4',

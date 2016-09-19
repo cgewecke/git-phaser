@@ -38,6 +38,13 @@
 .no-wrap{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .wrap{ word-wrap: break-word; white-space: normal}
 
+/* Vertical Centering */
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
 /* Ionic Overides */
 /*.has-header { top: 42px; }*/
 /*-------------------*/
@@ -196,27 +203,23 @@
 
 .authenticate-container {
 	color: white;
-    background-color: rgba(2, 119, 189, 0.7);
+    background: linear-gradient(to left, #83c5d2, rgba(2, 119, 189, 0.7));
     display: -webkit-flex;
     -webkit-flex-direction: column;
     height: 100%;
 }
 
-.authenticate-container.spacer {  -webkit-flex: 1; }
-
+.authenticate-container.spacer { -webkit-flex: 1; }
+.authenticate-container.third { height: 33%; }
 
 .phaser{
-    position: absolute;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0;
-    top: 0;
+    width: 95%;
     margin: auto;
-
 }
 
 .phaser-wrapper{ position: relative;}
-.phaser-col{ min-height: 256px; }
+.phaser-col{}
+
 
 button.login{ 
     transform: translateY(50%);
