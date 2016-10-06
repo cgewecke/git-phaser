@@ -85,5 +85,5 @@ $ ionic build ios
 3. Build project in ionic
 4. In Xcode: General > Identity: Increment build or version number
 5. In Xcode: Build Setting > Code Signing > Provisioning Profile: GitphaserProduction (All the other stuff should be 'distribution')
-6. In Xcode: Product > Archive. Validate, then upload. [This issue has more.](https://github.com/cgewecke/beacon-testing/issues/36)
+6. In Xcode: Product > Archive. Validate, then upload. [This issue has more.](https://github.com/cgewecke/beacon-testing/issues/36) (Build target next to play button must be: git-phaser > Generic iOS Device).
 7. In iTunesConnect > Apps > TestFlight, select the new version to test. (These process for a while before they are available). 
