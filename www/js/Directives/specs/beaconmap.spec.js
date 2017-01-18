@@ -1,84 +1,80 @@
-"use strict"
+'use strict';
 var bm_test_debug;
 
 describe('Directive: <beacon-map>', function () {
-    
-    beforeEach(module('templates'));   // ng-html2js template cache
-    beforeEach(module('gitphaser'));    // Application
-    beforeEach(module('mocks'));  // Mocked Meteor services, collections
+  beforeEach(module('templates'));  // ng-html2js template cache
+  beforeEach(module('gitphaser'));  // Application
+  beforeEach(module('mocks'));      // Mocked Meteor services, collections
 
-    var $scope, $compile, ionicToast, 
-        user, ctrl, template, initTemplate, scope, mock_ipad;
+  var $scope
+  var $compile
+  var ionicToast
+  var user
+  var ctrl
+  var template
+  var initTemplate
+  var scope
+  var mock_ipad;
 
+  beforeEach(inject(function (_$rootScope_, _$compile_, _GeoLocate_) {
+    $scope = _$rootScope_;
+    $compile = _$compile_;
+    GeoLocate = _GeoLocate_;
 
-    beforeEach(inject(function(_$rootScope_, _$compile_, _GeoLocate_ ){
-        
-        $scope = _$rootScope_;
-        $compile = _$compile_;
-        GeoLocate = _GeoLocate_;
+    // Mock ionic.Platform
+    ionic.Platform.isIPad = function () { return mock_ipad; };
 
-        // Mock ionic.Platform 
-        ionic.Platform.isIPad = function(){ return mock_ipad };
+    // Mock nearby controller slide
+    $scope.slide = 0;
 
-        // Mock nearby controller slide
-        $scope.slide = 0;
+    initTemplate = function () {
+      template = angular.element('<beacon-map id="test" slide="slide"></beacon-map>');
+      $compile(template)($scope);
+      angular.element(document.body).append(template);
+      $scope.$digest();
+      scope = template.scope();
+    };
+  }));
 
-        initTemplate = function(){
+  afterEach(function () {
+    var node = document.getElementById('test');
+    node.parentNode.removeChild(node);
+    $scope.$digest();
+  });
 
-            template = angular.element('<beacon-map id="test" slide="slide"></beacon-map>');            
-            $compile(template)($scope);
-            angular.element(document.body).append(template);
-            $scope.$digest();
-            scope = template.scope();
-        }
-                
-    }));
+  it('should add class "ipad" to element IFF device is an ipad', function () {
+    mock_ipad = false;
+    initTemplate();
+    expect(template.hasClass('ipad')).toBe(false);
 
-    afterEach(function(){
-        var node  = document.getElementById("test");
-        node.parentNode.removeChild(node);
-        $scope.$digest();
-    })
+    mock_ipad = true;
+    initTemplate();
+    expect(template.hasClass('ipad')).toBe(true);
+  });
 
-    it('should add class "ipad" to element IFF device is an ipad', function(){
+  it('should load the map if it has become the active slide for the first time', function () {
+    $scope.slide = 1;
+    GeoLocate.map = null;
+    spyOn(GeoLocate, 'loadMap');
 
-        mock_ipad = false;
-        initTemplate();
-        expect(template.hasClass('ipad')).toBe(false);
+    initTemplate();
 
-        mock_ipad = true;
-        initTemplate();
-        expect(template.hasClass('ipad')).toBe(true);
+    expect(GeoLocate.loadMap).toHaveBeenCalled();
+  });
 
-    });
+  it('should update the map on slide change if map is already loaded', function () {
+    $scope.slide = 1;
+    GeoLocate.map = null;
+    spyOn(GeoLocate, 'updateMap');
 
-    it('should load the map if it has become the active slide for the first time', function(){
+    initTemplate();
 
-        $scope.slide = 1;
-        GeoLocate.map = null;
-        spyOn(GeoLocate, 'loadMap');
-        
-        initTemplate();
-        
-        expect(GeoLocate.loadMap).toHaveBeenCalled();
+    GeoLocate.map = 'notNull';
+    $scope.slide = 0;
+    $scope.$digest();
+    $scope.slide = 1;
+    $scope.$digest();
 
-    });
-
-    it('should update the map on slide change if map is already loaded', function(){
-        
-        $scope.slide = 1;
-        GeoLocate.map = null;
-        spyOn(GeoLocate, 'updateMap');
-        
-        initTemplate();
-        
-        GeoLocate.map = 'notNull'
-        $scope.slide = 0;
-        $scope.$digest();
-        $scope.slide = 1;
-        $scope.$digest();
-
-        expect(GeoLocate.updateMap).toHaveBeenCalled();
-
-    })
+    expect(GeoLocate.updateMap).toHaveBeenCalled();
+  });
 });

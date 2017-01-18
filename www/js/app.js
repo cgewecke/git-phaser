@@ -4,18 +4,14 @@
 // clientID 75rttrx3oxeeii
 // clientSecret adcGXkzR4fH6e3zI
 angular
+  .module('gitphaser', [
+    'ionic', 
+    'ionic-toast',
+    'ngCordova',
+    'ngCordovaOauth',
+    'angular-meteor',
+    'angular-meteor.auth',
+    'pascalprecht.github-adapter'
 
-	.module('gitphaser', [
-		'ionic', 
-		'ionic-toast',
-		'ngCordova',
-		'ngCordovaOauth',
-		'angular-meteor',
-		'angular-meteor.auth',
-		'pascalprecht.github-adapter'
-
-	]);
-
-
-
+  ]);
 

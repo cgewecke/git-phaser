@@ -7,7 +7,7 @@
 <ion-view hide-nav-bar="true" hide-back-button="true" can-swipe-back="false"> 
   
   <!-- Title Page and Login Button -->
-  <section class="authenticate-container" ng-show="!loggingIn">
+  <section class="authenticate-container" ng-show="!vm.loggingIn">
     
     <!-- Title -->
     <div class="row row-center third text-center">
@@ -32,9 +32,9 @@
     
     
     <!-- Login Button: Development (we can't login via inappbrowser in development) -->    
-    <div class="row row-center" ng-show="DEV">
+    <div class="row row-center" ng-show="vm.DEV">
       <div class="col text-center spacer">
-        <button ng-click="devLogin()" 
+        <button ng-click="vm.devLogin()" 
                 class="button button-large button-outline button-light icon-right ion-social-github login">
           Sign in with GitHub &nbsp
         </button>
@@ -42,9 +42,9 @@
     </div>  
 
     <!-- Login Button: Production --> 
-    <div class="row row-center" ng-show="!DEV">
+    <div class="row row-center" ng-show="!vm.DEV">
       <div class="col text-center spacer">
-        <button ng-click="login()" 
+        <button ng-click="vm.login()" 
                 class="button button-large button-outline button-light icon-right ion-social-github login">
           Sign in with GitHub &nbsp
         </button>
@@ -53,7 +53,7 @@
   </section>
 
   <!-- Authenticating cover -->
-  <section class="authenticate-container" ng-show="loggingIn">
+  <section class="authenticate-container" ng-show="vm.loggingIn">
     <div class="col spacer"></div>
     <div class="col button-row text-center"> 
       <div> <ion-spinner class="auth-spinner spinner-stable" icon="ripple"></ion-spinner> </div>

@@ -1,5 +1,5 @@
 angular.module('gitphaser')
-  .controller('SetupCtrl', SetupCtrl)
+  .controller('SetupController', SetupCtrl);
 
 // @controller: SetupCtrl
 // @params: $scope, $state
@@ -7,14 +7,12 @@ angular.module('gitphaser')
 //
 // Functions to toggle state change when user approves requests for permission to use
 // iBeacon and APNS on new account creation and new installs
-function SetupCtrl ($scope, $state ){
-
-  this.accept = function(){
+function SetupCtrl ($scope, $state) {
+  this.accept = function () {
     $state.go('tab.nearby');
   };
 
-  this.reject = function(){
+  this.reject = function () {
     $state.go('login');
   };
-
-};
+}

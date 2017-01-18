@@ -1,97 +1,94 @@
-"use strict"
+'use strict';
 
 describe('Directive: <server-status>', function () {
-    
-    beforeEach(module('templates'));   // ng-html2js template cache
-    beforeEach(module('gitphaser'));    // Application
-    beforeEach(module('mocks'));  // Mocked Meteor services, collections
+  beforeEach(module('templates'));   // ng-html2js template cache
+  beforeEach(module('gitphaser'));    // Application
+  beforeEach(module('mocks'));  // Mocked Meteor services, collections
 
-    var $scope, $compile, $controller, ionicToast, 
-        user, ctrl, template, initTemplate, scope, mock_status;
+  var $scope
+  var $compile
+  var $controller
+  var ionicToast
+  var user
+  var ctrl
+  var template
+  var initTemplate
+  var scope
+  var mock_status
 
+  beforeEach(inject(function (
+    _$rootScope_, 
+    _$compile_, 
+    _Mock_, 
+    _ionicToast_, 
+    _$controller_) 
+  {
+    $scope = _$rootScope_;
+    $compile = _$compile_;
+    $controller = _$controller_;
+    ionicToast = _ionicToast_;
 
-    beforeEach(inject(function(_$rootScope_, _$compile_, _Mock_, _ionicToast_, _$controller_ ){
-        
-        $scope = _$rootScope_;
-        $compile = _$compile_;
-        $controller = _$controller_;
-        ionicToast = _ionicToast_;
+    // Meteor
+    Meteor.status = function () { return {status: mock_status }; };
+    $scope.vm = { autorun: function (fn) { (fn)(); } };
 
-        // Meteor
-        Meteor.status = function(){ return {status: mock_status }}
-        $scope.vm = { autorun: function(fn){(fn)()} };
+    // Allows us to initialize template against different mock users
+    initTemplate = function () {
+      // 'ion-nav-buttons' requires the ion-nav-bar controller, unfortunately.
+      template = angular.element('<ion-nav-bar><server-status></server-status></ion-nav-bar>');
+      $compile(template)($scope);
+      $scope.$digest();
+      scope = template.find('ion-nav-buttons').scope();
+    };
+  }));
 
-        // Allows us to initialize template against different mock users
-        initTemplate = function(){
+  it('should initialize status to false', function () {
+    initTemplate();
+    expect(scope.status).toBe(false);
+  });
 
-            // 'ion-nav-buttons' requires the ion-nav-bar controller, unfortunately.
-            template = angular.element('<ion-nav-bar><server-status></server-status></ion-nav-bar>');            
-            $compile(template)($scope);
-            $scope.$digest();
-            scope = template.find('ion-nav-buttons').scope();
-           
-        };
+  // There are some weird issues here testing ng-class, possibly because the
+  // the inner scope of the button is not the ion-nav-buttons scope for the
+  // purposes of the test, because of the necessity of wrapping it in <ion-nav-bar>?
+  // In any case, the childScope of the button is being manually updated to the
+  // directive scope to make the test work.
+  it('should make the cloud icon green if app is connected to Meteor', function () {
+    mock_status = 'connected';
 
-    }));
+    initTemplate();
+    spyOn(scope.vm, 'autorun').and.callThrough();
+    var button = template.find('button#status-button');
+    var childScope = button.scope();
+    childScope.status = scope.status;
 
-    it('should initialize status to false', function(){
-        initTemplate();
-        expect(scope.status).toBe(false);
-    });
+    $scope.$digest();
+    expect(button.hasClass('button-balanced')).toBe(true);
+  });
 
-    // There are some weird issues here testing ng-class, possibly because the 
-    // the inner scope of the button is not the ion-nav-buttons scope for the 
-    // purposes of the test, because of the necessity of wrapping it in <ion-nav-bar>?
-    // In any case, the childScope of the button is being manually updated to the 
-    // directive scope to make the test work. 
-    it('should make the cloud icon green if app is connected to Meteor', function(){
-        
-        
-        mock_status = 'connected';
-        
-        initTemplate();
-        spyOn( scope.vm, 'autorun').and.callThrough();
-        var button = template.find('button#status-button');
-        var childScope = button.scope();
-        childScope.status = scope.status;
+  it('should make the cloud icon red if app is NOT connected to Meteor', function () {
+    spyOn(scope.vm, 'autorun').and.callThrough();
+    mock_status = 'disconnected';
 
-        $scope.$digest();
-        expect(button.hasClass('button-balanced')).toBe(true);
-        
-    })
+    initTemplate();
+    var button = template.find('button#status-button');
+    var childScope = button.scope();
+    childScope.status = scope.status;
 
-    it('should make the cloud icon red if app is NOT connected to Meteor', function(){
-        
-        spyOn( scope.vm, 'autorun').and.callThrough();
-        mock_status = 'disconnected';
-        
-        initTemplate();
-        var button = template.find('button#status-button');
-        var childScope = button.scope();
-        childScope.status = scope.status;
+    $scope.$digest();
+    expect(button.hasClass('button-assertive')).toBe(true);
+  });
 
-        $scope.$digest();
-        expect(button.hasClass('button-assertive')).toBe(true);
+  it('should show a toast with a status message when the icon is clicked', function () {
+    var true_msg = 'You are connected to the server.';
+    spyOn(scope, 'toast').and.callThrough();
+    spyOn(ionicToast, 'show');
+    mock_status = 'connected';
 
-    });
+    initTemplate();
 
-    it('should show a toast with a status message when the icon is clicked', function(){
-
-        var true_msg = 'You are connected to the server.';
-        
-        spyOn( scope, 'toast').and.callThrough();
-        spyOn( ionicToast, 'show');
-        mock_status = 'connected';
-
-        initTemplate();
-
-        var button = template.find('button#status-button');
-        
-        button.triggerHandler('click');
-        $scope.$digest();
-        expect(ionicToast.show).toHaveBeenCalledWith(true_msg, 'middle', false, 1000);
-
-    })
-
-
-})
+    var button = template.find('button#status-button');
+    button.triggerHandler('click');
+    $scope.$digest();
+    expect(ionicToast.show).toHaveBeenCalledWith(true_msg, 'middle', false, 1000);
+  });
+});
