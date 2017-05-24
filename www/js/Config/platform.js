@@ -17,8 +17,8 @@ function run ($ionicPlatform, $rootScope, $auth, $state, Beacons) {
       StatusBar.styleDefault();
     }
 
-    $rootScope.DEV = false;
-    $rootScope.beaconsOFF = false;
-    $rootScope.notificationsOff = false;
+    $rootScope.DEV = false;             // <--- True: for ionic serve only
+    $rootScope.beaconsOFF = false;      // <--- True: ionic serve and simulator! False: Device.
+    $rootScope.notificationsOff = true; // <--- True: always: unless push certs are good, but they aren't.
   });
 }

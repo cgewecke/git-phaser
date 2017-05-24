@@ -31,6 +31,8 @@ function Notify (
 
     if ($rootScope.DEV || $rootScope.notificationsOff) return $q.when();
 
+    logger(where, 'registering for APNS');
+    
     if ((user && !user.profile.pushToken) || window.localStorage['pl_newInstall'] === 'true') {
       var config = {
         android: {},
