@@ -10,53 +10,33 @@ Users only have to login once to be detectable. From then on the app will (brief
 
 **Git-phaser does not store any GitHub data on its servers apart from usernames.** Passwordless access to git-phaser is accomplished by generating a client side key when an account is created and storing it in the device keychain. Deleting this key will disable the app. All profile data is retrieved by the mobile client from Github itself on a session by session basis.    
 
-## Documentation
-[Docs for services, controllers and directives](https://git-phaser.github.io/git-phaser)
+## iOS Simulator
 
-To build docs
-```
-$ gulp ngdocs
-```
-
-To view docs locally
-```
-$ gulp connect_ngdocs
-```
-
-## Tests: 
-Individual tests are located in spec folders near their related js file e.g:
-
-```
-Controllers
-| - specs
-  | - controller_a.spec.js
-  | - controller_b.spec.js
-| - controller_a.js
-| - controller_b.js
-```
-
-To run all:
-```
-$ gulp test
-```
-** Warning: ** Set all dev variables in platform.js to false or tests will fail. 
-## Ionic Server
-```
-$ ionic serve
-```
+The iOS Simulator doesn't have beacon functionality and is useful primarily as a way of verifying that Github login
+works / exploring the UI. There are some buttons to mock user connections in the apps setting tab, so it's possible to see what connections look like.  
 
 ## Launch Meteor
-Make sure devices are connected to dev computer's wifi. In the server directory:
+Make sure devices are connected to dev computer's wifi. 
+
+This branch is configured to connect the app to a live server on Heroku and should work without deploying anything. However, if you'd prefer to use a local server, find your IP address by looking at your Mac's `Server Preferences / Network` options. In the server directory run:
+
 ```
-$ meteor run  --mobile-server 10.0.0.8:3000
+$ meteor run  --mobile-server <ip address>:3000
 ```
 
+**Then** go to the [meteor runtime config file](https://github.com/git-phaser/git-phaser/blob/dev/www/lib/meteor-client-side/meteor-runtime-config.js) and set the app to point at your local server. (There are additional instructions in that file if this isn't clear).
+
 ## Meteor Mongo interactive shell
+
+This is useful if you need to delete yourself from the server DB for some reason. Ex: the app crashed and now complains that your password is bad / advises you to contact `gitphaser.com`.
+
+In the server directory:
 ```
 $ meteor mongo                                      // Launch
 $ db.users.find()                                   // List users
 $ db.users.remove({"_id":"7YYNWfkX9tWjuw8k6"});     // Remove user
 ```
+
 ## Build:
 
 ```
@@ -64,26 +44,5 @@ $ ionic build ios
 ```
 
 ## XCode Development Settings
-```Product > Scheme > Edit``` should be debug
-```Build Setting > Code Signing > Provisioning Profile```: should be IOS Team Provisioning Profile: com.ionicframework.git-phaser800962
 
-## Deploy server 
-1. In beacon-production/server: % mv .git ..
-2. Trash server
-3. Copy new server to beacon-production/ from beacon-testing/linkedin/server
-4. % mv .git server
-
-```
-% git add -A
-% git commit -a -m 'Server update & deploy: '
-% git push heroku master
-```
-
-## Deploy to TestFlight
-1. Make sure www/lib/meteor-client-side/meteor-runtime-config.js is set to Production address.
-2. Make sure flags in config.platform AND server/config.push.json are set to production values.
-3. Build project in ionic
-4. In Xcode: General > Identity: Increment build or version number
-5. In Xcode: Build Setting > Code Signing > Provisioning Profile: GitphaserProduction (All the other stuff should be 'distribution')
-6. In Xcode: Product > Archive. Validate, then upload. [This issue has more.](https://github.com/cgewecke/beacon-testing/issues/36) (Build target next to play button must be: git-phaser > Generic iOS Device).
-7. In iTunesConnect > Apps > TestFlight, select the new version to test. (These process for a while before they are available). 
+You should be able to deploy to a device by setting code signing to `automatic`. 
