@@ -40,6 +40,21 @@ To run all:
 $ gulp test
 ```
 ** Warning: ** Set all dev variables in platform.js to false or tests will fail. 
+
+## Required cordova plugins
+
++ com.unarin.cordova.beacon 3.4.1 "Proximity Beacon Plugin"
++ cordova-plugin-compat 1.0.0 "Compat"
++ cordova-plugin-console 1.0.3 "Console"
++ cordova-plugin-contacts 2.1.0 "Contacts"
++ cordova-plugin-device 1.1.2 "Device"
++ cordova-plugin-geolocation 2.2.0 "Geolocation"
++ cordova-plugin-inappbrowser 1.4.0 "InAppBrowser"
++ cordova-plugin-ios-keychain 3.0.0 "KeyChain Plugin for Cordova iOS"
++ cordova-plugin-splashscreen 3.2.2 "Splashscreen"
++ cordova-plugin-whitelist 1.2.2 "Whitelist"
++ phonegap-plugin-push 1.6.4 "PushPlugin"
+
 ## Ionic Server
 ```
 $ ionic serve
