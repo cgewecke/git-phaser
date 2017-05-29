@@ -39,7 +39,7 @@ To run all:
 ```
 $ gulp test
 ```
-** Warning: ** Set all dev variables in platform.js to false or tests will fail. 
+**Warning:** Set all dev variables in platform.js to false or tests will fail. 
 
 ## Required cordova plugins
 
